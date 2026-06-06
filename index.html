@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>UFO RIT SYSTEM</title>
+</head>
+<body>
+
+<h2>UFO RIT INPUT SYSTEM</h2>
+
+<label>Sopir</label>
+<select id="sopir"></select>
+<br><br>
+
+<label>Kernet</label>
+<select id="kernet"></select>
+<br><br>
+
+<input id="sj_bln" placeholder="SJ Bulan"><br><br>
+<input id="sj_no" placeholder="SJ No"><br><br>
+<input id="faktur_bln" placeholder="Faktur Bulan"><br><br>
+<input id="faktur_no" placeholder="Faktur No"><br><br>
+<input id="keterangan" placeholder="Keterangan"><br><br>
+
+<button onclick="kirim()">KIRIM</button>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbxu2kklzIUIPozlqscps0Zq2SuqvqV98CWT4w-XFWjOkDH0y0MLv7sBK0eJvt12eo6fXQ/exec";
+
+// LOAD MASTER
+fetch(API + "?action=master")
+.then(r => r.json())
+.then(res => {
+  let s = document.getElementById("sopir");
+  let k = document.getElementById("kernet");
+
+  res.sopir.forEach(v => {
+    let opt = document.createElement("option");
+    opt.text = v;
+    s.add(opt);
+  });
+
+  res.kernet.forEach(v => {
+    let opt = document.createElement("option");
+    opt.text = v;
+    k.add(opt);
+  });
+});
+
+// KIRIM DATA
+function kirim() {
+  fetch(API, {
+    method: "POST",
+    body: JSON.stringify({
+      sopir: sopir.value,
+      kernet: kernet.value,
+      sj_bln: sj_bln.value,
+      sj_no: sj_no.value,
+      faktur_bln: faktur_bln.value,
+      faktur_no: faktur_no.value,
+      keterangan: keterangan.value,
+      dklk: "OK"
+    })
+  })
+  .then(r => r.json())
+  .then(res => {
+    alert("BERHASIL KIRIM");
+  });
+}
+</script>
+
+</body>
+</html>
