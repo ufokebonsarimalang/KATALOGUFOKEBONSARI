@@ -30,7 +30,6 @@ background:white;
 position:sticky;
 top:0;
 z-index:10;
-box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
 
 #search{
@@ -51,9 +50,9 @@ flex-wrap:wrap;
 }
 
 select{
-padding:10px;
 flex:1;
 min-width:120px;
+padding:10px;
 border-radius:8px;
 border:1px solid #ccc;
 }
@@ -204,10 +203,11 @@ function formatRupiah(n){
 return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR"}).format(n || 0);
 }
 
-function img(n){
-return n ? "images/"+n : "";
+function img(file){
+return file ? "images/"+file : "";
 }
 
+/* ================= LOAD DATA ================= */
 async function loadProduk(){
 
 try{
@@ -217,95 +217,5 @@ const data = await res.json();
 
 semuaProduk = data || [];
 
-tampilkan(data);
-
-}catch(e){
-document.getElementById("produk").innerHTML =
-"<h3 style='text-align:center'>Gagal load data</h3>";
-}
-}
-
-function tampilkan(data){
-
-const box=document.getElementById("produk");
-box.innerHTML="";
-
-data.forEach((p,i)=>{
-
-box.innerHTML += `
-<div class="card" onclick="detail(${i})">
-
-<img src="${img(p.foto)}">
-
-<div class="card-body">
-
-<div class="brand">${p.brand||""}</div>
-
-<div class="tipe">${p.tipe||""}</div>
-
-<div class="harga">${formatRupiah(p.harga)}</div>
-
-</div>
-
-</div>
-`;
-
-});
-
-semuaProduk = data;
-isiFilter(data);
-}
-
-function isiFilter(data){
-
-const kSet = new Set();
-const bSet = new Set();
-
-data.forEach(p=>{
-if(p.kategori) kSet.add(p.kategori);
-if(p.brand) bSet.add(p.brand);
-});
-
-const k = document.getElementById("filterKategori");
-const b = document.getElementById("filterBrand");
-
-k.innerHTML = `<option value="">Semua Kategori</option>`;
-b.innerHTML = `<option value="">Semua Brand</option>`;
-
-kSet.forEach(v=>{
-k.innerHTML += `<option value="${v}">${v}</option>`;
-});
-
-bSet.forEach(v=>{
-b.innerHTML += `<option value="${v}">${v}</option>`;
-});
-
-}
-
-function applyFilter(){
-
-let hasil = semuaProduk.filter(p=>{
-
-return (
-(!filterKategori || p.kategori == filterKategori) &&
-(!filterBrand || p.brand == filterBrand) &&
-(
-(p.brand||"").toLowerCase().includes(keyword) ||
-(p.tipe||"").toLowerCase().includes(keyword)
-)
-);
-
-});
-
-render(hasil);
-}
-
-function render(data){
-
-const box=document.getElementById("produk");
-box.innerHTML="";
-
-data.forEach((p,i)=>{
-
-box.innerHTML += `
-<div class="card" onclick
+/* langsung render tanpa bentrok */
+render(semuaProduk
