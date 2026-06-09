@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UFO Kebonsari Malang</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
+#promoBanner{background:#facc15;padding:10px;text-align:center;font-weight:700}
+.header{background:linear-gradient(135deg,#0077c8,#00a2ff);color:#fff;text-align:center;padding:18px}
+.logo{width:80px;height:80px;border-radius:50%;background:#fff;padding:4px}
+.search-wrap{display:flex;gap:10px;padding:12px;background:#0077c8;position:sticky;top:0}
+.menu-btn{width:48px;border:none;border-radius:12px}
+#search{flex:1;padding:12px;border:none;border-radius:30px}
+#productCount{padding:12px;font-weight:600}
+.container{padding:12px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.08);cursor:pointer}
+.card img{width:100%;height:180px;object-fit:contain;padding:10px}
+.card-body{padding:10px}.brand{display:inline-block;background:#eef6ff;color:#0077c8;padding:4px 8px;border-radius:999px;font-size:11px}
+.tipe{font-weight:600;margin-top:8px;min-height:40px}.harga{color:#e11d48;font-size:20px;font-weight:700}
+.status,.unggulan{display:inline-block;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:700;margin:2px}
+.baru{background:#dbeafe;color:#2563eb}.promo{background:#fee2e2;color:#dc2626}.best{background:#fef3c7;color:#d97706}.unggulan{background:#fff7ed;color:#ea580c}
+.modal{display:none;position:fixed;inset:0;background:#fff;overflow:auto;z-index:9999}.modal-content{padding:20px}
+.close{font-size:30px;cursor:pointer;float:right}.modal img{width:100%;max-height:350px;object-fit:contain}
+.wa,.share{display:block;text-align:center;color:#fff;text-decoration:none;padding:14px;border-radius:10px;margin-top:10px;border:none;width:100%;font-weight:700}
+.wa{background:#25D366}.share{background:#0077c8}
+</style>
+</head>
+<body>
+<div id="promoBanner">🔥 PROMO UFO KEBONSARI</div>
+<div class="header"><img src="images/logo.png" class="logo"><h2>UFO Kebonsari Malang</h2></div>
+<div class="search-wrap"><button class="menu-btn">☰</button><input id="search" placeholder="Cari produk..."></div>
+<div id="productCount">Memuat produk...</div>
+<div id="produk" class="container"></div>
+
+<div id="modal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="modal.style.display='none'">&times;</span>
+<img id="mFoto"><h2 id="mNama"></h2><h3 id="mHarga"></h3>
+<div id="mKategori"></div><div id="mSpek"></div>
+<a id="waBtn" class="wa" target="_blank">Tanya via WhatsApp</a>
+<button id="shareBtn" class="share">📤 Bagikan Produk</button>
+</div></div>
+
+<script>
+const API_URL="https://script.google.com/macros/s/AKfycbwqnu2yJWk3Bb8JPSVy8ZSZxs5Ae4VGSNpRJl1j3Qgkoj-27FQX_ys4-8qyyyrbXJhQ/exec";
+let semuaProduk=[];
+
+function slugProduk(p){
+return ((p.brand||"")+"-"+(p.tipe||"")).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+}
+function formatRupiah(n){return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n||0)}
+function foto(f){return "https://ufokebonsarimalang.github.io/KATALOGUFOKEBONSARI/images/"+f}
+
+async function loadProduk(){
+const res=await fetch(API_URL);
+const data=await res.json();
+
+data.sort((a,b)=>{
+if(a.unggulan==="YA"&&b.unggulan!=="YA")return -1;
+if(a.unggulan!=="YA"&&b.unggulan==="YA")return 1;
+return (Number(a.urutan)||999)-(Number(b.urutan)||999);
+});
+
+const banner=data.find(x=>x.banner&&x.banner.trim());
+if(banner) promoBanner.innerHTML="🔥 "+banner.banner;
+
+semuaProduk=data;
+tampilkan(data);
+productCount.innerHTML="📦 Total Produk : "+data.length;
+
+const slug=new URLSearchParams(location.search).get("produk");
+if(slug){
+const p=data.find(x=>slugProduk(x)===slug);
+if(p)setTimeout(()=>detail(p),300);
+}
+}
+
+function tampilkan(data){
+produk.innerHTML="";
+data.forEach(p=>{
+let badge="";
+if(p.status==="BARU") badge='<span class="status baru">🆕 BARU</span>';
+if(p.status==="PROMO") badge='<span class="status promo">🔥 PROMO</span>';
+if(p.status==="BESTSELLER") badge='<span class="status best">⭐ BESTSELLER</span>';
+let unggulan=p.unggulan==="YA"?'<span class="unggulan">⭐ UNGGULAN</span>':'';
+
+produk.innerHTML+=`<div class="card" onclick='detail(${JSON.stringify(p)})'>
+<img src="${foto(p.foto)}">
+<div class="card-body">${badge}${unggulan}<div class="brand">${p.brand||""}</div><div class="tipe">${p.tipe||""}</div><div class="harga">${formatRupiah(p.harga)}</div></div></div>`;
+});
+}
+
+function detail(p){
+modal.style.display="block";
+mFoto.src=foto(p.foto);
+mNama.innerHTML=(p.brand||"")+" "+(p.tipe||"");
+mHarga.innerHTML=formatRupiah(p.harga);
+mKategori.innerHTML="Kategori : "+(p.kategori||"-");
+mSpek.innerHTML=[p.spek1,p.spek2,p.spek3,p.spek4,p.spek5].filter(Boolean).map(x=>"<div>✅ "+x+"</div>").join("");
+waBtn.href="https://wa.me/6289524391002?text="+encodeURIComponent("Halo, saya tertarik "+mNama.innerText);
+
+shareBtn.onclick=function(){
+const url=location.origin+location.pathname+"?produk="+slugProduk(p);
+if(navigator.share){
+navigator.share({title:mNama.innerText,text:"Cek produk ini",url:url});
+}else{
+navigator.clipboard.writeText(url);
+alert("Link produk disalin");
+}
+}
+}
+
+search.addEventListener("keyup",function(){
+const k=this.value.toLowerCase();
+tampilkan(semuaProduk.filter(p=>(p.brand||"").toLowerCase().includes(k)||(p.tipe||"").toLowerCase().includes(k)||(p.kategori||"").toLowerCase().includes(k)));
+});
+
+loadProduk();
+</script>
+</body></html>
