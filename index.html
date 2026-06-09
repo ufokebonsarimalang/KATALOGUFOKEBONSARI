@@ -19,6 +19,11 @@ padding:20px;
 text-align:center;
 }
 
+.header img{
+width:80px;
+margin-bottom:10px;
+}
+
 .search-box{
 padding:15px;
 background:white;
@@ -138,6 +143,7 @@ font-weight:bold;
 <body>
 
 <div class="header">
+<img src="images/logo.png">
 <h1>UFO KEBONSARI MALANG</h1>
 <p>Katalog Produk</p>
 </div>
@@ -148,6 +154,7 @@ font-weight:bold;
 
 <div id="produk" class="container"></div>
 
+<!-- MODAL -->
 <div id="modal" class="modal">
 <div class="modal-content">
 
@@ -185,17 +192,14 @@ maximumFractionDigits:0
 }).format(n);
 }
 
-function convertDrive(namaFile){
-
-  if(!namaFile) return "";
-
-  return "https://ufokebonsarimalang.github.io/KATALOGUFOKEBONSARI/images/" + namaFile;
-
+function imgPath(file){
+if(!file) return "";
+return "images/"+file;
 }
+
 async function loadProduk(){
 
 const res = await fetch(API_URL);
-
 const data = await res.json();
 
 semuaProduk=data;
@@ -206,18 +210,14 @@ tampilkan(data);
 function tampilkan(data){
 
 const box=document.getElementById("produk");
-
 box.innerHTML="";
 
-data.forEach(p=>{
-
-const foto=convertDrive(p.foto);
+data.forEach((p,i)=>{
 
 box.innerHTML += `
-<div class="card"
-onclick='detail(${JSON.stringify(p)})'>
+<div class="card" onclick="detail(${i})">
 
-<img src="${foto}">
+<img src="${imgPath(p.foto)}">
 
 <div class="card-body">
 
@@ -225,9 +225,7 @@ onclick='detail(${JSON.stringify(p)})'>
 
 <div class="tipe">${p.tipe}</div>
 
-<div class="harga">
-${formatRupiah(p.harga)}
-</div>
+<div class="harga">${formatRupiah(p.harga)}</div>
 
 </div>
 
@@ -235,40 +233,42 @@ ${formatRupiah(p.harga)}
 `;
 
 });
+
+semuaProduk = data;
 }
 
-function detail(p){
+function detail(i){
+
+const p = semuaProduk[i];
 
 document.getElementById("modal").style.display="block";
 
-document.getElementById("mFoto").src=convertDrive(p.foto);
+document.getElementById("mFoto").src = imgPath(p.foto);
 
-document.getElementById("mNama").innerHTML=
+document.getElementById("mNama").innerHTML =
 p.brand+" "+p.tipe;
 
-document.getElementById("mHarga").innerHTML=
+document.getElementById("mHarga").innerHTML =
 formatRupiah(p.harga);
 
-document.getElementById("mKategori").innerHTML=
+document.getElementById("mKategori").innerHTML =
 "Kategori : "+p.kategori;
 
 let spek="";
 
 [p.spek1,p.spek2,p.spek3,p.spek4,p.spek5]
 .forEach(s=>{
-
 if(s){
 spek += `<div>✅ ${s}</div>`;
 }
-
 });
 
-document.getElementById("mSpek").innerHTML=spek;
+document.getElementById("mSpek").innerHTML = spek;
 
-const pesan=
+const pesan =
 `Halo, saya ingin menanyakan produk:%0A%0A${p.brand} ${p.tipe}`;
 
-document.getElementById("waBtn").href=
+document.getElementById("waBtn").href =
 `https://wa.me/6289524391002?text=${pesan}`;
 }
 
@@ -290,7 +290,6 @@ String(p.kategori).toLowerCase().includes(key)
 );
 
 tampilkan(hasil);
-
 });
 
 loadProduk();
