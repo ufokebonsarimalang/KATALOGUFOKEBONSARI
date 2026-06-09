@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UFO Elektronik - Katalog</title>
+<title>UFO Elektronik - Katalog Produk</title>
 
 <style>
 body{
@@ -17,11 +17,6 @@ background:#0f172a;
 color:white;
 text-align:center;
 padding:20px;
-}
-
-.header img{
-width:80px;
-margin-bottom:10px;
 }
 
 .search-box{
@@ -39,22 +34,6 @@ border:1px solid #ccc;
 border-radius:8px;
 font-size:16px;
 box-sizing:border-box;
-}
-
-.filters{
-display:flex;
-gap:10px;
-padding:10px;
-background:white;
-flex-wrap:wrap;
-}
-
-select{
-flex:1;
-min-width:120px;
-padding:10px;
-border-radius:8px;
-border:1px solid #ccc;
 }
 
 .container{
@@ -149,23 +128,12 @@ font-weight:bold;
 <body>
 
 <div class="header">
-<img src="images/logo.png" onerror="this.style.display='none'">
 <h1>UFO KEBONSARI MALANG</h1>
 <p>Katalog Produk</p>
 </div>
 
 <div class="search-box">
 <input type="text" id="search" placeholder="Cari produk...">
-</div>
-
-<div class="filters">
-<select id="filterKategori">
-<option value="">Semua Kategori</option>
-</select>
-
-<select id="filterBrand">
-<option value="">Semua Brand</option>
-</select>
 </div>
 
 <div id="produk" class="container"></div>
@@ -195,9 +163,6 @@ font-weight:bold;
 const API_URL = "https://script.google.com/macros/s/AKfycbzqDhY5nu8KBLMggsRrDuo9gxcUrEpFrfqhnb6UnDyrpR6KG2aUh46Jk5kliW3xG2yH/exec";
 
 let semuaProduk = [];
-let filterKategori = "";
-let filterBrand = "";
-let keyword = "";
 
 function formatRupiah(n){
 return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR"}).format(n || 0);
@@ -217,5 +182,67 @@ const data = await res.json();
 
 semuaProduk = data || [];
 
-/* langsung render tanpa bentrok */
-render(semuaProduk
+render(semuaProduk);
+
+}catch(e){
+
+console.log(e);
+
+document.getElementById("produk").innerHTML =
+"<h3 style='text-align:center'>Gagal load data</h3>";
+
+}
+
+}
+
+/* ================= RENDER ================= */
+function render(data){
+
+const box = document.getElementById("produk");
+box.innerHTML = "";
+
+data.forEach((p,i)=>{
+
+box.innerHTML += `
+<div class="card" onclick="detail(${i})">
+
+<img src="${img(p.foto)}">
+
+<div class="card-body">
+
+<div class="brand">${p.brand||""}</div>
+
+<div class="tipe">${p.tipe||""}</div>
+
+<div class="harga">${formatRupiah(p.harga)}</div>
+
+</div>
+
+</div>
+`;
+
+});
+
+}
+
+/* ================= DETAIL ================= */
+function detail(i){
+
+const p = semuaProduk[i];
+if(!p) return;
+
+document.getElementById("modal").style.display="block";
+
+document.getElementById("mFoto").src = img(p.foto);
+document.getElementById("mNama").innerText = (p.brand||"")+" "+(p.tipe||"");
+document.getElementById("mHarga").innerText = formatRupiah(p.harga);
+document.getElementById("mKategori").innerText = "Kategori: "+(p.kategori||"");
+
+let spek="";
+[p.spek1,p.spek2,p.spek3,p.spek4,p.spek5].forEach(s=>{
+if(s) spek += "<div>✅ "+s+"</div>";
+});
+
+document.getElementById("mSpek").innerHTML = spek;
+
+document.getElementById("waBtn").href =
