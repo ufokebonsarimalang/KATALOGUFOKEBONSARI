@@ -3,58 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UFO Elektronik - Katalog Produk</title>
+<title>UFO Elektronik Kebonsari Malang - Katalog Produk</title>
 
 <style>
 body{
 margin:0;
-font-family:Arial;
+font-family:Arial,sans-serif;
 background:#f5f5f5;
 }
 
 .header{
 background:#0f172a;
 color:white;
-text-align:center;
 padding:20px;
+text-align:center;
 }
 
 .search-box{
-padding:10px;
+padding:15px;
 background:white;
 position:sticky;
 top:0;
-z-index:10;
+z-index:100;
+box-shadow:0 2px 5px rgba(0,0,0,.1);
 }
 
 #search{
 width:100%;
 padding:12px;
+font-size:16px;
 border:1px solid #ccc;
 border-radius:8px;
-font-size:16px;
 box-sizing:border-box;
 }
 
-.container{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+/* FILTER BAR BARU */
+.filters{
+display:flex;
 gap:10px;
 padding:10px;
+background:white;
+flex-wrap:wrap;
+}
+
+select{
+flex:1;
+min-width:120px;
+padding:10px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+.container{
+padding:10px;
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+gap:12px;
 }
 
 .card{
 background:white;
 border-radius:10px;
 overflow:hidden;
+box-shadow:0 2px 6px rgba(0,0,0,.1);
 cursor:pointer;
-box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
 
 .card img{
 width:100%;
-height:160px;
+height:180px;
 object-fit:cover;
+background:#eee;
 }
 
 .card-body{
@@ -64,36 +83,40 @@ padding:10px;
 .brand{
 font-size:12px;
 color:#666;
+font-weight:bold;
 }
 
 .tipe{
+font-size:14px;
 font-weight:bold;
 margin-top:5px;
+min-height:40px;
 }
 
 .harga{
-color:#e11d48;
+margin-top:10px;
+font-size:18px;
 font-weight:bold;
-margin-top:8px;
+color:#e11d48;
 }
 
 .modal{
 display:none;
 position:fixed;
-top:0;
 left:0;
+top:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.7);
-z-index:9999;
+background:rgba(0,0,0,.7);
 overflow:auto;
+z-index:9999;
 }
 
 .modal-content{
 background:white;
 margin:20px;
-padding:15px;
 border-radius:10px;
+padding:15px;
 }
 
 .modal img{
@@ -103,21 +126,25 @@ border-radius:10px;
 
 .close{
 float:right;
-font-size:25px;
+font-size:28px;
 cursor:pointer;
 }
 
+.spek{
+margin-top:15px;
+}
+
 .spek div{
-padding:4px 0;
+padding:5px 0;
 }
 
 .wa{
 display:block;
+margin-top:20px;
 background:#25D366;
 color:white;
 text-align:center;
-padding:12px;
-margin-top:15px;
+padding:15px;
 border-radius:8px;
 text-decoration:none;
 font-weight:bold;
@@ -136,9 +163,19 @@ font-weight:bold;
 <input type="text" id="search" placeholder="Cari produk...">
 </div>
 
+<!-- FILTER BAR -->
+<div class="filters">
+<select id="filterKategori">
+<option value="">Semua Kategori</option>
+</select>
+
+<select id="filterBrand">
+<option value="">Semua Brand</option>
+</select>
+</div>
+
 <div id="produk" class="container"></div>
 
-<!-- MODAL -->
 <div id="modal" class="modal">
 <div class="modal-content">
 
@@ -147,74 +184,73 @@ font-weight:bold;
 <img id="mFoto">
 
 <h2 id="mNama"></h2>
+
 <h3 id="mHarga"></h3>
 
 <div id="mKategori"></div>
 
-<div id="mSpek"></div>
+<div id="mSpek" class="spek"></div>
 
-<a id="waBtn" class="wa" target="_blank">Tanya WhatsApp</a>
+<a id="waBtn" class="wa" target="_blank">
+Tanya via WhatsApp
+</a>
 
 </div>
 </div>
 
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycbzqDhY5nu8KBLMggsRrDuo9gxcUrEpFrfqhnb6UnDyrpR6KG2aUh46Jk5kliW3xG2yH/exec";
+const API_URL =
+"https://script.google.com/macros/s/AKfycbzqDhY5nu8KBLMggsRrDuo9gxcUrEpFrfqhnb6UnDyrpR6KG2aUh46Jk5kliW3xG2yH/exec";
 
 let semuaProduk = [];
+let filterKategori = "";
+let filterBrand = "";
 
 function formatRupiah(n){
-return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR"}).format(n || 0);
+return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR"}).format(n);
 }
 
-function img(file){
-return file ? "images/"+file : "";
+function convertDrive(namaFile){
+if(!namaFile) return "";
+return "https://ufokebonsarimalang.github.io/KATALOGUFOKEBONSARI/images/" + namaFile;
 }
 
-/* ================= LOAD DATA ================= */
+/* ================= LOAD ================= */
 async function loadProduk(){
-
-try{
 
 const res = await fetch(API_URL);
 const data = await res.json();
 
-semuaProduk = data || [];
+semuaProduk = data;
 
-render(semuaProduk);
-
-}catch(e){
-
-console.log(e);
-
-document.getElementById("produk").innerHTML =
-"<h3 style='text-align:center'>Gagal load data</h3>";
-
+tampilkan(data);
+isiFilter(data);
 }
 
-}
+/* ================= TAMPIL ================= */
+function tampilkan(data){
 
-/* ================= RENDER ================= */
-function render(data){
+const box=document.getElementById("produk");
+box.innerHTML="";
 
-const box = document.getElementById("produk");
-box.innerHTML = "";
-
-data.forEach((p,i)=>{
+data.forEach(p=>{
 
 box.innerHTML += `
-<div class="card" onclick="detail(${i})">
+<div class="card"
+onclick='detail(${JSON.stringify(p)})'>
 
-<img src="${img(p.foto)}">
+<img src="${convertDrive(p.foto)}">
 
 <div class="card-body">
 
-<div class="brand">${p.brand||""}</div>
+<div class="brand">${p.brand}</div>
 
-<div class="tipe">${p.tipe||""}</div>
+<div class="tipe">${p.tipe}</div>
 
-<div class="harga">${formatRupiah(p.harga)}</div>
+<div class="harga">
+${formatRupiah(p.harga)}
+</div>
 
 </div>
 
@@ -222,27 +258,67 @@ box.innerHTML += `
 `;
 
 });
+}
+
+/* ================= FILTER ISI ================= */
+function isiFilter(data){
+
+const kSet = new Set();
+const bSet = new Set();
+
+data.forEach(p=>{
+if(p.kategori) kSet.add(p.kategori);
+if(p.brand) bSet.add(p.brand);
+});
+
+const k = document.getElementById("filterKategori");
+const b = document.getElementById("filterBrand");
+
+k.innerHTML = `<option value="">Semua Kategori</option>`;
+b.innerHTML = `<option value="">Semua Brand</option>`;
+
+kSet.forEach(v=>{
+k.innerHTML += `<option value="${v}">${v}</option>`;
+});
+
+bSet.forEach(v=>{
+b.innerHTML += `<option value="${v}">${v}</option>`;
+});
 
 }
 
-/* ================= DETAIL ================= */
-function detail(i){
+/* ================= FILTER ================= */
+function applyFilter(){
 
-const p = semuaProduk[i];
-if(!p) return;
+let hasil = semuaProduk.filter(p=>{
+
+return (
+(!filterKategori || p.kategori == filterKategori) &&
+(!filterBrand || p.brand == filterBrand) &&
+(
+(p.brand||"").toLowerCase().includes(
+document.getElementById("search").value.toLowerCase()
+) ||
+(p.tipe||"").toLowerCase().includes(
+document.getElementById("search").value.toLowerCase()
+)
+)
+);
+
+});
+
+tampilkan(hasil);
+}
+
+/* ================= DETAIL ================= */
+function detail(p){
 
 document.getElementById("modal").style.display="block";
 
-document.getElementById("mFoto").src = img(p.foto);
-document.getElementById("mNama").innerText = (p.brand||"")+" "+(p.tipe||"");
-document.getElementById("mHarga").innerText = formatRupiah(p.harga);
-document.getElementById("mKategori").innerText = "Kategori: "+(p.kategori||"");
+document.getElementById("mFoto").src=convertDrive(p.foto);
 
-let spek="";
-[p.spek1,p.spek2,p.spek3,p.spek4,p.spek5].forEach(s=>{
-if(s) spek += "<div>✅ "+s+"</div>";
-});
+document.getElementById("mNama").innerHTML=
+p.brand+" "+p.tipe;
 
-document.getElementById("mSpek").innerHTML = spek;
-
-document.getElementById("waBtn").href =
+document.getElementById("mHarga").innerHTML=
+formatRup
