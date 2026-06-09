@@ -1,133 +1,128 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UFO Elektronik Kebonsari Malang - Katalog Produk</title>
+<script>
 
-<style>
-body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#f5f5f5;
+const API_URL = "https://script.google.com/macros/s/AKfycbzqDhY5nu8KBLMggsRrDuo9gxcUrEpFrfqhnb6UnDyrpR6KG2aUh46Jk5kliW3xG2yH/exec";
+
+let semuaProduk = [];
+
+function formatRupiah(n){
+try{
+return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR"}).format(n || 0);
+}catch(e){
+return "Rp 0";
+}
 }
 
-.header{
-background:#0f172a;
-color:white;
-padding:20px;
-text-align:center;
+function imgPath(file){
+return file ? "images/"+file : "";
 }
 
-.header img{
-width:80px;
-margin-bottom:10px;
+async function loadProduk(){
+
+try{
+
+const res = await fetch(API_URL);
+const data = await res.json();
+
+if(!Array.isArray(data)){
+document.getElementById("produk").innerHTML =
+"<h3>Data API tidak valid</h3>";
+return;
 }
 
-.search-box{
-padding:15px;
-background:white;
-position:sticky;
-top:0;
-z-index:100;
-box-shadow:0 2px 5px rgba(0,0,0,.1);
+semuaProduk = data;
+tampilkan(data);
+
+}catch(err){
+console.log(err);
+document.getElementById("produk").innerHTML =
+"<h3>Gagal load data (cek API)</h3>";
+}
 }
 
-#search{
-width:100%;
-padding:12px;
-font-size:16px;
-border:1px solid #ccc;
-border-radius:8px;
-box-sizing:border-box;
+function tampilkan(data){
+
+const box = document.getElementById("produk");
+box.innerHTML = "";
+
+if(!data || data.length === 0){
+box.innerHTML = "<h3>Tidak ada produk</h3>";
+return;
 }
 
-.container{
-padding:10px;
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-gap:12px;
+data.forEach((p,i)=>{
+
+if(!p) return;
+
+box.innerHTML += `
+<div class="card" onclick="detail(${i})">
+
+<img src="${imgPath(p.foto)}">
+
+<div class="card-body">
+
+<div class="brand">${p.brand || ""}</div>
+
+<div class="tipe">${p.tipe || ""}</div>
+
+<div class="harga">${formatRupiah(p.harga)}</div>
+
+</div>
+
+</div>
+`;
+
+});
+
+semuaProduk = data;
 }
 
-.card{
-background:white;
-border-radius:10px;
-overflow:hidden;
-box-shadow:0 2px 6px rgba(0,0,0,.1);
-cursor:pointer;
+function detail(i){
+
+const p = semuaProduk[i];
+
+if(!p) return;
+
+document.getElementById("modal").style.display="block";
+
+document.getElementById("mFoto").src = imgPath(p.foto);
+document.getElementById("mNama").innerText = (p.brand || "")+" "+(p.tipe || "");
+document.getElementById("mHarga").innerText = formatRupiah(p.harga);
+document.getElementById("mKategori").innerText = "Kategori : "+(p.kategori || "");
+
+let spek = "";
+
+[p.spek1,p.spek2,p.spek3,p.spek4,p.spek5].forEach(s=>{
+if(s) spek += "<div>✅ "+s+"</div>";
+});
+
+document.getElementById("mSpek").innerHTML = spek;
+
+document.getElementById("waBtn").href =
+"https://wa.me/6289524391002?text=Halo saya mau tanya "+(p.brand||"")+" "+(p.tipe||"");
 }
 
-.card img{
-width:100%;
-height:180px;
-object-fit:cover;
-background:#eee;
+function tutupModal(){
+document.getElementById("modal").style.display="none";
 }
 
-.card-body{
-padding:10px;
-}
+document.getElementById("search").addEventListener("keyup",function(){
 
-.brand{
-font-size:12px;
-color:#666;
-font-weight:bold;
-}
+const key = this.value.toLowerCase();
 
-.tipe{
-font-size:14px;
-font-weight:bold;
-margin-top:5px;
-min-height:40px;
-}
+const hasil = semuaProduk.filter(p=>{
 
-.harga{
-margin-top:10px;
-font-size:18px;
-font-weight:bold;
-color:#e11d48;
-}
+return (
+(p.brand||"").toLowerCase().includes(key) ||
+(p.tipe||"").toLowerCase().includes(key) ||
+(p.kategori||"").toLowerCase().includes(key)
+);
 
-.modal{
-display:none;
-position:fixed;
-left:0;
-top:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.7);
-overflow:auto;
-z-index:9999;
-}
+});
 
-.modal-content{
-background:white;
-margin:20px;
-border-radius:10px;
-padding:15px;
-}
+tampilkan(hasil);
 
-.modal img{
-width:100%;
-border-radius:10px;
-}
+});
 
-.close{
-float:right;
-font-size:28px;
-cursor:pointer;
-}
+loadProduk();
 
-.spek{
-margin-top:15px;
-}
-
-.spek div{
-padding:5px 0;
-}
-
-.wa{
-display:block;
-margin-top:20px;
-background:#25D366;
-color:white;
+</script>
