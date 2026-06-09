@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UFO Elektronik Kebonsari Malang - Katalog Produk</title>
+<title>Katalog UFO Elektronik</title>
 
 <style>
 body{
@@ -35,23 +35,6 @@ font-size:16px;
 border:1px solid #ccc;
 border-radius:8px;
 box-sizing:border-box;
-}
-
-/* FILTER BAR BARU */
-.filters{
-display:flex;
-gap:10px;
-padding:10px;
-background:white;
-flex-wrap:wrap;
-}
-
-select{
-flex:1;
-min-width:120px;
-padding:10px;
-border-radius:8px;
-border:1px solid #ccc;
 }
 
 .container{
@@ -90,7 +73,6 @@ font-weight:bold;
 font-size:14px;
 font-weight:bold;
 margin-top:5px;
-min-height:40px;
 }
 
 .harga{
@@ -130,10 +112,6 @@ font-size:28px;
 cursor:pointer;
 }
 
-.spek{
-margin-top:15px;
-}
-
 .spek div{
 padding:5px 0;
 }
@@ -163,19 +141,9 @@ font-weight:bold;
 <input type="text" id="search" placeholder="Cari produk...">
 </div>
 
-<!-- FILTER BAR -->
-<div class="filters">
-<select id="filterKategori">
-<option value="">Semua Kategori</option>
-</select>
-
-<select id="filterBrand">
-<option value="">Semua Brand</option>
-</select>
-</div>
-
 <div id="produk" class="container"></div>
 
+<!-- MODAL -->
 <div id="modal" class="modal">
 <div class="modal-content">
 
@@ -184,39 +152,32 @@ font-weight:bold;
 <img id="mFoto">
 
 <h2 id="mNama"></h2>
-
 <h3 id="mHarga"></h3>
 
 <div id="mKategori"></div>
 
-<div id="mSpek" class="spek"></div>
+<div id="mSpek"></div>
 
-<a id="waBtn" class="wa" target="_blank">
-Tanya via WhatsApp
-</a>
+<a id="waBtn" class="wa" target="_blank">Tanya via WhatsApp</a>
 
 </div>
 </div>
 
 <script>
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbzqDhY5nu8KBLMggsRrDuo9gxcUrEpFrfqhnb6UnDyrpR6KG2aUh46Jk5kliW3xG2yH/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzqDhY5nu8KBLMggsRrDuo9gxcUrEpFrfqhnb6UnDyrpR6KG2aUh46Jk5kliW3xG2yH/exec";
 
 let semuaProduk = [];
-let filterKategori = "";
-let filterBrand = "";
 
 function formatRupiah(n){
-return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR"}).format(n);
+return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR"}).format(n || 0);
 }
 
-function convertDrive(namaFile){
-if(!namaFile) return "";
-return "https://ufokebonsarimalang.github.io/KATALOGUFOKEBONSARI/images/" + namaFile;
+function getImg(file){
+return file ? "images/"+file : "";
 }
 
-/* ================= LOAD ================= */
+/* ================= LOAD DATA ================= */
 async function loadProduk(){
 
 const res = await fetch(API_URL);
@@ -224,33 +185,30 @@ const data = await res.json();
 
 semuaProduk = data;
 
-tampilkan(data);
-isiFilter(data);
+render(semuaProduk);
+
 }
 
-/* ================= TAMPIL ================= */
-function tampilkan(data){
+/* ================= RENDER ================= */
+function render(data){
 
 const box=document.getElementById("produk");
 box.innerHTML="";
 
-data.forEach(p=>{
+data.forEach((p,i)=>{
 
 box.innerHTML += `
-<div class="card"
-onclick='detail(${JSON.stringify(p)})'>
+<div class="card" onclick="detail(${i})">
 
-<img src="${convertDrive(p.foto)}">
+<img src="${getImg(p.Foto)}">
 
 <div class="card-body">
 
-<div class="brand">${p.brand}</div>
+<div class="brand">${p.Brand || ""}</div>
 
-<div class="tipe">${p.tipe}</div>
+<div class="tipe">${p.Tipe || ""}</div>
 
-<div class="harga">
-${formatRupiah(p.harga)}
-</div>
+<div class="harga">${formatRupiah(p.Harga)}</div>
 
 </div>
 
@@ -258,67 +216,41 @@ ${formatRupiah(p.harga)}
 `;
 
 });
-}
 
-/* ================= FILTER ISI ================= */
-function isiFilter(data){
-
-const kSet = new Set();
-const bSet = new Set();
-
-data.forEach(p=>{
-if(p.kategori) kSet.add(p.kategori);
-if(p.brand) bSet.add(p.brand);
-});
-
-const k = document.getElementById("filterKategori");
-const b = document.getElementById("filterBrand");
-
-k.innerHTML = `<option value="">Semua Kategori</option>`;
-b.innerHTML = `<option value="">Semua Brand</option>`;
-
-kSet.forEach(v=>{
-k.innerHTML += `<option value="${v}">${v}</option>`;
-});
-
-bSet.forEach(v=>{
-b.innerHTML += `<option value="${v}">${v}</option>`;
-});
-
-}
-
-/* ================= FILTER ================= */
-function applyFilter(){
-
-let hasil = semuaProduk.filter(p=>{
-
-return (
-(!filterKategori || p.kategori == filterKategori) &&
-(!filterBrand || p.brand == filterBrand) &&
-(
-(p.brand||"").toLowerCase().includes(
-document.getElementById("search").value.toLowerCase()
-) ||
-(p.tipe||"").toLowerCase().includes(
-document.getElementById("search").value.toLowerCase()
-)
-)
-);
-
-});
-
-tampilkan(hasil);
 }
 
 /* ================= DETAIL ================= */
-function detail(p){
+function detail(i){
+
+const p = semuaProduk[i];
 
 document.getElementById("modal").style.display="block";
 
-document.getElementById("mFoto").src=convertDrive(p.foto);
+document.getElementById("mFoto").src = getImg(p.Foto);
 
-document.getElementById("mNama").innerHTML=
-p.brand+" "+p.tipe;
+document.getElementById("mNama").innerText =
+(p.Brand || "") + " " + (p.Tipe || "");
 
-document.getElementById("mHarga").innerHTML=
-formatRup
+document.getElementById("mHarga").innerText =
+formatRupiah(p.Harga);
+
+document.getElementById("mKategori").innerText =
+"Kategori : " + (p.Kategori || "");
+
+let spek="";
+[p.Spek1,p.Spek2,p.Spek3,p.Spek4,p.Spek5].forEach(s=>{
+if(s){
+spek += `<div>✅ ${s}</div>`;
+}
+});
+
+document.getElementById("mSpek").innerHTML = spek;
+
+document.getElementById("waBtn").href =
+`https://wa.me/6289524391002?text=Halo saya mau tanya ${p.Brand} ${p.Tipe}`;
+
+}
+
+/* ================= CLOSE MODAL ================= */
+function tutupModal(){
+document.getElementById("modal").
