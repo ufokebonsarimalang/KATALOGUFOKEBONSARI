@@ -305,15 +305,34 @@ const res = await fetch(API_URL);
 
 const data = await res.json();
 
-console.log("Data berhasil:", data.length);
+data.sort((a,b)=>{
 
-document.getElementById("productCount").innerHTML =
-"📦 Total Produk: " + data.length;
+if(a.unggulan==="YA" && b.unggulan!=="YA") return -1;
+if(a.unggulan!=="YA" && b.unggulan==="YA") return 1;
+
+return (Number(a.urutan)||999) - (Number(b.urutan)||999);
+
+});
+
+const banner=data.find(x=>x.banner && x.banner.trim()!=='');
+
+if(banner){
+document.getElementById("promoBanner").innerHTML="🔥 "+banner.banner;
+}
+
+semuaProduk=data;
+
+buatBrandMenu(data);
+
+tampilkan(data);
+
+document.getElementById("productCount").innerHTML=
+"📦 Total Produk : "+data.length;
 
 }catch(e){
 
-document.getElementById("productCount").innerHTML =
-"❌ ERROR : " + e.message;
+document.getElementById("productCount").innerHTML=
+"❌ ERROR : "+e.message;
 
 console.error(e);
 
