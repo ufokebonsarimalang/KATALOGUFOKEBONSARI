@@ -138,7 +138,7 @@ font-weight:bold;
 <body>
 
 <div class="header">
-<h1>UFO ELEKTRONIK</h1>
+<h1>UFO KEBONSARI MALANG</h1>
 <p>Katalog Produk</p>
 </div>
 
@@ -185,19 +185,13 @@ maximumFractionDigits:0
 }).format(n);
 }
 
-function convertDrive(url){
+function convertDrive(namaFile){
 
-if(!url) return "";
+  if(!namaFile) return "";
 
-const match = url.match(/\/d\/([^\/]+)/);
+  return "https://ufokebonsarimalang.github.io/KATALOGUFOKEBONSARI/images/" + namaFile;
 
-if(match){
-return `https://drive.google.com/uc?export=view&id=${match[1]}`;
 }
-
-return url;
-}
-
 async function loadProduk(){
 
 const res = await fetch(API_URL);
