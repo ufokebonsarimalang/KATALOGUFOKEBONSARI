@@ -1,50 +1,53 @@
-<!DOCTYPE html>  <html lang="id">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width,initial-scale=1">  
-<title>UFO Kebonsari Malang</title>  
-<meta name="description" content="Katalog Produk UFO Kebonsari Malang">  
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">  
-<style>  
-*{box-sizing:border-box}body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}  
-#promoBanner{display:none}  
-..header{  
-  background:#0077c8;  
-  padding:0;  
-  margin:0;  
-}  .header-banner{
-width:100%;
-display:block;
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UFO Kebonsari Malang</title>
+<meta name="description" content="Katalog Produk UFO Kebonsari Malang">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
+#promoBanner{display:none}
+..header{
+  background:#0077c8;
+  padding:0;
+  margin:0;
+}
+
+.header-banner{
+  width:100%;
+  display:block;
 }
 
 .header-banner img{
-width:100%;
-display:block;
-border-radius:0 0 18px 18px;
-box-shadow:0 4px 12px rgba(0,0,0,.15);
+  width:100%;
+  display:block;
+  border-radius:0 0 18px 18px;
+  box-shadow:0 4px 12px rgba(0,0,0,.15);
 }
 .search-wrap{display:flex;gap:10px;padding:12px;background:#0077c8;position:sticky;top:0;z-index:50}
 .menu-btn{width:48px;border:none;border-radius:12px}
 #search{flex:1;padding:12px;border:none;border-radius:30px}
 #productCount{padding:12px;font-weight:600}
 .container{
-padding:8px;
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:8px;
+  padding:8px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
 }
 
 @media(min-width:768px){
-.container{
-grid-template-columns:repeat(4,1fr);
-}
+  .container{
+    grid-template-columns:repeat(4,1fr);
+  }
 }
 .card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.08);cursor:pointer}
 .card img{
-width:100%;
-aspect-ratio:1/1;
-object-fit:cover;
-display:block;
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  display:block;
 }
 .card-body{padding:8px}.brand{display:inline-block;background:#eef6ff;color:#0077c8;padding:4px 8px;border-radius:999px;font-size:11px}
 .tipe{font-weight:600;margin-top:8px;min-height:40px}.harga{color:#e11d48;font-size:20px;font-weight:700}
@@ -60,240 +63,220 @@ display:block;
 #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9998}
 .floating-wa{position:fixed;right:20px;bottom:20px;width:60px;height:60px;background:#25D366;color:#fff;text-decoration:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;z-index:9999}
 .info-box{grid-column:1/-1;background:#fff;padding:20px;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
-.footer{
-text-align:center;
-padding:20px 10px;
-color:#666;
-font-size:13px;
-margin-top:20px;
-.action-btn {
-display: flex;
-gap: 10px;
-}
-
-.btn {
-width: 42px;
-height: 42px;
-border-radius: 12px;
-border: none;
-background: white;
-box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-display: flex;
-align-items: center;
-justify-content: center;
-cursor: pointer;
-transition: 0.2s;
-}
-
-.btn.active {
-background: #4ade80;
-color: white;
-}
-
-.btn:active {
-transform: scale(0.95);
+  .footer{
+  text-align:center;
+  padding:20px 10px;
+  color:#666;
+  font-size:13px;
+  margin-top:20px;
 }
 </style>
+</head>
+<body>
 
-</head>  
-<body>  <div id="sideMenu">  
-<div style="padding:20px;font-weight:700">UFO Kebonsari</div>  
-<div class="menu-item" onclick="showHome()">🏠 Beranda</div>  
-<div class="menu-item" onclick="showPromo()">🔥 Promo Bulan Ini</div>  
-<div class="menu-item" onclick="showUnggulan()">⭐ Produk Unggulan</div>  
-<div class="menu-item" onclick="window.open('https://maps.app.goo.gl/oGMAEKaJqjncurwD9')">📍 Lokasi Toko</div>  
-<div class="menu-item" onclick="hubungiKami()">📞 Hubungi Kami</div>  
-<div class="menu-item" onclick="showTentang()">🏪 Tentang Toko</div>  
-<div style="padding:15px;font-weight:bold">🏷️ Brand Produk</div>  
-<div id="brandList"></div>  
-</div>  <div id="overlay" onclick="closeMenu()"></div>  <div class="header">  
-  <div class="header-banner">  
-    <img src="images/header-ufo.png" alt="UFO Kebonsari Malang">  
-  </div>  
-</div>  <div class="search-wrap">  
-<button class="menu-btn" onclick="toggleMenu()">☰</button>  
-<input id="search" placeholder="Cari produk...">  
-</div>  <div id="bannerArea"></div>  <div id="produk" class="container"></div>  <div id="modal" class="modal">  
-<div class="modal-content">  
-<span class="close" onclick="modal.style.display='none'">&times;</span>  
-<img id="mFoto">  
-<h2 id="mNama"></h2>  
-<h3 id="mHarga"></h3>  
-<div id="mKategori"></div>  
-<div id="mSpek"></div>  
-<div class="action-btn">  
-  <div class="action-btn">  
-  <button onclick="sharePage(this)" class="btn">  
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">  
-      <path d="M14 3l7 7-7 7" stroke="currentColor" stroke-width="2"/>  
-      <path d="M21 10H10c-4 0-7 3-7 7" stroke="currentColor" stroke-width="2"/>  
-    </svg>  
-  </button>    <button onclick="copyLink(this)" class="btn">  
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">  
-      <rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/>  
-      <path d="M5 15V5a2 2 0 0 1 2-2h10" stroke="currentColor" stroke-width="2"/>  
-    </svg>  
-  </button>  
-</div>  
-</div>  <a href="#" id="floatingWA" target="_blank" class="floating-wa">💬</a>
+<div id="sideMenu">
+<div style="padding:20px;font-weight:700">UFO Kebonsari</div>
+<div class="menu-item" onclick="showHome()">🏠 Beranda</div>
+<div class="menu-item" onclick="showPromo()">🔥 Promo Bulan Ini</div>
+<div class="menu-item" onclick="showUnggulan()">⭐ Produk Unggulan</div>
+<div class="menu-item" onclick="window.open('https://maps.app.goo.gl/oGMAEKaJqjncurwD9')">📍 Lokasi Toko</div>
+<div class="menu-item" onclick="hubungiKami()">📞 Hubungi Kami</div>
+<div class="menu-item" onclick="showTentang()">🏪 Tentang Toko</div>
+<div style="padding:15px;font-weight:bold">🏷️ Brand Produk</div>
+<div id="brandList"></div>
+</div>
 
-<script>  
-const API_URL="https://script.google.com/macros/s/AKfycbwqnu2yJWk3Bb8JPSVy8ZSZxs5Ae4VGSNpRJl1j3Qgkoj-27FQX_ys4-8qyyyrbXJhQ/exec";  
-let semuaProduk=[];  
-let settingData={};  
-let bannerData=[];  
-  
-const foto=f=>"https://ufokebonsarimalang.github.io/KATALOGUFOKEBONSARI/images/"+f;  
-const rupiah=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n||0);  
-const slug=p=>((p.brand||"")+"-"+(p.tipe||"")).toLowerCase().replace(/[^a-z0-9]+/g,"-");  
-  
-async function loadProduk(){  
-  
- try{  
-  
-  const cache=localStorage.getItem("ufo_cache");  
-  
-  if(cache){  
-    const c=JSON.parse(cache);  
-    semuaProduk=c.produk||[];  
-    settingData=c.setting||{};  
-    bannerData=c.banner||[];  
-    renderSetting();  
-    renderBanner();  
-    buatBrandMenu(semuaProduk);  
-    tampilkan(semuaProduk);  
-  }  
-  
-  const res=await fetch(API_URL);  
-  const data=await res.json();  
-  
-  localStorage.setItem("ufo_cache",JSON.stringify(data));  
-  
-  semuaProduk=data.produk||[];  
-  settingData=data.setting||{};  
-  bannerData=data.banner||[];  
-  
-  renderSetting();  
-  renderBanner();  
-  buatBrandMenu(semuaProduk);  
-  tampilkan(semuaProduk);  
-  
-  productCount.innerHTML="📦 Total Produk : "+semuaProduk.length;  
-  
- }catch(err){  
-  console.error(err);  
- }  
-  
-}  
-  
-function tampilkan(data){  
- produk.innerHTML="";  
- data.forEach(p=>{  
- let badge="";  
- if(p.status==="BARU") badge='<span class="status baru">🆕 BARU</span>';  
- if(p.status==="PROMO") badge='<span class="status promo">🔥 PROMO</span>';  
- if(p.status==="BESTSELLER") badge='<span class="status best">⭐ BESTSELLER</span>';  
- let unggulan=p.unggulan==="YA"?'<span class="unggulan">⭐ UNGGULAN</span>':'';  
- produk.innerHTML+=`<div class="card" onclick='detail(${JSON.stringify(p)})'><img loading="lazy" src="${foto(p.foto)}" onerror="this.src='images/noimage.jpg'"><div class="card-body">${badge}${unggulan}<div class="brand">${p.brand||""}</div><div class="tipe">${p.tipe||""}</div><div class="harga">${rupiah(p.harga)}</div></div></div>`;  
- });  
-}  
-  
-  
- function showPromo(){  
-  produk.innerHTML=`  
-  <div class="info-box">  
-    <h2>🔥 Promo Bulan Ini</h2>  
-    <p style="white-space:pre-line">${settingData.promo||"-"}</p>  
-  </div>`;  
-  
-  closeMenu();  
-}  
-  
-function showTentang(){  
- produk.innerHTML=`<div class="info-box"><h2>🏪 Tentang Toko</h2><p>${settingData.tentang||"-"}</p></div>`;  
- closeMenu();  
-}  
-  
-function showHome(){tampilkan(semuaProduk);closeMenu();}  
-function showUnggulan(){tampilkan(semuaProduk.filter(x=>x.unggulan==="YA"));closeMenu();}  
-  
-function detail(p){  
- modal.style.display="block";  
- mFoto.src=foto(p.foto);  
- mNama.innerHTML=(p.brand||"")+" "+(p.tipe||"");  
-  
- mHarga.innerHTML=`  
- ${rupiah(p.harga)}  
- <div style="font-size:11px;color:#888;font-weight:400;margin-top:6px">  
- * Harga dapat berubah sewaktu-waktu. Silakan hubungi kami untuk informasi harga terbaru.  
- </div>`;  
-  
- mKategori.innerHTML="Kategori : "+(p.kategori||"-");  
- mSpek.innerHTML=[p.spek1,p.spek2,p.spek3,p.spek4,p.spek5]  
- .filter(Boolean)  
- .map(x=>"<div>✅ "+x+"</div>")  
- .join("");  
-  
- const url=location.origin+location.pathname+"?produk="+slug(p);  
-  
- waBtn.href="https://wa.me/"+(settingData.wa||"6289524391002")+"?text="+encodeURIComponent("Halo, saya tertarik "+mNama.innerText);  
-  
- shareBtn.onclick=()=>navigator.share  
- ?navigator.share({title:mNama.innerText,url})  
- :navigator.clipboard.writeText(url);  
-  
- copyBtn.onclick=()=>{  
-  navigator.clipboard.writeText(url);  
-  alert("Link produk disalin");  
- }  
-}  
-search.addEventListener("keyup",function(){  
- const k=this.value.toLowerCase();  
- tampilkan(semuaProduk.filter(p=>(p.brand||"").toLowerCase().includes(k)||(p.tipe||"").toLowerCase().includes(k)));  
-});  
-  
-function buatBrandMenu(data){  
- const brand=[...new Set(data.map(x=>x.brand).filter(Boolean))].sort();  
- brandList.innerHTML='<div class="menu-item" onclick="showHome()">Semua Brand</div>';  
- brand.forEach(b=>brandList.innerHTML+=`<div class="menu-item" onclick="tampilkan(semuaProduk.filter(x=>x.brand==='${b}'));closeMenu()">${b}</div>`);  
-}  
-  
-function renderSetting(){  
- if(settingData.judul){  
-   document.title=settingData.judul;  
-  
-   const waLink=document.getElementById("floatingWA");  
-   if(waLink){  
-     waLink.href="https://wa.me/" + (settingData.wa || "6289524391002");  
-   }  
- }  
-}  
-  
-function renderBanner(){  
- const area=document.getElementById("bannerArea");  
- if(!area) return;  
-  
- if(!bannerData.length){  
-   area.innerHTML="";  
-   return;  
- }  
-  
- area.innerHTML=bannerData.map(b=>`  
- <a href="${b.link||'#'}" target="_blank">  
- <img loading="lazy" src="${b.gambar}" style="width:100%;display:block;border-radius:14px;margin:10px 0;">  
- </a>`).join("");  
-}  
-  
-  
-function hubungiKami(){  
- window.open("https://wa.me/" + (settingData.wa || "6289524391002"));  
-}  
-  
-function toggleMenu(){sideMenu.style.left="0";overlay.style.display="block";}  
-function closeMenu(){sideMenu.style.left="-300px";overlay.style.display="none";}  
-loadProduk();  
-</script>    <footer class="footer">  
-  © UFO Kebonsari Malang • 2020-2026  
-</footer>  
-</body>  
+<div id="overlay" onclick="closeMenu()"></div>
+
+<div class="header">
+  <div class="header-banner">
+    <img src="images/header-ufo.png" alt="UFO Kebonsari Malang">
+  </div>
+</div>
+
+<div class="search-wrap">
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<input id="search" placeholder="Cari produk...">
+</div>
+
+<div id="bannerArea"></div>
+
+<div id="produk" class="container"></div>
+
+<div id="modal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="modal.style.display='none'">&times;</span>
+<img id="mFoto">
+<h2 id="mNama"></h2>
+<h3 id="mHarga"></h3>
+<div id="mKategori"></div>
+<div id="mSpek"></div>
+<a id="waBtn" class="btn wa" target="_blank">Tanya via WhatsApp</a>
+<button id="shareBtn" class="btn share">📤 Bagikan Produk</button>
+<button id="copyBtn" class="btn copy">🔗 Salin Link</button>
+</div>
+</div>
+
+<a href="#" id="floatingWA" target="_blank" class="floating-wa">💬</a>
+
+<script>
+const API_URL="https://script.google.com/macros/s/AKfycbwqnu2yJWk3Bb8JPSVy8ZSZxs5Ae4VGSNpRJl1j3Qgkoj-27FQX_ys4-8qyyyrbXJhQ/exec";
+let semuaProduk=[];
+let settingData={};
+let bannerData=[];
+
+const foto=f=>"https://ufokebonsarimalang.github.io/KATALOGUFOKEBONSARI/images/"+f;
+const rupiah=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n||0);
+const slug=p=>((p.brand||"")+"-"+(p.tipe||"")).toLowerCase().replace(/[^a-z0-9]+/g,"-");
+
+async function loadProduk(){
+
+ try{
+
+  const cache=localStorage.getItem("ufo_cache");
+
+  if(cache){
+    const c=JSON.parse(cache);
+    semuaProduk=c.produk||[];
+    settingData=c.setting||{};
+    bannerData=c.banner||[];
+    renderSetting();
+    renderBanner();
+    buatBrandMenu(semuaProduk);
+    tampilkan(semuaProduk);
+  }
+
+  const res=await fetch(API_URL);
+  const data=await res.json();
+
+  localStorage.setItem("ufo_cache",JSON.stringify(data));
+
+  semuaProduk=data.produk||[];
+  settingData=data.setting||{};
+  bannerData=data.banner||[];
+
+  renderSetting();
+  renderBanner();
+  buatBrandMenu(semuaProduk);
+  tampilkan(semuaProduk);
+
+  productCount.innerHTML="📦 Total Produk : "+semuaProduk.length;
+
+ }catch(err){
+  console.error(err);
+ }
+
+}
+
+function tampilkan(data){
+ produk.innerHTML="";
+ data.forEach(p=>{
+ let badge="";
+ if(p.status==="BARU") badge='<span class="status baru">🆕 BARU</span>';
+ if(p.status==="PROMO") badge='<span class="status promo">🔥 PROMO</span>';
+ if(p.status==="BESTSELLER") badge='<span class="status best">⭐ BESTSELLER</span>';
+ let unggulan=p.unggulan==="YA"?'<span class="unggulan">⭐ UNGGULAN</span>':'';
+ produk.innerHTML+=`<div class="card" onclick='detail(${JSON.stringify(p)})'><img loading="lazy" src="${foto(p.foto)}" onerror="this.src='images/noimage.jpg'"><div class="card-body">${badge}${unggulan}<div class="brand">${p.brand||""}</div><div class="tipe">${p.tipe||""}</div><div class="harga">${rupiah(p.harga)}</div></div></div>`;
+ });
+}
+
+
+ function showPromo(){
+  produk.innerHTML=`
+  <div class="info-box">
+    <h2>🔥 Promo Bulan Ini</h2>
+    <p style="white-space:pre-line">${settingData.promo||"-"}</p>
+  </div>`;
+
+  closeMenu();
+}
+
+function showTentang(){
+ produk.innerHTML=`<div class="info-box"><h2>🏪 Tentang Toko</h2><p>${settingData.tentang||"-"}</p></div>`;
+ closeMenu();
+}
+
+function showHome(){tampilkan(semuaProduk);closeMenu();}
+function showUnggulan(){tampilkan(semuaProduk.filter(x=>x.unggulan==="YA"));closeMenu();}
+
+function detail(p){
+ modal.style.display="block";
+ mFoto.src=foto(p.foto);
+ mNama.innerHTML=(p.brand||"")+" "+(p.tipe||"");
+
+ mHarga.innerHTML=`
+ ${rupiah(p.harga)}
+ <div style="font-size:11px;color:#888;font-weight:400;margin-top:6px">
+ * Harga dapat berubah sewaktu-waktu. Silakan hubungi kami untuk informasi harga terbaru.
+ </div>`;
+
+ mKategori.innerHTML="Kategori : "+(p.kategori||"-");
+ mSpek.innerHTML=[p.spek1,p.spek2,p.spek3,p.spek4,p.spek5]
+ .filter(Boolean)
+ .map(x=>"<div>✅ "+x+"</div>")
+ .join("");
+
+ const url=location.origin+location.pathname+"?produk="+slug(p);
+
+ waBtn.href="https://wa.me/"+(settingData.wa||"6289524391002")+"?text="+encodeURIComponent("Halo, saya tertarik "+mNama.innerText);
+
+ shareBtn.onclick=()=>navigator.share
+ ?navigator.share({title:mNama.innerText,url})
+ :navigator.clipboard.writeText(url);
+
+ copyBtn.onclick=()=>{
+  navigator.clipboard.writeText(url);
+  alert("Link produk disalin");
+ }
+}
+search.addEventListener("keyup",function(){
+ const k=this.value.toLowerCase();
+ tampilkan(semuaProduk.filter(p=>(p.brand||"").toLowerCase().includes(k)||(p.tipe||"").toLowerCase().includes(k)));
+});
+
+function buatBrandMenu(data){
+ const brand=[...new Set(data.map(x=>x.brand).filter(Boolean))].sort();
+ brandList.innerHTML='<div class="menu-item" onclick="showHome()">Semua Brand</div>';
+ brand.forEach(b=>brandList.innerHTML+=`<div class="menu-item" onclick="tampilkan(semuaProduk.filter(x=>x.brand==='${b}'));closeMenu()">${b}</div>`);
+}
+
+function renderSetting(){
+ if(settingData.judul){
+   document.title=settingData.judul;
+
+   const waLink=document.getElementById("floatingWA");
+   if(waLink){
+     waLink.href="https://wa.me/" + (settingData.wa || "6289524391002");
+   }
+ }
+}
+
+function renderBanner(){
+ const area=document.getElementById("bannerArea");
+ if(!area) return;
+
+ if(!bannerData.length){
+   area.innerHTML="";
+   return;
+ }
+
+ area.innerHTML=bannerData.map(b=>`
+ <a href="${b.link||'#'}" target="_blank">
+ <img loading="lazy" src="${b.gambar}" style="width:100%;display:block;border-radius:14px;margin:10px 0;">
+ </a>`).join("");
+}
+
+
+function hubungiKami(){
+ window.open("https://wa.me/" + (settingData.wa || "6289524391002"));
+}
+
+function toggleMenu(){sideMenu.style.left="0";overlay.style.display="block";}
+function closeMenu(){sideMenu.style.left="-300px";overlay.style.display="none";}
+loadProduk();
+</script>
+  <footer class="footer">
+  © UFO Kebonsari Malang • 2020-2026
+</footer>
+</body>
 </html>
