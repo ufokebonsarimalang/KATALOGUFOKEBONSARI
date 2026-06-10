@@ -203,15 +203,32 @@ function detail(p){
  modal.style.display="block";
  mFoto.src=foto(p.foto);
  mNama.innerHTML=(p.brand||"")+" "+(p.tipe||"");
- mHarga.innerHTML=rupiah(p.harga);
- mKategori.innerHTML="Kategori : "+(p.kategori||"-");
- mSpek.innerHTML=[p.spek1,p.spek2,p.spek3,p.spek4,p.spek5].filter(Boolean).map(x=>"<div>✅ "+x+"</div>").join("");
- const url=location.origin+location.pathname+"?produk="+slug(p);
- waBtn.href="https://wa.me/"+(settingData.wa||"6289524391002")+"?text="+encodeURIComponent("Halo, saya tertarik "+mNama.innerText);
- shareBtn.onclick=()=>navigator.share?navigator.share({title:mNama.innerText,url}):navigator.clipboard.writeText(url);
- copyBtn.onclick=()=>{navigator.clipboard.writeText(url);alert("Link produk disalin");}
-}
 
+ mHarga.innerHTML=`
+ ${rupiah(p.harga)}
+ <div style="font-size:11px;color:#888;font-weight:400;margin-top:6px">
+ * Harga dapat berubah sewaktu-waktu. Silakan hubungi kami untuk informasi harga terbaru.
+ </div>`;
+
+ mKategori.innerHTML="Kategori : "+(p.kategori||"-");
+ mSpek.innerHTML=[p.spek1,p.spek2,p.spek3,p.spek4,p.spek5]
+ .filter(Boolean)
+ .map(x=>"<div>✅ "+x+"</div>")
+ .join("");
+
+ const url=location.origin+location.pathname+"?produk="+slug(p);
+
+ waBtn.href="https://wa.me/"+(settingData.wa||"6289524391002")+"?text="+encodeURIComponent("Halo, saya tertarik "+mNama.innerText);
+
+ shareBtn.onclick=()=>navigator.share
+ ?navigator.share({title:mNama.innerText,url})
+ :navigator.clipboard.writeText(url);
+
+ copyBtn.onclick=()=>{
+  navigator.clipboard.writeText(url);
+  alert("Link produk disalin");
+ }
+}
 search.addEventListener("keyup",function(){
  const k=this.value.toLowerCase();
  tampilkan(semuaProduk.filter(p=>(p.brand||"").toLowerCase().includes(k)||(p.tipe||"").toLowerCase().includes(k)));
