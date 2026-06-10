@@ -12,15 +12,8 @@
 body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
 
 /* HEADER */
-.header{
-  background:#0077c8;
-}
-
-.header-banner img{
-  width:100%;
-  display:block;
-  border-radius:0 0 18px 18px;
-}
+.header{background:#0077c8}
+.header-banner img{width:100%;display:block}
 
 /* SEARCH */
 .search-wrap{
@@ -56,19 +49,40 @@ body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
   cursor:pointer;
 }
 
-.card img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.card img{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+}
+
 .card-body{padding:8px}
-.brand{display:inline-block;background:#eef6ff;color:#0077c8;padding:4px 8px;border-radius:999px;font-size:11px}
+.brand{
+  display:inline-block;
+  background:#eef6ff;
+  color:#0077c8;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:11px;
+}
+
 .tipe{font-weight:600;margin-top:8px;min-height:40px}
 .harga{color:#e11d48;font-size:20px;font-weight:700}
 
 /* MODAL */
-.modal{display:none;position:fixed;inset:0;background:#fff;overflow:auto;z-index:9999}
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#fff;
+  overflow:auto;
+  z-index:9999;
+}
+
 .modal-content{padding:20px}
 .modal img{width:100%;max-height:350px;object-fit:contain}
 .close{font-size:30px;cursor:pointer;float:right}
 
-/* ACTION BUTTONS */
+/* BUTTON SHARE & COPY */
 .action-btn{
   display:flex;
   gap:10px;
@@ -96,37 +110,42 @@ body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
 
 .btn:active{transform:scale(0.95)}
 
-/* INFO */
-.info-box{
-  grid-column:1/-1;
-  background:#fff;
-  padding:20px;
-  border-radius:16px;
-  box-shadow:0 4px 12px rgba(0,0,0,.08);
-}
-
-.footer{
-  text-align:center;
-  padding:20px;
-  color:#666;
-  font-size:13px;
+/* FLOATING WA */
+.floating-wa{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  width:60px;
+  height:60px;
+  background:#25D366;
+  color:#fff;
+  text-decoration:none;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  z-index:9999;
 }
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <div class="header">
   <div class="header-banner">
     <img src="images/header-ufo.png">
   </div>
 </div>
 
+<!-- SEARCH -->
 <div class="search-wrap">
-<button class="menu-btn" onclick="toggleMenu()">☰</button>
+<button class="menu-btn">☰</button>
 <input id="search" placeholder="Cari produk...">
 </div>
 
+<!-- PRODUCT -->
 <div id="produk" class="container"></div>
 
 <!-- MODAL -->
@@ -141,27 +160,40 @@ body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
 <div id="mKategori"></div>
 <div id="mSpek"></div>
 
-<!-- BUTTON SHARE & COPY -->
+<!-- ACTION -->
 <div class="action-btn">
+
+  <!-- SHARE -->
   <button onclick="sharePage(this)" class="btn">
-    🔗
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <path d="M14 3l7 7-7 7" stroke="currentColor" stroke-width="2"/>
+      <path d="M21 10H10c-4 0-7 3-7 7" stroke="currentColor" stroke-width="2"/>
+    </svg>
   </button>
 
+  <!-- COPY -->
   <button onclick="copyLink(this)" class="btn">
-    📋
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/>
+      <path d="M5 15V5a2 2 0 0 1 2-2h10" stroke="currentColor" stroke-width="2"/>
+    </svg>
   </button>
+
 </div>
 
 </div>
 </div>
+
+<!-- FLOATING WA -->
+<a id="floatingWA" target="_blank" class="floating-wa">💬</a>
 
 <script>
 const API_URL="https://script.google.com/macros/s/AKfycbwqnu2yJWk3Bb8JPSVy8ZSZxs5Ae4VGSNpRJl1j3Qgkoj-27FQX_ys4-8qyyyrbXJhQ/exec";
 
 let semuaProduk=[];
+let settingData={};
 
 const foto=f=>"images/"+f;
-
 const rupiah=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR"}).format(n||0);
 
 async function loadProduk(){
@@ -169,7 +201,10 @@ async function loadProduk(){
  const data=await res.json();
 
  semuaProduk=data.produk||[];
+ settingData=data.setting||{};
+
  tampilkan(semuaProduk);
+ renderSetting();
 }
 
 function tampilkan(data){
@@ -221,10 +256,18 @@ function copyLink(btn){
  flash(btn);
 }
 
-/* EFFECT */
+/* FLASH COLOR */
 function flash(btn){
  btn.classList.add("active");
  setTimeout(()=>btn.classList.remove("active"),800);
+}
+
+/* FLOATING WA */
+function renderSetting(){
+ const wa=document.getElementById("floatingWA");
+ if(wa){
+   wa.href="https://wa.me/" + (settingData.wa || "6289524391002");
+ }
 }
 
 /* SEARCH */
@@ -238,10 +281,6 @@ search.addEventListener("keyup",function(){
 
 loadProduk();
 </script>
-
-<footer class="footer">
-© UFO Kebonsari Malang • 2020-2026
-</footer>
 
 </body>
 </html>
