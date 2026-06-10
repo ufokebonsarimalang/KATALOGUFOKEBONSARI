@@ -9,8 +9,23 @@
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
 #promoBanner{display:none}
-.header{background:linear-gradient(135deg,#0077c8,#00a2ff);color:#fff;text-align:center;padding:18px}
-.logo{width:80px;height:80px;border-radius:50%;background:#fff;padding:4px}
+..header{
+  background:#0077c8;
+  padding:0;
+  margin:0;
+}
+
+.header-banner{
+  width:100%;
+  display:block;
+}
+
+.header-banner img{
+  width:100%;
+  display:block;
+  border-radius:0 0 18px 18px;
+  box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
 .search-wrap{display:flex;gap:10px;padding:12px;background:#0077c8;position:sticky;top:0;z-index:50}
 .menu-btn{width:48px;border:none;border-radius:12px}
 #search{flex:1;padding:12px;border:none;border-radius:30px}
@@ -74,8 +89,9 @@
 <div id="overlay" onclick="closeMenu()"></div>
 
 <div class="header">
-<img src="images/logo.png" class="logo" onerror="this.style.display='none'">
-<h2>UFO Kebonsari Malang</h2>
+  <div class="header-banner">
+    <img src="images/header-ufo.png" alt="UFO Kebonsari Malang">
+  </div>
 </div>
 
 <div class="search-wrap">
@@ -210,8 +226,7 @@ function buatBrandMenu(data){
 function renderSetting(){
  if(settingData.judul){
    document.title=settingData.judul;
-   const h=document.querySelector(".header h2");
-   if(h) h.innerHTML=settingData.judul;
+
    const waLink=document.getElementById("floatingWA");
    if(waLink){
      waLink.href="https://wa.me/" + (settingData.wa || "6289524391002");
