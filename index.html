@@ -69,6 +69,32 @@
   color:#666;
   font-size:13px;
   margin-top:20px;
+    .action-btn {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: none;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn.active {
+  background: #4ade80;
+  color: white;
+}
+
+.btn:active {
+  transform: scale(0.95);
 }
 </style>
 </head>
