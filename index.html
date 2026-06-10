@@ -111,8 +111,20 @@
 <h3 id="mHarga"></h3>
 <div id="mKategori"></div>
 <div id="mSpek"></div>
-<button id="shareBtn" class="btn share">📤 Bagikan Produk</button>
-<button id="copyBtn" class="btn copy">🔗 Salin Link</button>
+<div class="action-btn">
+  <button onclick="sharePage(this)" class="btn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <path d="M14 3l7 7-7 7" stroke="currentColor" stroke-width="2"/>
+      <path d="M21 10H10c-4 0-7 3-7 7" stroke="currentColor" stroke-width="2"/>
+    </svg>
+  </button>
+
+  <button onclick="copyLink(this)" class="btn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/>
+      <path d="M5 15V5a2 2 0 0 1 2-2h10" stroke="currentColor" stroke-width="2"/>
+    </svg>
+  </button>
 </div>
 </div>
 
