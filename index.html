@@ -182,14 +182,27 @@ function tampilkan(data){
 }
 
 
- function showPromo(){
-  produk.innerHTML=`
-  <div class="info-box">
-    <h2>🔥 Promo Bulan Ini</h2>
-    <p style="white-space:pre-line">${settingData.promo||"-"}</p>
-  </div>`;
+function showPromo(){
 
-  closeMenu();
+ let html=`
+ <div class="info-box">
+ <h2>🔥 Promo Bulan Ini</h2>`;
+
+ bannerData.forEach(b=>{
+   html += `
+   <img src="${b.gambar}"
+        style="width:100%;
+        margin-bottom:15px;
+        border-radius:12px;">`;
+ });
+
+ html += `
+ <p style="white-space:pre-line">
+ ${settingData.promo||"-"}
+ </p></div>`;
+
+ produk.innerHTML=html;
+ closeMenu();
 }
 
 function showTentang(){
