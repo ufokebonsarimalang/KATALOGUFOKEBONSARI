@@ -220,18 +220,20 @@ function detail(p){
  const url=location.origin+location.pathname+"?produk="+slug(p);
 
  
- shareBtn.onclick=()=>{
- if(navigator.share){
-   navigator.share({
-     title:mNama.innerText,
-     text:"Lihat produk ini di UFO Kebonsari Malang",
-     url:url
-   });
- }else{
-   navigator.clipboard.writeText(url);
-   alert("Link produk disalin");
- }
-}
+ shareBtn.onclick = async () => {
+  try {
+    await navigator.share({
+      title: mNama.innerText,
+      text: "Lihat produk ini di UFO Kebonsari Malang",
+      url: url
+    });
+  } catch (err) {
+    console.log("Share dibatalkan atau gagal:", err);
+
+    navigator.clipboard.writeText(url);
+    alert("Link produk disalin");
+  }
+};
 
  
 }
