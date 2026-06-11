@@ -111,9 +111,10 @@
 <h3 id="mHarga"></h3>
 <div id="mKategori"></div>
 <div id="mSpek"></div>
-<a id="waBtn" class="btn wa" target="_blank">Tanya via WhatsApp</a>
-<button id="shareBtn" class="btn share">📤 Bagikan Produk</button>
-<button id="copyBtn" class="btn copy">🔗 Salin Link</button>
+
+<button id="shareBtn" class="btn share">
+  ↗️ Bagikan Produk
+</button>
 </div>
 </div>
 
@@ -213,21 +214,26 @@ function detail(p){
  mKategori.innerHTML="Kategori : "+(p.kategori||"-");
  mSpek.innerHTML=[p.spek1,p.spek2,p.spek3,p.spek4,p.spek5]
  .filter(Boolean)
- .map(x=>"<div>✅ "+x+"</div>")
+ .map(x=>"<div>• "+x+"</div>")
  .join("");
 
  const url=location.origin+location.pathname+"?produk="+slug(p);
 
- waBtn.href="https://wa.me/"+(settingData.wa||"6289524391002")+"?text="+encodeURIComponent("Halo, saya tertarik "+mNama.innerText);
-
- shareBtn.onclick=()=>navigator.share
- ?navigator.share({title:mNama.innerText,url})
- :navigator.clipboard.writeText(url);
-
- copyBtn.onclick=()=>{
-  navigator.clipboard.writeText(url);
-  alert("Link produk disalin");
+ 
+ shareBtn.onclick=()=>{
+ if(navigator.share){
+   navigator.share({
+     title:mNama.innerText,
+     text:"Lihat produk ini di UFO Kebonsari Malang",
+     url:url
+   });
+ }else{
+   navigator.clipboard.writeText(url);
+   alert("Link produk disalin");
  }
+}
+
+ 
 }
 search.addEventListener("keyup",function(){
  const k=this.value.toLowerCase();
