@@ -228,10 +228,7 @@ function detail(p){
       url: url
     });
   } catch (err) {
-    console.log("Share dibatalkan atau gagal:", err);
-
-    navigator.clipboard.writeText(url);
-    alert("Link produk disalin");
+    // Tidak melakukan apa-apa jika dibatalkan
   }
 };
 
