@@ -186,24 +186,27 @@ function showPromo(){
 
  let html = `
  <div class="info-box">
- <h2>🔥 Promo Bulan Ini</h2>`;
+   <h2>🔥 Promo Bulan Ini</h2>
+ `;
 
- bannerData.forEach(b=>{
+ bannerData.forEach(b => {
    html += `
    <img src="${b.gambar}"
-        style="width:100%;
-        border-radius:12px;
-        margin-bottom:15px;">`;
+        style="
+          width:100%;
+          border-radius:12px;
+          margin-bottom:15px;
+          display:block;
+        ">
+   `;
  });
 
- html += `
- </div>`;
+ html += `</div>`;
 
  produk.innerHTML = html;
 
  closeMenu();
 }
-
 function showTentang(){
  produk.innerHTML=`<div class="info-box"><h2>🏪 Tentang Toko</h2><p>${settingData.tentang||"-"}</p></div>`;
  closeMenu();
