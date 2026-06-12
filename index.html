@@ -191,15 +191,23 @@ function showPromo(){
 
  bannerData.forEach(b => {
    html += `
-   <img src="${b.gambar}"
-        style="
-          width:100%;
-          border-radius:12px;
-          margin-bottom:15px;
-          display:block;
-        ">
+   <a href="${b.link || '#'}" target="_blank">
+     <img src="${b.gambar}"
+          style="width:100%;border-radius:12px;margin-bottom:15px;display:block;">
+   </a>
    `;
  });
+
+ html += `
+ <p style="white-space:pre-line">
+   ${settingData.promo || "-"}
+ </p>
+ </div>`;
+
+ produk.innerHTML = html;
+
+ closeMenu();
+}
 
  html += `</div>`;
 
