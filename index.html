@@ -161,10 +161,7 @@ async function loadProduk(){
   buatBrandMenu(semuaProduk);
   tampilkan(semuaProduk);
 
-  const pc=document.getElementById("productCount");
-if(pc){
- pc.innerHTML="📦 Total Produk : "+semuaProduk.length;
-}
+  productCount.innerHTML="📦 Total Produk : "+semuaProduk.length;
 
  }catch(err){
   console.error(err);
@@ -178,36 +175,33 @@ function tampilkan(data){
  let badge="";
  if(p.status==="BARU") badge='<span class="status baru">🆕 BARU</span>';
  if(p.status==="PROMO") badge='<span class="status promo">🔥 PROMO</span>';
- if(p.status==="BESTSELLER") badge='<span class="status best">👍 BESTSELLER</span>';
+ if(p.status==="BESTSELLER") badge='<span class="status best">⭐ BESTSELLER</span>';
  let unggulan=p.unggulan==="YA"?'<span class="unggulan">⭐ UNGGULAN</span>':'';
  produk.innerHTML+=`<div class="card" onclick='detail(${JSON.stringify(p)})'><img loading="lazy" src="${foto(p.foto)}" onerror="this.src='images/noimage.jpg'"><div class="card-body">${badge}${unggulan}<div class="brand">${p.brand||""}</div><div class="tipe">${p.tipe||""}</div><div class="harga">${rupiah(p.harga)}</div></div></div>`;
  });
 }
 
+
 function showPromo(){
 
- let html = `
+ let html=`
  <div class="info-box">
-   <h2>🔥 Promo Bulan Ini</h2>
- `;
+ <h2>🔥 Promo Bulan Ini</h2>`;
 
- bannerData.forEach(b => {
+ bannerData.forEach(b=>{
    html += `
-   <a href="${b.link || '#'}" target="_blank">
-     <img src="${b.gambar}"
-          style="width:100%;border-radius:12px;margin-bottom:15px;display:block;">
-   </a>
-   `;
+   <img src="${b.gambar}"
+        style="width:100%;
+        margin-bottom:15px;
+        border-radius:12px;">`;
  });
 
  html += `
  <p style="white-space:pre-line">
-   ${settingData.promo || "-"}
- </p>
- </div>`;
+ ${settingData.promo||"-"}
+ </p></div>`;
 
- produk.innerHTML = html;
-
+ produk.innerHTML=html;
  closeMenu();
 }
 
