@@ -130,54 +130,22 @@ const foto=f=>"https://ufokebonsarimalang.github.io/KATALOGUFOKEBONSARI/images/"
 const rupiah=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n||0);
 const slug=p=>((p.brand||"")+"-"+(p.tipe||"")).toLowerCase().replace(/[^a-z0-9]+/g,"-");
 
-async function loadProduk() {
+async function loadProduk(){
 
-  try {
+ try{
 
-    const cache = localStorage.getItem("ufo_cache");
+  const cache=localStorage.getItem("ufo_cache");
 
-    if (cache) {
-      try {
-        const c = JSON.parse(cache);
-
-        semuaProduk = c.produk || [];
-        settingData = c.setting || {};
-        bannerData = c.banner || [];
-
-        renderSetting();
-        renderBanner();
-        buatBrandMenu(semuaProduk);
-        tampilkan(semuaProduk);
-
-        return; // stop kalau cache sukses
-      } catch (e) {
-        console.log("Cache rusak, ambil dari server...");
-      }
-    }
-
-    // =====================
-    // FALLBACK KE SHEET (API)
-    // =====================
-
-    const res = await fetch("https://script.google.com/macros/s/XXXX/exec");
-    const data = await res.json();
-
-    semuaProduk = data.produk || [];
-    settingData = data.setting || {};
-    bannerData = data.banner || [];
-
+  if(cache){
+    const c=JSON.parse(cache);
+    semuaProduk=c.produk||[];
+    settingData=c.setting||{};
+    bannerData=c.banner||[];
     renderSetting();
     renderBanner();
     buatBrandMenu(semuaProduk);
     tampilkan(semuaProduk);
-
-    // simpan ulang cache
-    localStorage.setItem("ufo_cache", JSON.stringify(data));
-
-  } catch (err) {
-    console.log("ERROR LOAD:", err);
   }
-}
 
   const res=await fetch(API_URL);
   const data=await res.json();
