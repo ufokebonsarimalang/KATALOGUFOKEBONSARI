@@ -184,7 +184,7 @@ function tampilkan(data){
 
 function showPromo(){
 
- let html=`
+ let html = `
  <div class="info-box">
  <h2>🔥 Promo Bulan Ini</h2>`;
 
@@ -192,16 +192,15 @@ function showPromo(){
    html += `
    <img src="${b.gambar}"
         style="width:100%;
-        margin-bottom:15px;
-        border-radius:12px;">`;
+        border-radius:12px;
+        margin-bottom:15px;">`;
  });
 
  html += `
- <p style="white-space:pre-line">
- ${settingData.promo||"-"}
- </p></div>`;
+ </div>`;
 
- produk.innerHTML=html;
+ produk.innerHTML = html;
+
  closeMenu();
 }
 
