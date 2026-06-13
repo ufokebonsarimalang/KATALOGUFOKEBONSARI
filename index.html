@@ -314,6 +314,22 @@ function hubungiKami(){
 function toggleMenu(){sideMenu.style.left="0";overlay.style.display="block";}
 function closeMenu(){sideMenu.style.left="-300px";overlay.style.display="none";}
 loadProduk();
+  function filterKategori(k){
+
+  if(k === "SEMUA"){
+    tampilkan(semuaProduk);
+    return;
+  }
+
+  const hasil = semuaProduk.filter(p =>
+    (p.kategori || "")
+      .toString()
+      .trim()
+      .toUpperCase() === k
+  );
+
+  tampilkan(hasil);
+}
 </script>
   <footer class="footer">
   © UFO Kebonsari Malang • 2020-2026
