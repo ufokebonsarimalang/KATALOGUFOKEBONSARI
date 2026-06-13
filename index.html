@@ -40,15 +40,7 @@
   }
 }
 .search-wrap{display:flex;gap:10px;padding:12px;background:#0077c8;position:sticky;top:0;z-index:50}
-  <div id="kategoriBar" style="display:flex;gap:8px;overflow-x:auto;padding:10px;background:#fff;white-space:nowrap;">
-
-  <button onclick="filterKategori('SEMUA')">Semua</button>
-  <button onclick="filterKategori('HP')">📱 HP</button>
-  <button onclick="filterKategori('LAPTOP')">💻 Laptop</button>
-  <button onclick="filterKategori('ELEKTRONIK')">📺 Elektronik</button>
-  <button onclick="filterKategori('DAPUR')">🍳 Dapur</button>
-
-</div>
+  
 .menu-btn{width:48px;border:none;border-radius:12px}
 #search{flex:1;padding:12px;border:none;border-radius:30px}
 #productCount{padding:12px;font-weight:600}
@@ -117,6 +109,15 @@
 </div>
 
 <div class="search-wrap">
+  <div id="kategoriBar" style="display:flex;gap:8px;overflow-x:auto;padding:10px;background:#fff;white-space:nowrap;">
+
+  <button onclick="filterKategori('SEMUA')">Semua</button>
+  <button onclick="filterKategori('HP')">📱 HP</button>
+  <button onclick="filterKategori('LAPTOP')">💻 Laptop</button>
+  <button onclick="filterKategori('ELEKTRONIK')">📺 Elektronik</button>
+  <button onclick="filterKategori('DAPUR')">🍳 Dapur</button>
+
+</div>
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
 <input id="search" placeholder="Cari produk...">
 </div>
@@ -143,7 +144,6 @@
 <a href="#" id="floatingWA" target="_blank" class="floating-wa">💬</a>
 
 <script>
-const kategoriBar = document.getElementById("kategoriBar");
 const API_URL="https://script.google.com/macros/s/AKfycbwqnu2yJWk3Bb8JPSVy8ZSZxs5Ae4VGSNpRJl1j3Qgkoj-27FQX_ys4-8qyyyrbXJhQ/exec";
 let semuaProduk=[];
 let settingData={};
@@ -318,7 +318,7 @@ function hubungiKami(){
 function toggleMenu(){sideMenu.style.left="0";overlay.style.display="block";}
 function closeMenu(){sideMenu.style.left="-300px";overlay.style.display="none";}
 loadProduk();
-  function filterKategori(k){
+function filterKategori(k){
 
   if(k === "SEMUA"){
     tampilkan(semuaProduk);
@@ -326,10 +326,10 @@ loadProduk();
   }
 
   const hasil = semuaProduk.filter(p =>
-    (p.kategori || "")
-      .toString()
+    String(p.kategori || "")
       .trim()
-      .toUpperCase() === k
+      .toUpperCase()
+      === String(k).toUpperCase()
   );
 
   tampilkan(hasil);
