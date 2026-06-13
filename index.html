@@ -111,6 +111,14 @@
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
 <input id="search" placeholder="Cari produk...">
 </div>
+  <!-- ===== KATEGORI FILTER ===== -->
+<div id="kategoriBar">
+  <button class="cat active" onclick="filterKategori('SEMUA', this)">🏠 Semua</button>
+  <button class="cat" onclick="filterKategori('HP', this)">📱 HP</button>
+  <button class="cat" onclick="filterKategori('LAPTOP', this)">💻 Laptop</button>
+  <button class="cat" onclick="filterKategori('ELEKTRONIK', this)">📺 Elektronik</button>
+  <button class="cat" onclick="filterKategori('DAPUR', this)">🍳 Dapur</button>
+</div>
 
 <div id="bannerArea"></div>
 
@@ -304,7 +312,65 @@ function hubungiKami(){
 
 function toggleMenu(){sideMenu.style.left="0";overlay.style.display="block";}
 function closeMenu(){sideMenu.style.left="-300px";overlay.style.display="none";}
+/* =========================
+   FILTER KATEGORI AMAN
+========================= */
+function filterKategori(k, el = null) {
+
+  // 1. reset tombol aktif
+  document.querySelectorAll('#kategoriBar button')
+    .forEach(btn => btn.classList.remove('active'));
+
+  // 2. set tombol aktif
+  if (el) el.classList.add('active');
+
+  // 3. filter data
+  let hasil = [];
+
+  if (k === "SEMUA") {
+    hasil = semuaProduk;
+  } else {
+    hasil = semuaProduk.filter(p =>
+      String(p.kategori || "").toUpperCase() === k.toUpperCase()
+    );
+  }
+
+  // 4. tampilkan
+  tampilkan(hasil);
+} 
 loadProduk();
+  /* ===== KATEGORI MODERN STYLE ===== */
+#kategoriBar{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding:10px;
+  background:#fff;
+  white-space:nowrap;
+}
+
+#kategoriBar button{
+  flex:0 0 auto;
+  padding:10px 16px;
+  border:none;
+  border-radius:999px;
+  background:#f1f5f9;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+#kategoriBar button:hover{
+  background:#e2e8f0;
+  transform:translateY(-1px);
+}
+
+/* tombol aktif */
+#kategoriBar button.active{
+  background:#0077c8;
+  color:#fff;
+}
 </script>
   <footer class="footer">
   © UFO Kebonsari Malang • 2020-2026
