@@ -111,14 +111,12 @@
 <button class="menu-btn" onclick="toggleMenu()">☰</button>
 <input id="search" placeholder="Cari produk...">
 </div>
- <div id="kategoriBar" style="display:flex;gap:8px;overflow-x:auto;padding:10px;background:#fff;white-space:nowrap;">
-
-  <button onclick="filterKategori('SEMUA')">Semua</button>
-  <button onclick="filterKategori('HP')">📱 HP</button>
-  <button onclick="filterKategori('LAPTOP')">💻 Laptop</button>
-  <button onclick="filterKategori('ELEKTRONIK')">📺 Elektronik</button>
-  <button onclick="filterKategori('DAPUR')">🍳 Dapur</button>
-
+ <div id="kategoriBar">
+  <button onclick="filterKategori('SEMUA', this)">🏠 Semua</button>
+  <button onclick="filterKategori('HP', this)">📱 HP</button>
+  <button onclick="filterKategori('LAPTOP', this)">💻 Laptop</button>
+  <button onclick="filterKategori('ELEKTRONIK', this)">📺 Elektronik</button>
+  <button onclick="filterKategori('DAPUR', this)">🍳 Dapur</button>
 </div>
 <div id="bannerArea"></div>
 
