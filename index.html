@@ -50,27 +50,17 @@ body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
   padding:12px 10px;
   background:#fff;
   white-space:nowrap;
-  scrollbar-width:none;
 }
-#kategoriBar::-webkit-scrollbar{display:none}
-
 #kategoriBar button{
   flex:0 0 auto;
   padding:10px 16px;
   border:none;
   border-radius:999px;
   background:#f1f5f9;
-  color:#334155;
-  font-weight:600;
-  font-size:13px;
   font-family:Poppins;
-  box-shadow:0 2px 6px rgba(0,0,0,0.06);
+  font-weight:600;
   cursor:pointer;
   transition:.25s;
-}
-#kategoriBar button:hover{
-  transform:translateY(-2px);
-  background:#e2e8f0;
 }
 #kategoriBar button.active{
   background:linear-gradient(135deg,#0077c8,#00a6ff);
@@ -95,29 +85,11 @@ body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
   box-shadow:0 4px 12px rgba(0,0,0,.08);
   cursor:pointer;
 }
-.card img{
-  width:100%;
-  aspect-ratio:1/1;
-  object-fit:cover;
-}
+.card img{width:100%;aspect-ratio:1/1;object-fit:cover}
 .card-body{padding:8px}
-.brand{background:#eef6ff;color:#0077c8;padding:4px 8px;border-radius:999px;font-size:11px;display:inline-block}
+.brand{background:#eef6ff;color:#0077c8;padding:4px 8px;border-radius:999px;font-size:11px}
 .tipe{font-weight:600;margin-top:8px}
-.harga{color:#e11d48;font-size:18px;font-weight:700}
-
-/* STATUS */
-.status,.unggulan{
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:999px;
-  font-size:10px;
-  font-weight:700;
-  margin:2px;
-}
-.baru{background:#dbeafe;color:#2563eb}
-.promo{background:#fee2e2;color:#dc2626}
-.best{background:#fef3c7;color:#d97706}
-.unggulan{background:#fff7ed;color:#ea580c}
+.harga{color:#e11d48;font-weight:700}
 
 /* MENU */
 #sideMenu{
@@ -128,16 +100,13 @@ body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
   height:100%;
   background:#0077c8;
   color:#fff;
-  z-index:9999;
   transition:.3s;
-  overflow:auto;
+  z-index:9999;
 }
 .menu-item{
   padding:14px 18px;
   border-bottom:1px solid rgba(255,255,255,.1);
-  cursor:pointer;
 }
-
 #overlay{
   position:fixed;
   inset:0;
@@ -201,7 +170,7 @@ body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
 
 <!-- KATEGORI -->
 <div id="kategoriBar">
-  <button onclick="filterKategori('SEMUA',this)" class="active">🏠 Semua</button>
+  <button onclick="filterKategori('SEMUA',this)">🏠 Semua</button>
   <button onclick="filterKategori('HP',this)">📱 HP</button>
   <button onclick="filterKategori('LAPTOP',this)">💻 Laptop</button>
   <button onclick="filterKategori('ELEKTRONIK',this)">📺 Elektronik</button>
@@ -247,6 +216,7 @@ function toggleMenu(){
   sideMenu.style.left="0";
   overlay.style.display="block";
 }
+
 function closeMenu(){
   sideMenu.style.left="-300px";
   overlay.style.display="none";
@@ -271,7 +241,10 @@ function filterKategori(k,el){
   document.querySelectorAll("#kategoriBar button").forEach(b=>b.classList.remove("active"));
   if(el) el.classList.add("active");
 
-  if(k==="SEMUA") return tampilkan(semuaProduk);
+  if(k==="SEMUA"){
+    tampilkan(semuaProduk);
+    return;
+  }
 
   tampilkan(semuaProduk.filter(p=>p.kategori===k));
 }
