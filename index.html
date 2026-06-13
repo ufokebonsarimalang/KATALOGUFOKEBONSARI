@@ -5,38 +5,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>UFO Kebonsari Malang</title>
 <meta name="description" content="Katalog Produk UFO Kebonsari Malang">
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
 
-#promoBanner{display:none}
-
-.header{
-  background:#0077c8;
-  padding:0;
-  margin:0;
-  text-align:center;
-}
-
-.header-banner{width:100%;background:#0077c8}
-
+/* HEADER */
+.header{text-align:center}
 .header-banner img{
   width:100%;
   display:block;
   border-radius:0 0 18px 18px;
-  box-shadow:0 4px 12px rgba(0,0,0,.15);
 }
 
-@media (min-width:768px){
-  .header-banner img{
-    width:60%;
-    margin:0 auto;
-    display:block;
-  }
-}
-
+/* SEARCH */
 .search-wrap{
   display:flex;
   gap:10px;
@@ -46,17 +30,60 @@ body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
   top:0;
   z-index:50;
 }
+.menu-btn{
+  width:48px;
+  border:none;
+  border-radius:12px;
+}
+#search{
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:30px;
+}
 
-.menu-btn{width:48px;border:none;border-radius:12px}
-#search{flex:1;padding:12px;border:none;border-radius:30px}
+/* KATEGORI */
+#kategoriBar{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding:12px 10px;
+  background:#fff;
+  white-space:nowrap;
+  scrollbar-width:none;
+}
+#kategoriBar::-webkit-scrollbar{display:none}
 
+#kategoriBar button{
+  flex:0 0 auto;
+  padding:10px 16px;
+  border:none;
+  border-radius:999px;
+  background:#f1f5f9;
+  color:#334155;
+  font-weight:600;
+  font-size:13px;
+  font-family:Poppins;
+  box-shadow:0 2px 6px rgba(0,0,0,0.06);
+  cursor:pointer;
+  transition:.25s;
+}
+#kategoriBar button:hover{
+  transform:translateY(-2px);
+  background:#e2e8f0;
+}
+#kategoriBar button.active{
+  background:linear-gradient(135deg,#0077c8,#00a6ff);
+  color:#fff;
+}
+
+/* PRODUK */
 .container{
   padding:8px;
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:8px;
 }
-
 @media(min-width:768px){
   .container{grid-template-columns:repeat(4,1fr);}
 }
@@ -68,28 +95,17 @@ body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
   box-shadow:0 4px 12px rgba(0,0,0,.08);
   cursor:pointer;
 }
-
 .card img{
   width:100%;
   aspect-ratio:1/1;
   object-fit:cover;
-  display:block;
 }
-
 .card-body{padding:8px}
+.brand{background:#eef6ff;color:#0077c8;padding:4px 8px;border-radius:999px;font-size:11px;display:inline-block}
+.tipe{font-weight:600;margin-top:8px}
+.harga{color:#e11d48;font-size:18px;font-weight:700}
 
-.brand{
-  display:inline-block;
-  background:#eef6ff;
-  color:#0077c8;
-  padding:4px 8px;
-  border-radius:999px;
-  font-size:11px;
-}
-
-.tipe{font-weight:600;margin-top:8px;min-height:40px}
-.harga{color:#e11d48;font-size:20px;font-weight:700}
-
+/* STATUS */
 .status,.unggulan{
   display:inline-block;
   padding:4px 8px;
@@ -98,128 +114,179 @@ body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
   font-weight:700;
   margin:2px;
 }
-
 .baru{background:#dbeafe;color:#2563eb}
 .promo{background:#fee2e2;color:#dc2626}
 .best{background:#fef3c7;color:#d97706}
 .unggulan{background:#fff7ed;color:#ea580c}
 
-.modal{
-  display:none;
+/* MENU */
+#sideMenu{
   position:fixed;
-  inset:0;
-  background:#fff;
-  overflow:auto;
+  left:-300px;
+  top:0;
+  width:300px;
+  height:100%;
+  background:#0077c8;
+  color:#fff;
   z-index:9999;
+  transition:.3s;
+  overflow:auto;
 }
-
-.modal-content{padding:20px}
-.modal img{width:100%;max-height:350px;object-fit:contain}
-
-#kategoriBar{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding:12px 10px;
-  background:#fff;
-  white-space:nowrap;
-}
-
-#kategoriBar button{
-  flex:0 0 auto;
-  padding:10px 16px;
-  border:none;
-  border-radius:999px;
-  background:#f1f5f9;
+.menu-item{
+  padding:14px 18px;
+  border-bottom:1px solid rgba(255,255,255,.1);
   cursor:pointer;
 }
 
-#kategoriBar button.active{
-  background:#0077c8;
+#overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  z-index:9998;
+}
+
+/* FLOAT WA */
+.floating-wa{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  width:60px;
+  height:60px;
+  background:#25D366;
   color:#fff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  text-decoration:none;
+}
+
+/* FOOTER */
+.footer{
+  text-align:center;
+  padding:20px;
+  font-size:13px;
+  color:#666;
 }
 </style>
 </head>
 
 <body>
 
+<!-- SIDE MENU -->
 <div id="sideMenu">
-<div style="padding:20px;font-weight:700">KATALOG UFO KEBONSARI</div>
-<div class="menu-item" onclick="showHome()">🏠 Beranda</div>
-<div class="menu-item" onclick="showPromo()">🔥 Promo Bulan Ini</div>
-<div class="menu-item" onclick="showUnggulan()">⭐ Produk Unggulan</div>
+  <div style="padding:20px;font-weight:700">KATALOG UFO KEBONSARI</div>
+  <div class="menu-item" onclick="showHome()">🏠 Beranda</div>
+  <div class="menu-item" onclick="showPromo()">🔥 Promo</div>
+  <div class="menu-item" onclick="showUnggulan()">⭐ Unggulan</div>
+  <div class="menu-item" onclick="hubungiKami()">📞 Kontak</div>
 </div>
 
 <div id="overlay" onclick="closeMenu()"></div>
 
+<!-- HEADER -->
 <div class="header">
   <div class="header-banner">
     <img src="images/header-ufo.png">
   </div>
 </div>
 
+<!-- SEARCH -->
 <div class="search-wrap">
-<button class="menu-btn" onclick="toggleMenu()">☰</button>
-<input id="search" placeholder="Cari produk...">
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  <input id="search" placeholder="Cari produk...">
 </div>
 
+<!-- KATEGORI -->
 <div id="kategoriBar">
-  <button onclick="filterKategori('SEMUA')">🏠 Semua</button>
-  <button onclick="filterKategori('HP')">📱 HP</button>
-  <button onclick="filterKategori('LAPTOP')">💻 Laptop</button>
-  <button onclick="filterKategori('ELEKTRONIK')">📺 Elektronik</button>
-  <button onclick="filterKategori('DAPUR')">🍳 Dapur</button>
+  <button onclick="filterKategori('SEMUA',this)" class="active">🏠 Semua</button>
+  <button onclick="filterKategori('HP',this)">📱 HP</button>
+  <button onclick="filterKategori('LAPTOP',this)">💻 Laptop</button>
+  <button onclick="filterKategori('ELEKTRONIK',this)">📺 Elektronik</button>
+  <button onclick="filterKategori('DAPUR',this)">🍳 Dapur</button>
 </div>
 
+<!-- BANNER -->
+<div id="bannerArea"></div>
+
+<!-- PRODUK -->
 <div id="produk" class="container"></div>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span onclick="modal.style.display='none'">&times;</span>
+    <img id="mFoto">
+    <h2 id="mNama"></h2>
+    <h3 id="mHarga"></h3>
+    <div id="mKategori"></div>
+    <div id="mSpek"></div>
+    <button id="shareBtn">📤 Share</button>
+  </div>
+</div>
+
+<!-- WA -->
+<a id="floatingWA" class="floating-wa">💬</a>
+
+<!-- FOOTER -->
+<div class="footer">
+  © UFO Kebonsari Malang • 2020-2026
+</div>
 
 <script>
 const API_URL="https://script.google.com/macros/s/AKfycbwqnu2yJWk3Bb8JPSVy8ZSZxs5Ae4VGSNpRJl1j3Qgkoj-27FQX_ys4-8qyyyrbXJhQ/exec";
 
-let semuaProduk=[];
+let semuaProduk=[],settingData={},bannerData=[];
 
-const foto=f=>"https://ufokebonsarimalang.github.io/KATALOGUFOKEBONSARI/images/"+f;
+const sideMenu=document.getElementById("sideMenu");
+const overlay=document.getElementById("overlay");
 
-async function loadProduk(){
-  const res=await fetch(API_URL);
-  const data=await res.json();
-  semuaProduk=data.produk||[];
-  tampilkan(semuaProduk);
+function toggleMenu(){
+  sideMenu.style.left="0";
+  overlay.style.display="block";
+}
+function closeMenu(){
+  sideMenu.style.left="-300px";
+  overlay.style.display="none";
 }
 
 function tampilkan(data){
   produk.innerHTML="";
   data.forEach(p=>{
     produk.innerHTML+=`
-      <div class="card">
-        <img src="${foto(p.foto)}">
-        <div class="card-body">
-          <div class="brand">${p.brand||""}</div>
-          <div class="tipe">${p.tipe||""}</div>
-        </div>
+    <div class="card">
+      <img src="${p.foto}">
+      <div class="card-body">
+        <div class="brand">${p.brand||""}</div>
+        <div class="tipe">${p.tipe||""}</div>
+        <div class="harga">${p.harga||0}</div>
       </div>
-    `;
+    </div>`;
   });
 }
 
-function filterKategori(k){
-  if(k==="SEMUA"){
-    tampilkan(semuaProduk);
-    return;
-  }
+function filterKategori(k,el){
+  document.querySelectorAll("#kategoriBar button").forEach(b=>b.classList.remove("active"));
+  if(el) el.classList.add("active");
 
-  tampilkan(
-    semuaProduk.filter(p =>
-      (p.kategori||"").toUpperCase() === k
-    )
-  );
+  if(k==="SEMUA") return tampilkan(semuaProduk);
+
+  tampilkan(semuaProduk.filter(p=>p.kategori===k));
 }
 
-function showHome(){tampilkan(semuaProduk);}
-function showPromo(){tampilkan(semuaProduk);}
-function showUnggulan(){tampilkan(semuaProduk);}
+function showHome(){tampilkan(semuaProduk);closeMenu();}
+function showPromo(){closeMenu();}
+function showUnggulan(){closeMenu();}
+function hubungiKami(){window.open("https://wa.me/628");}
 
-loadProduk();
+fetch(API_URL)
+.then(r=>r.json())
+.then(d=>{
+  semuaProduk=d.produk;
+  tampilkan(semuaProduk);
+});
 </script>
 
 </body>
