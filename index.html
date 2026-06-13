@@ -83,6 +83,38 @@
   font-size:13px;
   margin-top:20px;
 }
+ /* ===== KATEGORI MODERN STYLE ===== */
+#kategoriBar{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding:10px;
+  background:#fff;
+  white-space:nowrap;
+}
+
+#kategoriBar button{
+  flex:0 0 auto;
+  padding:10px 16px;
+  border:none;
+  border-radius:999px;
+  background:#f1f5f9;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+#kategoriBar button:hover{
+  background:#e2e8f0;
+  transform:translateY(-1px);
+}
+
+/* tombol aktif */
+#kategoriBar button.active{
+  background:#0077c8;
+  color:#fff;
+}  
 </style>
 </head>
 <body>
@@ -339,38 +371,6 @@ function filterKategori(k, el = null) {
   tampilkan(hasil);
 } 
 loadProduk();
-  /* ===== KATEGORI MODERN STYLE ===== */
-#kategoriBar{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding:10px;
-  background:#fff;
-  white-space:nowrap;
-}
-
-#kategoriBar button{
-  flex:0 0 auto;
-  padding:10px 16px;
-  border:none;
-  border-radius:999px;
-  background:#f1f5f9;
-  font-size:13px;
-  font-weight:600;
-  cursor:pointer;
-  transition:0.2s;
-}
-
-#kategoriBar button:hover{
-  background:#e2e8f0;
-  transform:translateY(-1px);
-}
-
-/* tombol aktif */
-#kategoriBar button.active{
-  background:#0077c8;
-  color:#fff;
-}
 </script>
   <footer class="footer">
   © UFO Kebonsari Malang • 2020-2026
