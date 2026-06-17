@@ -371,7 +371,14 @@ function filterKategori(k, el = null) {
   // 4. tampilkan
   tampilkan(hasil);
 } 
-loadProduk();
+const pass = prompt("Masukkan Password");
+
+if(pass === "UFO2026"){
+  loadProduk();
+}else{
+  document.body.innerHTML =
+    "<h2 style='text-align:center;margin-top:50px'>Akses Ditolak</h2>";
+}
 </script>
   <footer class="footer">
   © UFO Kebonsari Malang • 2020-2026
