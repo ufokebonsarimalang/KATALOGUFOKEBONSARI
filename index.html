@@ -162,6 +162,8 @@
   color:#666;
   font-size:13px;
   margin-top:20px;
+ .badge-area{
+  min-height:32px;
 }
  /* ===== KATEGORI MODERN STYLE ===== */
 #kategoriBar{
@@ -310,7 +312,11 @@ function tampilkan(data){
  if(p.status==="PROMO") badge='<span class="status promo">🔥PROMO</span>';
  if(p.status==="BESTSELLER") badge='<span class="status best">⭐BESTSELLER</span>';
  let unggulan=p.unggulan==="YA"?'<span class="unggulan">⭐UNGGULAN</span>':'';
- produk.innerHTML+=`<div class="card" onclick='detail(${JSON.stringify(p)})'><img loading="lazy" src="${foto(p.foto)}" onerror="this.src='images/noimage.jpg'"><div class="card-body">${badge}${unggulan}<div class="brand">${p.brand||""}</div><div class="tipe">${p.tipe||""}</div><div class="harga">${rupiah(p.harga)}</div></div></div>`;
+ produk.innerHTML+=`<div class="card" onclick='detail(${JSON.stringify(p)})'><img loading="lazy" src="${foto(p.foto)}" onerror="this.src='images/noimage.jpg'"><div class="card-body"><div class="badge-area">
+  ${badge}${unggulan}
+</div>
+
+<div class="brand">${p.brand||""}</div><div class="tipe">${p.tipe||""}</div><div class="harga">${rupiah(p.harga)}</div></div></div>`;
  });
 }
 
