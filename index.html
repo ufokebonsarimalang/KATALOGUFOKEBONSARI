@@ -56,15 +56,37 @@
     grid-template-columns:repeat(4,1fr);
   }
 }
-.card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.08);cursor:pointer}
+.card{
+  background:#fff;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+  cursor:pointer;
+
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
 .card img{
   width:100%;
   aspect-ratio:1/1;
   object-fit:cover;
   display:block;
 }
-.card-body{padding:8px}.brand{display:inline-block;background:#eef6ff;color:#0077c8;padding:4px 8px;border-radius:999px;font-size:11px}
-.tipe{font-weight:600;margin-top:8px;min-height:40px}.harga{color:#e11d48;font-size:20px;font-weight:700}
+.card-body{
+  padding:8px;
+
+  display:flex;
+  flex-direction:column;
+  flex:1;
+}.brand{display:inline-block;background:#eef6ff;color:#0077c8;padding:4px 8px;border-radius:999px;font-size:11px}
+.tipe{font-weight:600;margin-top:8px;min-height:40px}.harga{
+  color:#e11d48;
+  font-size:20px;
+  font-weight:700;
+
+  margin-top:auto;
+}
 .status,.unggulan{display:inline-block;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:700;margin:2px}
 .baru{background:#dbeafe;color:#2563eb}.promo{background:#fee2e2;color:#dc2626}.best{background:#fef3c7;color:#d97706}.unggulan{background:#fff7ed;color:#ea580c}
 .modal{display:none;position:fixed;inset:0;background:#fff;overflow:auto;z-index:9999}
@@ -227,10 +249,10 @@ function tampilkan(data){
  produk.innerHTML="";
  data.forEach(p=>{
  let badge="";
- if(p.status==="BARU") badge='<span class="status baru">🆕 BARU</span>';
- if(p.status==="PROMO") badge='<span class="status promo">🔥 PROMO</span>';
- if(p.status==="BESTSELLER") badge='<span class="status best">⭐ BESTSELLER</span>';
- let unggulan=p.unggulan==="YA"?'<span class="unggulan">⭐ UNGGULAN</span>':'';
+ if(p.status==="BARU") badge='<span class="status baru">🆕BARU</span>';
+ if(p.status==="PROMO") badge='<span class="status promo">🔥PROMO</span>';
+ if(p.status==="BESTSELLER") badge='<span class="status best">⭐BESTSELLER</span>';
+ let unggulan=p.unggulan==="YA"?'<span class="unggulan">⭐UNGGULAN</span>':'';
  produk.innerHTML+=`<div class="card" onclick='detail(${JSON.stringify(p)})'><img loading="lazy" src="${foto(p.foto)}" onerror="this.src='images/noimage.jpg'"><div class="card-body">${badge}${unggulan}<div class="brand">${p.brand||""}</div><div class="tipe">${p.tipe||""}</div><div class="harga">${rupiah(p.harga)}</div></div></div>`;
  });
 }
