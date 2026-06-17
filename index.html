@@ -118,7 +118,7 @@
 }  
 </style>
 </head>
-<body>
+<body style="display:none;" id="bodyWeb">
 
 <div id="sideMenu">
 <div style="padding:20px;font-weight:700">Katalog Produk</div>
@@ -382,12 +382,18 @@ if(!pass){
     .then(r => r.json())
     .then(data => {
 
-      if(data.success){
-        loadProduk();
-      }else{
-        document.body.innerHTML =
-          "<h2 style='text-align:center;margin-top:50px'>Password Salah</h2>";
-      }
+     if(data.success){
+
+  document.getElementById("bodyWeb").style.display = "block";
+
+  loadProduk();
+
+}else{
+
+  document.body.innerHTML =
+    "<h2 style='text-align:center;margin-top:50px'>Password Salah</h2>";
+
+}
 
     })
     .catch(() => {
