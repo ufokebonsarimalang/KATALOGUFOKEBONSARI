@@ -374,6 +374,7 @@ function filterKategori(k, el = null) {
 const pass = prompt("Masukkan Password");
 
 if(!pass){
+  document.body.style.display = "block";
   document.body.innerHTML =
     "<h2 style='text-align:center;margin-top:50px'>Akses Ditolak</h2>";
 }else{
@@ -398,6 +399,7 @@ document.body.innerHTML =
 
     })
     .catch(() => {
+      document.body.style.display = "block";
       document.body.innerHTML =
         "<h2 style='text-align:center;margin-top:50px'>Gagal Verifikasi</h2>";
     });
