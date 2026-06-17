@@ -10,7 +10,7 @@
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
 #promoBanner{display:none}
-..header{
+.header{
   background:#0077c8;
   padding:0;
   margin:0;
@@ -162,6 +162,7 @@
   color:#666;
   font-size:13px;
   margin-top:20px;
+  }
  .badge-area{
   min-height:40px;
 }
@@ -312,15 +313,24 @@ function tampilkan(data){
  if(p.status==="PROMO") badge='<span class="status promo">🔥PROMO</span>';
  if(p.status==="BESTSELLER") badge='<span class="status best">⭐BESTSELLER</span>';
  let unggulan=p.unggulan==="YA"?'<span class="unggulan">⭐UNGGULAN</span>':'';
- produk.innerHTML+=`<div class="card" onclick='detail(${JSON.stringify(p)})'><img loading="lazy" src="${foto(p.foto)}" onerror="this.src='images/noimage.jpg'"><div class="card-body"><div class="brand">${p.brand||""}</div>
+produk.innerHTML+=`
+<div class="card" onclick='detail(${JSON.stringify(p)})'>
+  <img loading="lazy" src="${foto(p.foto)}" onerror="this.src='images/noimage.jpg'">
 
-<div class="tipe">${p.tipe||""}</div>
+  <div class="card-body">
 
-<div class="badge-area">
-  ${badge}${unggulan}
-</div>
+    <div class="brand">${p.brand||""}</div>
 
-<div class="harga">${rupiah(p.harga)}</div> class="tipe">${p.tipe||""}</div><div class="harga">${rupiah(p.harga)}</div>`;
+    <div class="tipe">${p.tipe||""}</div>
+
+    <div class="badge-area">
+      ${badge}${unggulan}
+    </div>
+
+    <div class="harga">${rupiah(p.harga)}</div>
+
+  </div>
+</div>`;
  });
 }
 
