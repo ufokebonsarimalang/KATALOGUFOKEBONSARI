@@ -562,13 +562,11 @@ function filterKategori(k, el = null) {
 
     if(data.success){
 
-      localStorage.setItem("ufo_login","true");
+  localStorage.setItem("ufo_login","true");
 
-      document.getElementById("loginBox").style.display = "none";
+  location.reload();
 
-      document.getElementById("bodyWeb").style.display = "block";
-
-      loadProduk();
+}
 
     }else{
 
