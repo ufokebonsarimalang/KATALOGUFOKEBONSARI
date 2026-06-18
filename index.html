@@ -486,11 +486,15 @@ if(!pass){
     .then(r => r.json())
     .then(data => {
 
-     if(data.success){
+    if(data.success){
+
+  localStorage.setItem("ufo_login","true");
 
   document.getElementById("bodyWeb").style.display = "block";
 
   loadProduk();
+
+}
 
 }else{
 document.body.style.display = "block";
@@ -506,7 +510,7 @@ document.body.innerHTML =
       document.body.innerHTML =
         "<h2 style='text-align:center;margin-top:50px'>Gagal Verifikasi</h2>";
     });
-
+  }
 }
 </script>
   <footer class="footer">
