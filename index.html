@@ -555,25 +555,35 @@ function filterKategori(k, el = null) {
   document.getElementById("loadingLogin").style.display = "block";
 
   fetch(API_URL + "?password=" + encodeURIComponent(pass))
-  .then(r => r.json())
-  .then(data => {
+    .then(r => r.json())
+    .then(data => {
 
-    document.getElementById("loadingLogin").style.display = "none";
+      document.getElementById("loadingLogin").style.display = "none";
 
-    if(data.success){
+      if(data.success){
 
-  localStorage.setItem("ufo_login","true");
+        localStorage.setItem("ufo_login","true");
 
-  location.reload();
+        location.reload();
 
-}
+      }else{
 
-    }else{
+        document.getElementById("loginError").innerHTML =
+          "Password Salah";
+
+      }
+
+    })
+    .catch(() => {
+
+      document.getElementById("loadingLogin").style.display = "none";
 
       document.getElementById("loginError").innerHTML =
-      "Password Salah";
+        "Gagal Verifikasi";
 
-    }
+    });
+
+}
 
   })
   .catch(() => {
