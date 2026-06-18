@@ -499,12 +499,11 @@ font-family:Poppins,sans-serif;
 
     if(data.success){
 
-      localStorage.setItem("ufo_login","true");
+  localStorage.setItem("ufo_login","true");
 
-      document.getElementById("bodyWeb").style.display = "block";
+  location.reload();
 
-      loadProduk();
-
+}
     }else{
 
       document.body.style.display = "block";
