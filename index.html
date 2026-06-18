@@ -482,29 +482,28 @@ if(!pass){
     "<h2 style='text-align:center;margin-top:50px'>Akses Ditolak</h2>";
 }else{
 
-  fetch(API_URL + "?password=" + encodeURIComponent(pass))
-    .then(r => r.json())
-    .then(data => {
+ fetch(API_URL + "?password=" + encodeURIComponent(pass))
+  .then(r => r.json())
+  .then(data => {
 
     if(data.success){
 
-  localStorage.setItem("ufo_login","true");
+      localStorage.setItem("ufo_login","true");
 
-  document.getElementById("bodyWeb").style.display = "block";
+      document.getElementById("bodyWeb").style.display = "block";
 
-  loadProduk();
+      loadProduk();
 
-}
+    }else{
 
-}else{
-document.body.style.display = "block";
+      document.body.style.display = "block";
 
-document.body.innerHTML =
-  "<h2 style='text-align:center;margin-top:50px'>Password Salah</h2>";
- 
-}
+      document.body.innerHTML =
+        "<h2 style='text-align:center;margin-top:50px'>Password Salah</h2>";
 
-    })
+    }
+
+  })
     .catch(() => {
       document.body.style.display = "block";
       document.body.innerHTML =
