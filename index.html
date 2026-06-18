@@ -550,38 +550,37 @@ function filterKategori(k, el = null) {
 } 
   function cekPassword(){
 
-  const pass =
-    document.getElementById("passInput").value;
+  const pass = document.getElementById("passInput").value;
 
-  document.getElementById("loadingLogin").style.display="block";
+  document.getElementById("loadingLogin").style.display = "block";
 
   fetch(API_URL + "?password=" + encodeURIComponent(pass))
   .then(r => r.json())
   .then(data => {
 
-    document.getElementById("loadingLogin").style.display="none";
+    document.getElementById("loadingLogin").style.display = "none";
 
     if(data.success){
 
       localStorage.setItem("ufo_login","true");
 
-      document.getElementById("loginBox").style.display="none";
+      document.getElementById("loginBox").style.display = "none";
 
-      document.getElementById("bodyWeb").style.display="block";
+      document.getElementById("bodyWeb").style.display = "block";
 
       loadProduk();
 
     }else{
 
       document.getElementById("loginError").innerHTML =
-      "Password salah";
+      "Password Salah";
 
     }
 
   })
   .catch(() => {
 
-    document.getElementById("loadingLogin").style.display="none";
+    document.getElementById("loadingLogin").style.display = "none";
 
     document.getElementById("loginError").innerHTML =
     "Gagal terhubung ke server";
@@ -589,45 +588,18 @@ function filterKategori(k, el = null) {
   });
 
 }
-  if(localStorage.getItem("ufo_login")=="true"){
 
-  document.getElementById("loginBox").style.display="none";
+/* Login otomatis jika sudah pernah login */
 
-  document.getElementById("bodyWeb").style.display="block";
+if(localStorage.getItem("ufo_login")=="true"){
+
+  document.getElementById("loginBox").style.display = "none";
+
+  document.getElementById("bodyWeb").style.display = "block";
 
   loadProduk();
 
 }
- fetch(API_URL + "?password=" + encodeURIComponent(pass))
-  .then(r => r.json())
-  .then(data => {
-
-  if(data.success){
-
-  document.getElementById("loadingLogin").style.display = "none";
-
-  localStorage.setItem("ufo_login","true");
-
-  document.getElementById("bodyWeb").style.display="block";
-
-  loadProduk();
-    }else{
-document.getElementById("loadingLogin").style.display = "none";
-      document.body.style.display = "block";
-      document.body.innerHTML =
-        "<h2 style='text-align:center;margin-top:50px'>Password Salah</h2>";
-
-    }
-
-  })
-    .catch(() => {
-
-  document.getElementById("loadingLogin").style.display = "none";
-      document.body.style.display = "block";
-      document.body.innerHTML =
-        "<h2 style='text-align:center;margin-top:50px'>Gagal Verifikasi</h2>";
-    });
-    } 
 
 </script>
   <footer class="footer">
