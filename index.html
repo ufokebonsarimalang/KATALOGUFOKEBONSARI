@@ -481,7 +481,19 @@ if(!pass){
   document.body.innerHTML =
     "<h2 style='text-align:center;margin-top:50px'>Akses Ditolak</h2>";
 }else{
+document.body.style.display = "block";
+document.body.innerHTML = `
+<div style="
+text-align:center;
+margin-top:80px;
+font-family:Poppins,sans-serif;
+">
+  <h3>🔒 Memverifikasi password...</h3>
+  <p>Mohon tunggu</p>
+</div>
+`;
 
+fetch(API_URL + "?password=" + encodeURIComponent(pass))
  fetch(API_URL + "?password=" + encodeURIComponent(pass))
   .then(r => r.json())
   .then(data => {
