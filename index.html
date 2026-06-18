@@ -481,17 +481,7 @@ if(!pass){
   document.body.innerHTML =
     "<h2 style='text-align:center;margin-top:50px'>Akses Ditolak</h2>";
 }else{
-document.body.style.display = "block";
-document.body.innerHTML = `
-<div style="
-text-align:center;
-margin-top:80px;
-font-family:Poppins,sans-serif;
-">
-  <h3>🔒 Memverifikasi password...</h3>
-  <p>Mohon tunggu</p>
-</div>
-`;
+
 
  fetch(API_URL + "?password=" + encodeURIComponent(pass))
   .then(r => r.json())
@@ -499,15 +489,15 @@ font-family:Poppins,sans-serif;
 
     if(data.success){
 
-  localStorage.setItem("ufo_login","true");
+      localStorage.setItem("ufo_login","true");
 
-  location.reload();
+      document.getElementById("bodyWeb").style.display="block";
 
-}
+      loadProduk();
+
     }else{
 
       document.body.style.display = "block";
-
       document.body.innerHTML =
         "<h2 style='text-align:center;margin-top:50px'>Password Salah</h2>";
 
