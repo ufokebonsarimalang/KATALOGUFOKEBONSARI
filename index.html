@@ -197,11 +197,34 @@
 #kategoriBar button.active{
   background:#0077c8;
   color:#fff;
-}  
+} 
+ .loading-spinner{
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:50px;
+  height:50px;
+  border:5px solid #e5e7eb;
+  border-top:5px solid #0077c8;
+  border-radius:50%;
+  animation:putar 1s linear infinite;
+  z-index:99999;
+}
+
+@keyframes putar{
+  from{
+    transform:translate(-50%,-50%) rotate(0deg);
+  }
+  to{
+    transform:translate(-50%,-50%) rotate(360deg);
+  }
+}
 </style>
 </head>
 <body style="display:none;" id="bodyWeb">
-
+<div id="loadingLogin" class="loading-spinner"></div>
 <div id="sideMenu">
 <div style="padding:20px;font-weight:700">Katalog Produk</div>
 <div class="menu-item" onclick="showHome()">🏠 Beranda</div>
@@ -482,21 +505,22 @@ if(!pass){
     "<h2 style='text-align:center;margin-top:50px'>Akses Ditolak</h2>";
 }else{
 
-
+document.getElementById("loadingLogin").style.display = "block";
  fetch(API_URL + "?password=" + encodeURIComponent(pass))
   .then(r => r.json())
   .then(data => {
 
-    if(data.success){
+  if(data.success){
 
-      localStorage.setItem("ufo_login","true");
+  document.getElementById("loadingLogin").style.display = "none";
 
-      document.getElementById("bodyWeb").style.display="block";
+  localStorage.setItem("ufo_login","true");
 
-      loadProduk();
+  document.getElementById("bodyWeb").style.display="block";
 
+  loadProduk();
     }else{
-
+document.getElementById("loadingLogin").style.display = "none";
       document.body.style.display = "block";
       document.body.innerHTML =
         "<h2 style='text-align:center;margin-top:50px'>Password Salah</h2>";
@@ -505,6 +529,8 @@ if(!pass){
 
   })
     .catch(() => {
+
+  document.getElementById("loadingLogin").style.display = "none";
       document.body.style.display = "block";
       document.body.innerHTML =
         "<h2 style='text-align:center;margin-top:50px'>Gagal Verifikasi</h2>";
