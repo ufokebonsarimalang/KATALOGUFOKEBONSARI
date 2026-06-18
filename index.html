@@ -470,6 +470,10 @@ function filterKategori(k, el = null) {
   // 4. tampilkan
   tampilkan(hasil);
 } 
+  if(localStorage.getItem("ufo_login")=="true"){
+  document.getElementById("bodyWeb").style.display="block";
+  loadProduk();
+}else{
 const pass = prompt("Masukkan Password");
 
 if(!pass){
