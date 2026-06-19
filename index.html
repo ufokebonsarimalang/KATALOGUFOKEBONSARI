@@ -573,29 +573,7 @@ function filterKategori(k, el = null) {
 
       }
 
-    })
-    .catch(() => {
-
-      document.getElementById("loadingLogin").style.display = "none";
-
-      document.getElementById("loginError").innerHTML =
-        "Gagal Verifikasi";
-
-    });
-
-}
-
-  }
-  .catch(() => {
-
-    document.getElementById("loadingLogin").style.display = "none";
-
-    document.getElementById("loginError").innerHTML =
-    "Gagal terhubung ke server";
-
-  });
-
-}
+   
 
 /* Login otomatis jika sudah pernah login */
 
