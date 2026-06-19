@@ -548,7 +548,7 @@ function filterKategori(k, el = null) {
   // 4. tampilkan
   tampilkan(hasil);
 } 
-  function cekPassword(){
+ function cekPassword(){
 
   const pass = document.getElementById("passInput").value;
 
@@ -573,6 +573,17 @@ function filterKategori(k, el = null) {
 
       }
 
+    })
+    .catch(() => {
+
+      document.getElementById("loadingLogin").style.display = "none";
+
+      document.getElementById("loginError").innerHTML =
+        "Gagal Verifikasi";
+
+    });
+
+}
    
 
 /* Login otomatis jika sudah pernah login */
