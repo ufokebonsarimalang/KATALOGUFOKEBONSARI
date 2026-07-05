@@ -319,7 +319,7 @@ style="color:red;margin-top:10px;font-size:13px"></div>
 
 <div id="modal" class="modal">
 <div class="modal-content">
-<span class="close" onclick="modal.style.display='none'">&times;</span>
+<<span class="close" onclick="tutupDetail()">&times;</span>
 <img id="mFoto">
 <h2 id="mNama"></h2>
 <h3 id="mHarga"></h3>
@@ -374,7 +374,30 @@ async function loadProduk(){
   renderBanner();
   buatBrandMenu(semuaProduk);
   tampilkan(semuaProduk);
+renderSetting();
+renderBanner();
+buatBrandMenu(semuaProduk);
+tampilkan(semuaProduk);
 
+// =============================
+// BUKA PRODUK DARI LINK SHARE
+// =============================
+const params = new URLSearchParams(window.location.search);
+const slugProduk = params.get("produk");
+
+if (slugProduk) {
+
+  const produk = semuaProduk.find(p => slug(p) === slugProduk);
+
+  if (produk) {
+    detail(produk);
+  }
+
+}
+
+}catch(err){
+  console.error(err);
+}
   
 
  }catch(err){
@@ -446,6 +469,11 @@ function showUnggulan(){tampilkan(semuaProduk.filter(x=>x.unggulan==="YA"));clos
 
 function detail(p){
  modal.style.display="block";
+ history.replaceState(
+  {},
+  "",
+  "?produk=" + encodeURIComponent(slug(p))
+); 
  mFoto.src=foto(p.foto);
  mNama.innerHTML=(p.brand||"")+" "+(p.tipe||"");
 
@@ -461,7 +489,11 @@ function detail(p){
  .map(x=>"<div>• "+x+"</div>")
  .join("");
 
- const url=location.origin+location.pathname+"?produk="+slug(p);
+ const url =
+window.location.origin +
+window.location.pathname +
+"?produk=" +
+encodeURIComponent(slug(p));
 
  
  shareBtn.onclick = async () => {
@@ -548,6 +580,17 @@ function filterKategori(k, el = null) {
   // 4. tampilkan
   tampilkan(hasil);
 } 
+  function tutupDetail(){
+
+  modal.style.display = "none";
+
+  history.replaceState(
+    {},
+    "",
+    window.location.pathname
+  );
+
+}
  function cekPassword(){
 
   const pass = document.getElementById("passInput").value;
