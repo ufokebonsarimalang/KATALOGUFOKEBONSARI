@@ -333,8 +333,10 @@
 }
 
 #subKategoriBar button.active{
-  background:#16a34a;
-  color:#fff;
+    background:#FFD600;
+    color:#222;
+    border-color:#FFD600;
+    font-weight:700;
 }
  .loading-spinner{
   display:none;
@@ -597,11 +599,12 @@ style="color:red;margin-top:10px;font-size:13px"></div>
 <a href="#" id="floatingWA" target="_blank" class="floating-wa">💬</a>
 
 <script>
-const API_URL="https://script.google.com/macros/s/AKfycbwqnu2yJWk3Bb8JPSVy8ZSZxs5Ae4VGSNpRJl1j3Qgkoj-27FQX_ys4-8qyyyrbXJhQ/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbwIHn0J0auhFrSMSRE6vpJ7-9TUVIQVyhwVtxMMYG2bo0jYriYfgni6zG5COxp7x45HmA/exec";
 let semuaProduk=[];
 let settingData={};
 let bannerData=[];
- let promoData=[]; 
+ let promoData=[];
+  let produkAktif = null;
 let kategoriAktif = "SEMUA";
 let subKategoriAktif = "SEMUA";
 const foto = f => {
@@ -623,6 +626,7 @@ settingData = c.data?.setting || {};
 bannerData = c.data?.banner || [];
     promoData = c.data?.promo || [];
     renderSetting();
+    updateFloatingWA();
     renderBanner();
     buatBrandMenu(semuaProduk);
 buatKategori(semuaProduk);
@@ -702,22 +706,14 @@ function buatSubKategori(kategori){
     btn.textContent = s;
 
     if(i===0){
-      btn.classList.add("active");
-      filterSubKategori(kategori,s);
-    }
+  filterSubKategori(kategori,s,btn);
+}
 
-    btn.onclick=function(){
+    btn.onclick = function(){
 
-      document
-        .querySelectorAll("#subKategoriBar button")
-        .forEach(x=>x.classList.remove("active"));
+  filterSubKategori(kategori, s, this);
 
-      this.classList.add("active");
-
-      filterSubKategori(kategori,s);
-
-    };
-
+};
     bar.appendChild(btn);
 
   });
@@ -747,41 +743,59 @@ function buatSubKategori(kategori){
 
 }
 function tampilkan(data){
- let html = "";
 
- data.forEach(p=>{
-  let badge="";
-  if(p.status==="BARU") badge='<span class="status baru">🆕BARU</span>';
-  if(p.status==="PROMO") badge='<span class="status promo">🔥PROMO</span>';
-  if(p.status==="BESTSELLER") badge='<span class="status best">⭐BESTSELLER</span>';
+  let html = "";
 
-  let unggulan = p.unggulan==="YA"
-    ? '<span class="unggulan">⭐UNGGULAN</span>'
-    : '';
+  data.forEach(p=>{
 
-  html += `
-  <div class="card" onclick='detail(${JSON.stringify(p)})'>
-    <img loading="lazy"
-         src="${foto(p.foto)}"
-         onerror="this.onerror=null;this.src='images/noimage.jpg'">
+    let badge = "";
 
-    <div class="card-body">
-      <div class="brand">${p.brand||""}</div>
-      <div class="tipe">${p.tipe||""}</div>
+    if(p.status==="BARU") badge='<span class="status baru">🆕BARU</span>';
+    if(p.status==="PROMO") badge='<span class="status promo">🔥PROMO</span>';
+    if(p.status==="BESTSELLER") badge='<span class="status best">⭐BESTSELLER</span>';
 
-      <div class="badge-area">
-        ${badge}${unggulan}
+    let unggulan =
+      p.unggulan==="YA"
+      ? '<span class="unggulan">⭐UNGGULAN</span>'
+      : '';
+
+    html += `
+    <div class="card" onclick='detail(${JSON.stringify(p)})'>
+
+      <img
+        loading="lazy"
+        src="${foto(p.foto)}"
+        onerror="this.onerror=null;this.src='images/noimage.jpg'">
+
+      <div class="card-body">
+
+        <div class="brand">${p.brand||""}</div>
+
+        <div class="tipe">${p.tipe||""}</div>
+
+        <div class="badge-area">
+          ${badge}${unggulan}
+        </div>
+
+        <div style="
+          color:#0077c8;
+          font-size:14px;
+          font-weight:700;
+          margin-top:10px;
+        ">
+          ➡️ Lihat Detail
+        </div>
+
       </div>
 
-      <div class="harga">${rupiah(p.harga)}</div>
     </div>
-  </div>`;
- });
+    `;
 
- produk.innerHTML = html;
+  });
+
+  produk.innerHTML = html;
+
 }
-
-
 function showPromo(){
 
  let html = `
@@ -870,6 +884,8 @@ function showHome(){tampilkan(semuaProduk);closeMenu();}
 function showUnggulan(){tampilkan(semuaProduk.filter(x=>x.unggulan==="YA"));closeMenu();}
 
 function detail(p){
+  produkAktif = p;
+  updateFloatingWA();
  modal.style.display="block";
  history.replaceState(
   {},
@@ -879,18 +895,25 @@ function detail(p){
  mFoto.src=foto(p.foto);
  mNama.innerHTML=(p.brand||"")+" "+(p.tipe||"");
 
-mHarga.innerHTML = `
-<div>${rupiah(p.harga)}</div>
+mHarga.innerHTML=`
 <div style="
-    font-size:12px;
-    color:#6b7280;
-    font-weight:400;
-    margin-top:8px;
-    line-height:1.5;
+color:#16a34a;
+font-size:22px;
+font-weight:700;
 ">
-* Harga dapat berubah sewaktu-waktu.<br>
-Silakan hubungi kami untuk informasi harga terbaru.
-</div>`;
+💬 Hubungi Admin
+</div>
+
+<div style="
+font-size:13px;
+color:#666;
+margin-top:8px;
+line-height:1.6;
+">
+Harga tidak ditampilkan pada katalog ini.<br>
+Silakan hubungi kami untuk mendapatkan informasi harga, stok, dan promo terbaru.
+</div>
+`;
 
 mBrand.innerHTML = p.brand || "-";
 mKategori.innerHTML = p.kategori || "-";
@@ -1086,7 +1109,8 @@ function filterKategori(k, el = null) {
   function tutupDetail(){
 
   modal.style.display = "none";
-
+produkAktif = null;
+updateFloatingWA();
   history.replaceState(
     {},
     "",
@@ -1163,6 +1187,46 @@ backToTop.addEventListener("click", () => {
     behavior: "smooth"
   });
 });
+  function updateFloatingWA(){
+
+  const wa = settingData.wa || "6289524391002";
+
+  let pesan = "";
+
+  if(produkAktif){
+
+    pesan =
+`Halo Admin UFO Kebonsari.
+
+Saya ingin menanyakan produk berikut:
+
+Brand : ${produkAktif.brand}
+Tipe : ${produkAktif.tipe}
+
+Mohon informasi harga dan stoknya.
+
+Terima kasih.`;
+
+  }else{
+
+    pesan =
+`Halo Admin UFO Kebonsari.
+
+Saya ingin bertanya mengenai produk yang ada di katalog.
+
+Mohon informasi harga dan stoknya.
+
+Terima kasih.`;
+
+  }
+
+  floatingWA.href =
+    "https://wa.me/" +
+    wa +
+    "?text=" +
+    encodeURIComponent(pesan);
+
+}
 </script>
   <footer class="footer">
   © 2026 UFO Kebonsari Malang 
