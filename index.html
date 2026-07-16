@@ -224,62 +224,56 @@
   min-height:40px;
 }
 
-#kategoriBar{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding:10px;
-  background:#fff;
-  white-space:nowrap;
-}
+/* KATEGORI UTAMA (KOLOM KIRI) */
 #kategoriBar button{
-  flex:0 0 auto;
-  padding:10px 16px;
-  border:none;
-  border-radius:999px;
-  background:#f1f5f9;
-  font-size:13px;
-  font-weight:600;
-  cursor:pointer;
-  transition:0.2s;
+  width: 100%;
+  text-align: left;
+  padding: 14px 16px;
+  border: none;
+  background: transparent;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  transition: all 0.2s;
 }
 #kategoriBar button:hover{
   background:#e2e8f0;
-  transform:translateY(-1px);
 }
 #kategoriBar button.active{
   background:#0077c8;
   color:#fff;
+  font-weight: 600;
 } 
 
-#subKategoriBar{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding:10px;
-  background:#fff;
-  white-space:nowrap;
+/* SUBKATEGORI (KOLOM KANAN) */
+.sub-menu-item {
+  width: 100%;
+  text-align: left;
+  padding: 14px 20px;
+  border: none;
+  background: transparent;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1f2937;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f9fafb;
 }
-#subKategoriBar button{
-  flex:0 0 auto;
-  padding:10px 16px;
-  border:none;
-  border-radius:999px;
-  background:#f1f5f9;
-  font-size:13px;
-  font-weight:600;
-  cursor:pointer;
-  transition:.2s;
+.sub-menu-item:active, .sub-menu-item.active {
+  background: #f3f4f6;
+  color: #0077c8;
+  font-weight: 600;
 }
-#subKategoriBar button:hover{
-  background:#e2e8f0;
-}
-#subKategoriBar button.active{
-    background:#FFD600;
-    color:#222;
-    border-color:#FFD600;
-    font-weight:700;
-}
+
 .loading-spinner{
   display:none;
   position:fixed;
@@ -371,39 +365,11 @@ z-index:99999;
   <input id="search" placeholder="Cari produk...">
 </div>
 
-<div id="kategoriBar"></div>
-<div id="subKategoriBar" style="padding: 10px 15px; background: #fff; display: none; justify-content: center; border-bottom: 1px solid #e2e8f0;">
-    <div style="position: relative; width: 100%; max-width: 350px;">
-        <select id="subKategoriSelect" style="
-            width: 100%;
-            padding: 12px 40px 12px 20px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            color: #1e293b;
-            background-color: #f1f5f9;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            outline: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-        " onfocus="this.style.borderColor='#0077c8'; this.style.backgroundColor='#fff';" onblur="this.style.borderColor='#e2e8f0'; this.style.backgroundColor='#f1f5f9';">
-            </select>
-        <div style="
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-            font-size: 12px;
-            color: #64748b;
-        ">▼</div>
-    </div>
+<div id="megaMenuContainer" style="display: flex; background: #fff; border-bottom: 1px solid #e5e7eb; height: 380px; overflow: hidden; font-size: 13px;">
+    <div id="kategoriBar" style="width: 45%; background: #f8fafc; overflow-y: auto; border-right: 1px solid #e5e7eb; -webkit-overflow-scrolling: touch;"></div>
+    <div id="subKategoriBar" style="width: 55%; background: #ffffff; overflow-y: auto; -webkit-overflow-scrolling: touch;"></div>
 </div>
+
 <div id="bannerArea"></div>
 <div id="produk" class="container"></div>
 
@@ -518,19 +484,44 @@ async function loadProduk(){
  }
 }
 
-function buatSubKategori(kategori){
-  const bar = document.getElementById("subKategoriBar");
-  const select = document.getElementById("subKategoriSelect");
-  if(!bar || !select) return;
+function buatKategori(data){
+  const bar = document.getElementById("kategoriBar");
+  if(!bar) return;
+  const daftar = ["SEMUA", ...new Set(data.map(x => (x.kategori || "").trim()).filter(Boolean))];
+  bar.innerHTML = "";
+  daftar.forEach((k,index)=>{
+    const btn = document.createElement("button");
+    btn.innerHTML = `<span>${k === "SEMUA" ? "🏠 Semua" : k}</span> <span style="font-size:10px; opacity:0.5;">❯</span>`;
+    if(index===0){ btn.classList.add("active"); }
+    btn.onclick = function(){ filterKategori(k,this); };
+    bar.appendChild(btn);
+  });
+  
+  // Set inisiasi awal bagian kanan kosong/default
+  buatSubKategori("SEMUA");
+}
 
-  // Jika memilih "SEMUA", sembunyikan dropdown subkategori
-  if(kategori==="SEMUA"){
-    bar.style.display="none";
-    select.innerHTML="";
+function filterKategori(k, el = null) {
+  document.querySelectorAll('#kategoriBar button').forEach(btn => btn.classList.remove('active'));
+  if (el) el.classList.add('active');
+  let hasil = [];
+  if (k === "SEMUA") { hasil = semuaProduk; } 
+  else { hasil = semuaProduk.filter(p => String(p.kategori || "").toUpperCase() === k.toUpperCase()); }
+  buatSubKategori(k);
+  tampilkan(hasil);
+} 
+
+function buatSubKategori(kategori){
+  const subBar = document.getElementById("subKategoriBar");
+  if(!subBar) return;
+  
+  subBar.innerHTML = "";
+
+  if(kategori === "SEMUA" || kategori === ""){
+    subBar.innerHTML = `<div style="padding: 20px; text-align: center; color: #9ca3af; font-style: italic;">Pilih kategori utama untuk melihat subkategori.</div>`;
     return;
   }
 
-  // Ambil daftar subkategori yang unik
   const daftar = [
     ...new Set(
       semuaProduk
@@ -540,30 +531,23 @@ function buatSubKategori(kategori){
     )
   ].sort();
 
-  // Jika tidak ada subkategori, sembunyikan dropdown
-  if(daftar.length===0){
-    bar.style.display="none";
-    select.innerHTML="";
+  if(daftar.length === 0){
+    subBar.innerHTML = `<button class="sub-menu-item active" onclick="filterSubKategori('${kategori}', 'SEMUA')"><span>Semua ${kategori}</span> <span>❯</span></button>`;
     return;
   }
 
-  // Tampilkan container dropdown
-  bar.style.display="flex";
+  let htmlOpsi = `<button class="sub-menu-item active" onclick="ubahAktifSub(this); filterSubKategori('${kategori}', 'SEMUA')"><span>Lihat Semua</span> <span>❯</span></button>`;
   
-  // Buat pilihan tanpa embel-embel teks panduan / "Semua" yang dobel
-  let opsiHtml = `<option value="SEMUA">Semua Sub ${kategori}</option>`;
   daftar.forEach(s => {
-    opsiHtml += `<option value="${s}">${s}</option>`;
+    htmlOpsi += `<button class="sub-menu-item" onclick="ubahAktifSub(this); filterSubKategori('${kategori}', '${s}')"><span>${s}</span> <span>❯</span></button>`;
   });
-  select.innerHTML = opsiHtml;
+  
+  subBar.innerHTML = htmlOpsi;
+}
 
-  // Event handler saat dropdown diubah nilainya
-  select.onchange = function() {
-    filterSubKategori(kategori, this.value);
-  };
-
-  // Langsung set filter default ke "SEMUA" subkategori saat ganti kategori utama
-  filterSubKategori(kategori, "SEMUA");
+function ubahAktifSub(el) {
+  document.querySelectorAll('.sub-menu-item').forEach(btn => btn.classList.remove('active'));
+  if(el) el.classList.add('active');
 }
 
 function filterSubKategori(kategori, subKategori){
@@ -683,20 +667,6 @@ function buatBrandMenu(data){
  brand.forEach(b=>brandList.innerHTML+=`<div class="menu-item" onclick="tampilkan(semuaProduk.filter(x=>x.brand==='${b}'));closeMenu()">${b}</div>`);
 }
 
-function buatKategori(data){
-  const bar = document.getElementById("kategoriBar");
-  if(!bar) return;
-  const daftar = ["SEMUA", ...new Set(data.map(x => (x.kategori || "").trim()).filter(Boolean))];
-  bar.innerHTML = "";
-  daftar.forEach((k,index)=>{
-    const btn = document.createElement("button");
-    btn.textContent = k === "SEMUA" ? "🏠 Semua" : k;
-    if(index===0){ btn.classList.add("active"); }
-    btn.onclick = function(){ filterKategori(k,this); };
-    bar.appendChild(btn);
-  });
-}
-
 function renderSetting(){
  if(settingData.judul){
    document.title=settingData.judul;
@@ -710,25 +680,15 @@ function renderBanner(){
  if(!area) return;
  if(!bannerData.length){ area.innerHTML=""; return; }
  area.innerHTML=bannerData.map(b=>`
- <a href="${b.link||'#'}" target="_blank">
- <img loading="lazy" src="${b.gambar}" style="width:30%;display:block;border-radius:14px;margin:10px auto;">
- </a>`).join("");
+  <a href="${b.link||'#'}" target="_blank">
+  <img loading="lazy" src="${b.gambar}" style="width:30%;display:block;border-radius:14px;margin:10px auto;">
+  </a>`).join("");
 }
 
 function hubungiKami(){ window.open("https://wa.me/" + (settingData.wa || "6289524391002")); }
 define=null;
 function toggleMenu(){sideMenu.style.left="0";overlay.style.display="block";}
 function closeMenu(){sideMenu.style.left="-300px";overlay.style.display="none";}
-
-function filterKategori(k, el = null) {
-  document.querySelectorAll('#kategoriBar button').forEach(btn => btn.classList.remove('active'));
-  if (el) el.classList.add('active');
-  let hasil = [];
-  if (k === "SEMUA") { hasil = semuaProduk; } 
-  else { hasil = semuaProduk.filter(p => String(p.kategori || "").toUpperCase() === k.toUpperCase()); }
-  buatSubKategori(k);
-  tampilkan(hasil);
-} 
 
 function tutupDetail(){
   modal.style.display = "none";
@@ -747,11 +707,7 @@ function cekPassword(){
       document.getElementById("loadingLogin").style.display = "none";
       if(data.success){
         localStorage.setItem("ufo_login","true");
-        
-        /* Eksekusi Full Screen Langsung Saat Klik */
         aktifkanFullScreen();
-        
-        /* Berikan jeda super singkat agar browser memproses fullscreen sebelum reload */
         setTimeout(() => {
           location.reload();
         }, 300);
@@ -771,7 +727,6 @@ window.addEventListener("load", function () {
     if (box) box.style.display = "none";
     loadProduk();
     
-    /* Otomatis memicu fullscreen kembali jika user interaksi pasca reload */
     document.body.addEventListener("click", function targetFS() {
        aktifkanFullScreen();
        document.body.removeEventListener("click", targetFS);
