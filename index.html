@@ -372,7 +372,11 @@ z-index:99999;
 </div>
 
 <div id="kategoriBar"></div>
-<div id="subKategoriBar"></div>
+<div id="subKategoriBar" style="padding: 10px; background: #fff; display: none; align-items: center; gap: 10px;">
+    <label for="subKategoriSelect" style="font-size: 13px; font-weight: 600; color: #4b5563;">Pilih Subkategori:</label>
+    <select id="subKategoriSelect" style="padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 999px; font-size: 13px; font-weight: 600; outline: none; background: #f1f5f9; cursor: pointer; max-width: 200px;">
+        </select>
+</div>
 <div id="bannerArea"></div>
 <div id="produk" class="container"></div>
 
@@ -489,11 +493,12 @@ async function loadProduk(){
 
 function buatSubKategori(kategori){
   const bar = document.getElementById("subKategoriBar");
-  if(!bar) return;
+  const select = document.getElementById("subKategoriSelect");
+  if(!bar || !select) return;
 
   if(kategori==="SEMUA"){
     bar.style.display="none";
-    bar.innerHTML="";
+    select.innerHTML="";
     return;
   }
 
@@ -504,30 +509,34 @@ function buatSubKategori(kategori){
         .map(p => String(p.subKategori||"").trim())
         .filter(Boolean)
     )
-  ];
+  ].sort();
 
   if(daftar.length===0){
     bar.style.display="none";
-    bar.innerHTML="";
+    select.innerHTML="";
     return;
   }
 
+  // Aktifkan kontainer dropdown
   bar.style.display="flex";
-  bar.innerHTML="";
-
-  daftar.forEach((s,i)=>{
-    const btn=document.createElement("button");
-    btn.textContent = s;
-    if(i===0){ filterSubKategori(kategori,s,btn); }
-    btn.onclick = function(){ filterSubKategori(kategori, s, this); };
-    bar.appendChild(btn);
+  
+  // Susun ulang opsi di dalam dropdown
+  let opsiHtml = `<option value="SEMUA">🌐 Semua ${kategori}</option>`;
+  daftar.forEach(s => {
+    opsiHtml += `<option value="${s}">📦 ${s}</option>`;
   });
+  select.innerHTML = opsiHtml;
+
+  // Pasang event penangkap perubahan pilihan (ketika dropdown dipilih)
+  select.onchange = function() {
+    filterSubKategori(kategori, this.value);
+  };
+
+  // Reset filter ke default "SEMUA" subkategori saat kategori utama berganti
+  filterSubKategori(kategori, "SEMUA");
 }
 
-function filterSubKategori(kategori, subKategori, el){
-  document.querySelectorAll("#subKategoriBar button").forEach(b=>b.classList.remove("active"));
-  if(el) el.classList.add("active");
-
+function filterSubKategori(kategori, subKategori){
   let hasil = semuaProduk.filter(p => String(p.kategori||"").trim().toUpperCase() === kategori.toUpperCase());
   if(subKategori !== "SEMUA"){
     hasil = hasil.filter(p => String(p.subKategori||"").trim().toUpperCase() === subKategori.toUpperCase());
