@@ -252,7 +252,6 @@
   color:#fff;
 } 
 
-/* SUBKATEGORI BAR DIKONDISIKAN UNTUK DISEMBUNYIKAN KARENA SUDAH PAKAI POPUP */
 #subKategoriBar{
   display:none; 
   gap:10px;
@@ -300,9 +299,7 @@
   to{ transform:translate(-50%,-50%) rotate(360deg); }
 }
 
-/* ========================================== */
-/* STYLE POPUP MODAL SUBKATEGORI DI TENGAH    */
-/* ========================================== */
+/* STYLE POPUP MODAL SUBKATEGORI DI TENGAH LAYAR */
 .popup-sub-modal {
   display: none;
   position: fixed;
@@ -425,15 +422,16 @@ z-index:99999;
   <div id="brandList"></div>
 </div>
 
+<!-- OVERLAY BACKDROP -->
 <div id="overlay" onclick="tutupSemuaOverlay()"></div>
 
+<!-- POPUP MODAL DI TENGAH LAYAR UNTUK SUBKATEGORI -->
 <div id="popupSubMenu" class="popup-sub-modal">
     <div class="popup-sub-header">
-        <span id="popupSubTitle">Pilih SubKategori</span>
+        <span id="popupSubTitle">Sub Kategori Pilihan</span>
         <span onclick="tutupPopupSub()" style="cursor:pointer; font-size: 18px; padding: 0 5px;">✕</span>
     </div>
-    <div id="popupSubBody" class="popup-sub-body">
-        </div>
+    <div id="popupSubBody" class="popup-sub-body"></div>
 </div>
 
 <div class="header">
@@ -504,7 +502,6 @@ const foto = f => {
 const rupiah=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n||0);
 const slug=p=>((p.brand||"")+"-"+(p.tipe||"")).toLowerCase().replace(/[^a-z0-9]+/g,"-");
 
-/* FUNGSI AKTIVASI FULLSCREEN */
 function aktifkanFullScreen() {
   const docEl = document.documentElement;
   if (docEl.requestFullscreen) {
@@ -563,7 +560,7 @@ async function loadProduk(){
  }
 }
 
-/* KITA MODIFIKASI FUNGSI PEMBUATAN SUBKATEGORI SUPAYA LANGSUNG MASUK KE POPUP DI TENGAH */
+/* FUNGSI SUBKATEGORI POPUP - TANPA TOMBOL SEMUA & FORMAT TITLE CASE */
 function buatSubKategori(kategori){
   if(kategori==="SEMUA"){
     tutupPopupSub();
@@ -584,24 +581,21 @@ function buatSubKategori(kategori){
     return;
   }
 
-  // Set Judul Modal Popup
-  document.getElementById("popupSubTitle").innerText = "SubKategori " + kategori;
+  // Mengubah teks judul menjadi rapi, misal: Sub Kategori Elektronik
+  let namaKategoriRapih = kategori.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+  document.getElementById("popupSubTitle").innerText = "Sub Kategori " + namaKategoriRapih;
   
   const body = document.getElementById("popupSubBody");
   body.innerHTML = "";
 
-  // Opsi untuk melihat semua produk di kategori utama tersebut
-  let html = `
-    <button class="popup-sub-item" style="color:#0077c8; border-color:#0077c8; background:#f0f9ff;" onclick="eksekusiFilter('${kategori}', 'SEMUA')">
-      <span>🌐 Semua Produk ${kategori}</span>
-      <span>❯</span>
-    </button>
-  `;
+  let html = "";
 
+  // Render langsung murni daftar subkategorinya saja
   daftar.forEach(s => {
+    let subRapih = s.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
     html += `
       <button class="popup-sub-item" onclick="eksekusiFilter('${kategori}', '${s}')">
-        <span>🔹 ${s}</span>
+        <span>🔹 ${subRapih}</span>
         <span>❯</span>
       </button>
     `;
@@ -609,31 +603,26 @@ function buatSubKategori(kategori){
 
   body.innerHTML = html;
 
-  // Memunculkan Popup di Tengah & Backdrop Blur
   document.getElementById("overlay").style.display = "block";
   document.getElementById("popupSubMenu").style.display = "block";
 }
 
-/* FUNGSI EKSEKUSI FILTER SEKALIGUS OTOMATIS MENUTUP POPUP */
 function eksekusiFilter(kategori, subKategori) {
   let hasil = semuaProduk.filter(p => String(p.kategori||"").trim().toUpperCase() === kategori.toUpperCase());
   if(subKategori !== "SEMUA"){
     hasil = hasil.filter(p => String(p.subKategori||"").trim().toUpperCase() === subKategori.toUpperCase());
   }
   tampilkan(hasil);
-  tutupPopupSub(); // Otomatis menutup popup setelah subkategori diklik
+  tutupPopupSub();
 }
 
-/* FUNGSI KHUSUS UNTUK MENUTUP POPUP SUBKATEGORI */
 function tutupPopupSub() {
   document.getElementById("popupSubMenu").style.display = "none";
-  // Jika menu drawer samping tidak terbuka, sembunyikan backdrop overlay
   if (sideMenu.style.left !== "0px") {
     document.getElementById("overlay").style.display = "none";
   }
 }
 
-/* FUNGSI GLOBAL CLOSE OVERLAY UNTUK MENANGANI BERBAGAI AKSI CLICK */
 function tutupSemuaOverlay() {
   closeMenu();
   tutupPopupSub();
@@ -755,7 +744,8 @@ function buatKategori(data){
   bar.innerHTML = "";
   daftar.forEach((k,index)=>{
     const btn = document.createElement("button");
-    btn.textContent = k === "SEMUA" ? "🏠 Semua" : k;
+    let formatKategori = k === "SEMUA" ? "🏠 Semua" : k.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+    btn.textContent = formatKategori;
     if(index===0){ btn.classList.add("active"); }
     btn.onclick = function(){ filterKategori(k,this); };
     bar.appendChild(btn);
@@ -812,11 +802,7 @@ function cekPassword(){
       document.getElementById("loadingLogin").style.display = "none";
       if(data.success){
         localStorage.setItem("ufo_login","true");
-        
-        /* Eksekusi Full Screen Langsung Saat Klik */
         aktifkanFullScreen();
-        
-        /* Berikan jeda super singkat agar browser memproses fullscreen sebelum reload */
         setTimeout(() => {
           location.reload();
         }, 300);
@@ -836,7 +822,6 @@ window.addEventListener("load", function () {
     if (box) box.style.display = "none";
     loadProduk();
     
-    /* Otomatis memicu fullscreen kembali jika user interaksi pasca reload */
     document.body.addEventListener("click", function targetFS() {
        aktifkanFullScreen();
        document.body.removeEventListener("click", targetFS);
