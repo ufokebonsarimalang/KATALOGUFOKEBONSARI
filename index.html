@@ -372,10 +372,37 @@ z-index:99999;
 </div>
 
 <div id="kategoriBar"></div>
-<div id="subKategoriBar" style="padding: 10px; background: #fff; display: none; align-items: center; gap: 10px;">
-    <label for="subKategoriSelect" style="font-size: 13px; font-weight: 600; color: #4b5563;">Pilih Subkategori:</label>
-    <select id="subKategoriSelect" style="padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 999px; font-size: 13px; font-weight: 600; outline: none; background: #f1f5f9; cursor: pointer; max-width: 200px;">
-        </select>
+<div id="subKategoriBar" style="padding: 10px 15px; background: #fff; display: none; justify-content: center; border-bottom: 1px solid #e2e8f0;">
+    <div style="position: relative; width: 100%; max-width: 350px;">
+        <select id="subKategoriSelect" style="
+            width: 100%;
+            padding: 12px 40px 12px 20px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        " onfocus="this.style.borderColor='#0077c8'; this.style.backgroundColor='#fff';" onblur="this.style.borderColor='#e2e8f0'; this.style.backgroundColor='#f1f5f9';">
+            </select>
+        <div style="
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 12px;
+            color: #64748b;
+        ">▼</div>
+    </div>
 </div>
 <div id="bannerArea"></div>
 <div id="produk" class="container"></div>
@@ -496,12 +523,14 @@ function buatSubKategori(kategori){
   const select = document.getElementById("subKategoriSelect");
   if(!bar || !select) return;
 
+  // Jika memilih "SEMUA", sembunyikan dropdown subkategori
   if(kategori==="SEMUA"){
     bar.style.display="none";
     select.innerHTML="";
     return;
   }
 
+  // Ambil daftar subkategori yang unik
   const daftar = [
     ...new Set(
       semuaProduk
@@ -511,28 +540,29 @@ function buatSubKategori(kategori){
     )
   ].sort();
 
+  // Jika tidak ada subkategori, sembunyikan dropdown
   if(daftar.length===0){
     bar.style.display="none";
     select.innerHTML="";
     return;
   }
 
-  // Aktifkan kontainer dropdown
+  // Tampilkan container dropdown
   bar.style.display="flex";
   
-  // Susun ulang opsi di dalam dropdown
-  let opsiHtml = `<option value="SEMUA">🌐 Semua ${kategori}</option>`;
+  // Buat pilihan tanpa embel-embel teks panduan / "Semua" yang dobel
+  let opsiHtml = `<option value="SEMUA">Semua Sub ${kategori}</option>`;
   daftar.forEach(s => {
-    opsiHtml += `<option value="${s}">📦 ${s}</option>`;
+    opsiHtml += `<option value="${s}">${s}</option>`;
   });
   select.innerHTML = opsiHtml;
 
-  // Pasang event penangkap perubahan pilihan (ketika dropdown dipilih)
+  // Event handler saat dropdown diubah nilainya
   select.onchange = function() {
     filterSubKategori(kategori, this.value);
   };
 
-  // Reset filter ke default "SEMUA" subkategori saat kategori utama berganti
+  // Langsung set filter default ke "SEMUA" subkategori saat ganti kategori utama
   filterSubKategori(kategori, "SEMUA");
 }
 
