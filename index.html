@@ -366,37 +366,6 @@
 </head>
 <body id="bodyWeb">
 
-<div id="loginBox" style="
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#f4f6f9;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:99999;
-">
-  <div style="
-  background:#fff;
-  padding:30px;
-  border-radius:20px;
-  width:320px;
-  box-shadow:0 10px 30px rgba(0,0,0,.15);
-  text-align:center;
-  ">
-    <h2 style="margin-top:0">📚 KATALOG PRODUK</h2>
-    <input id="passInput" type="password" placeholder="Masukkan Password" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:15px 0;">
-    <button onclick="cekPassword()" style="width:100%;padding:12px;background:#0077c8;color:white;border:none;border-radius:10px;font-weight:bold;cursor:pointer;">
-    MASUK
-    </button>
-    <div id="loginError" style="color:red;margin-top:10px;font-size:13px"></div>
-  </div>
-</div>
-
-<div id="loadingLogin" class="loading-spinner"></div>
-
 <div id="sideMenu">
   <div style="padding:16px 20px;background:#0066b3;position:relative;">
     <div style="font-size:18px;font-weight:700;">🏪 UFO Kebonsari Malang</div>
@@ -502,17 +471,6 @@ const foto = f => {
 const rupiah=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n||0);
 const slug=p=>((p.brand||"")+"-"+(p.tipe||"")).toLowerCase().replace(/[^a-z0-9]+/g,"-");
 
-function aktifkanFullScreen() {
-  const docEl = document.documentElement;
-  if (docEl.requestFullscreen) {
-    docEl.requestFullscreen();
-  } else if (docEl.webkitRequestFullscreen) {
-    docEl.webkitRequestFullscreen();
-  } else if (docEl.msRequestFullscreen) {
-    docEl.msRequestFullscreen();
-  }
-}
-
 async function loadProduk(){
  try{
   const cache = localStorage.getItem("ufo_cache_v1");
@@ -581,7 +539,6 @@ function buatSubKategori(kategori){
     return;
   }
 
-  // Mengubah teks judul menjadi rapi, misal: Sub Kategori Elektronik
   let namaKategoriRapih = kategori.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
   document.getElementById("popupSubTitle").innerText = "Sub Kategori " + namaKategoriRapih;
   
@@ -590,7 +547,6 @@ function buatSubKategori(kategori){
 
   let html = "";
 
-  // Render langsung murni daftar subkategorinya saja
   daftar.forEach(s => {
     let subRapih = s.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
     html += `
@@ -792,41 +748,8 @@ function tutupDetail(){
   history.replaceState({}, "", window.location.pathname);
 }
 
-function cekPassword(){
-  const pass = document.getElementById("passInput").value;
-  document.getElementById("loadingLogin").style.display = "block";
-
-  fetch(API_URL + "?password=" + encodeURIComponent(pass))
-    .then(r => r.json())
-    .then(data => {
-      document.getElementById("loadingLogin").style.display = "none";
-      if(data.success){
-        localStorage.setItem("ufo_login","true");
-        aktifkanFullScreen();
-        setTimeout(() => {
-          location.reload();
-        }, 300);
-      }else{
-        document.getElementById("loginError").innerHTML = "Password Salah";
-      }
-    })
-    .catch(() => {
-      document.getElementById("loadingLogin").style.display = "none";
-      document.getElementById("loginError").innerHTML = "Gagal Verifikasi";
-    });
-}
-
 window.addEventListener("load", function () {
-  if (localStorage.getItem("ufo_login") == "true") {
-    const box = document.getElementById("loginBox");
-    if (box) box.style.display = "none";
-    loadProduk();
-    
-    document.body.addEventListener("click", function targetFS() {
-       aktifkanFullScreen();
-       document.body.removeEventListener("click", targetFS);
-    });
-  }
+  loadProduk();
 });
 
 const backToTop = document.getElementById("backToTop");
