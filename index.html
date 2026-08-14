@@ -362,9 +362,84 @@
   background: #f0f9ff;
   color: #0077c8;
 }
+
+/* STYLE POP-UP PROMO OTOMATIS SAAT BUKA WEB */
+.promo-popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  z-index: 99999;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+.promo-popup-box {
+  position: relative;
+  background: #ffffff;
+  border-radius: 20px;
+  max-width: 480px;
+  width: 100%;
+  padding: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: popInPromo 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: center;
+}
+@keyframes popInPromo {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.promo-popup-close {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  background: #ffffff;
+  color: #1f2937;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  border: 2px solid #e5e7eb;
+  z-index: 10;
+  transition: all 0.2s;
+}
+.promo-popup-close:hover {
+  background: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+}
+.promo-popup-img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 12px;
+  display: block;
+}
+.promo-popup-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
 </style>
 </head>
 <body id="bodyWeb">
+
+<!-- POP-UP PROMO OTOMATIS SAAT BUKA WEB -->
+<div id="promoPopupOverlay" class="promo-popup-overlay">
+  <div class="promo-popup-box">
+    <div class="promo-popup-close" onclick="tutupPromoPopup()">✕</div>
+    <div id="promoPopupContent"></div>
+  </div>
+</div>
 
 <div id="sideMenu">
   <div style="padding:16px 20px;background:#0066b3;position:relative;">
@@ -486,6 +561,9 @@ async function loadProduk(){
     buatBrandMenu(semuaProduk);
     buatKategori(semuaProduk);
     tampilkan(semuaProduk);
+    
+    // Tampilkan pop-up promo otomatis dari cache
+    cekDanTampilkanPromoPopup();
 
     const params = new URLSearchParams(window.location.search);
     const slugProduk = params.get("produk");
@@ -513,9 +591,30 @@ async function loadProduk(){
   buatKategori(semuaProduk);
   tampilkan(semuaProduk);
 
+  // Tampilkan pop-up promo otomatis dari server
+  cekDanTampilkanPromoPopup();
+
  }catch(err){
   console.error(err);
  }
+}
+
+/* FUNGSI POPUP PROMO OTOMATIS */
+function cekDanTampilkanPromoPopup() {
+  if (promoData && promoData.length > 0) {
+    let promoUtama = promoData[0]; 
+    let html = `
+      <img src="${promoUtama.gambar}" alt="${promoUtama.judul || 'Promo'}" class="promo-popup-img">
+      ${promoUtama.judul ? `<div class="promo-popup-title">${promoUtama.judul}</div>` : ''}
+    `;
+
+    document.getElementById("promoPopupContent").innerHTML = html;
+    document.getElementById("promoPopupOverlay").style.display = "flex";
+  }
+}
+
+function tutupPromoPopup() {
+  document.getElementById("promoPopupOverlay").style.display = "none";
 }
 
 /* FUNGSI SUBKATEGORI POPUP - TANPA TOMBOL SEMUA & FORMAT TITLE CASE */
@@ -582,6 +681,7 @@ function tutupPopupSub() {
 function tutupSemuaOverlay() {
   closeMenu();
   tutupPopupSub();
+  tutupPromoPopup();
 }
 
 function tampilkan(data){
@@ -612,19 +712,19 @@ function tampilkan(data){
 function showPromo(){
  let html = `<div class="info-box"><h2>🔥 Promo Bulan Ini</h2>`;
  if(promoData.length==0){
-   html += `<div style="text-align:center;padding:30px;color:#777;">Belum ada promo bulan ini.</div>`;
+    html += `<div style="text-align:center;padding:30px;color:#777;">Belum ada promo bulan ini.</div>`;
  }else{
-   promoData.forEach(p=>{
-     html += `
-     <div style="margin-bottom:25px;">
-     <img src="${p.gambar}" alt="${p.judul}" style="width:100%;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.12);cursor:pointer;">
-     <div style="margin-top:10px;font-size:18px;font-weight:700;">${p.judul}</div>
-     </div>
-     `;
-   });
+    promoData.forEach(p=>{
+      html += `
+      <div style="margin-bottom:25px;">
+      <img src="${p.gambar}" alt="${p.judul}" style="width:100%;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.12);cursor:pointer;">
+      <div style="margin-top:10px;font-size:18px;font-weight:700;">${p.judul}</div>
+      </div>
+      `;
+    });
  }
  if(settingData.promo){
-   html += `<div style="margin-top:20px;white-space:pre-line;line-height:1.7;">${settingData.promo}</div>`;
+    html += `<div style="margin-top:20px;white-space:pre-line;line-height:1.7;">${settingData.promo}</div>`;
  }
  html += `</div>`;
  produk.innerHTML = html;
