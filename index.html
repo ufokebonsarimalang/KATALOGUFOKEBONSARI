@@ -363,7 +363,7 @@
   color: #0077c8;
 }
 
-/* STYLE POP-UP PROMO OTOMATIS SAAT BUKA WEB */
+/* STYLE POP-UP PROMO OTOMATIS BERUNTUN */
 .promo-popup-overlay {
   display: none;
   position: fixed;
@@ -433,7 +433,7 @@
 </head>
 <body id="bodyWeb">
 
-<!-- POP-UP PROMO OTOMATIS SAAT BUKA WEB -->
+<!-- POP-UP PROMO OTOMATIS -->
 <div id="promoPopupOverlay" class="promo-popup-overlay">
   <div class="promo-popup-box">
     <div class="promo-popup-close" onclick="tutupPromoPopup()">✕</div>
@@ -539,6 +539,8 @@ let produkAktif = null;
 let kategoriAktif = "SEMUA";
 let subKategoriAktif = "SEMUA";
 
+let promoPopupIndex = 0; // Variabel pelacak urutan pop-up promo
+
 const foto = f => {
   if (!f) return "images/noimage.jpg";
   return "images/" + f;
@@ -562,8 +564,8 @@ async function loadProduk(){
     buatKategori(semuaProduk);
     tampilkan(semuaProduk);
     
-    // Tampilkan pop-up promo otomatis dari cache
-    cekDanTampilkanPromoPopup();
+    // Mulai tampilkan pop-up beruntun dari cache
+    mulaiPromoPopup();
 
     const params = new URLSearchParams(window.location.search);
     const slugProduk = params.get("produk");
@@ -591,30 +593,42 @@ async function loadProduk(){
   buatKategori(semuaProduk);
   tampilkan(semuaProduk);
 
-  // Tampilkan pop-up promo otomatis dari server
-  cekDanTampilkanPromoPopup();
+  // Mulai tampilkan pop-up beruntun dari server
+  mulaiPromoPopup();
 
  }catch(err){
   console.error(err);
  }
 }
 
-/* FUNGSI POPUP PROMO OTOMATIS */
-function cekDanTampilkanPromoPopup() {
-  if (promoData && promoData.length > 0) {
-    let promoUtama = promoData[0]; 
+/* FUNGSI POP-UP PROMO BERUNTUN */
+function mulaiPromoPopup() {
+  promoPopupIndex = 0;
+  tampilkanPromoBerikutnya();
+}
+
+function tampilkanPromoBerikutnya() {
+  if (promoData && promoPopupIndex < promoData.length) {
+    let p = promoData[promoPopupIndex];
     let html = `
-      <img src="${promoUtama.gambar}" alt="${promoUtama.judul || 'Promo'}" class="promo-popup-img">
-      ${promoUtama.judul ? `<div class="promo-popup-title">${promoUtama.judul}</div>` : ''}
+      <img src="${p.gambar}" alt="${p.judul || 'Promo'}" class="promo-popup-img">
+      ${p.judul ? `<div class="promo-popup-title">${p.judul}</div>` : ''}
     `;
 
     document.getElementById("promoPopupContent").innerHTML = html;
     document.getElementById("promoPopupOverlay").style.display = "flex";
+  } else {
+    document.getElementById("promoPopupOverlay").style.display = "none";
   }
 }
 
 function tutupPromoPopup() {
   document.getElementById("promoPopupOverlay").style.display = "none";
+  promoPopupIndex++; // Pindah ke indeks gambar promo berikutnya
+  // Berikan jeda sangat singkat agar animasi penutupan mulus sebelum memunculkan gambar berikutnya
+  setTimeout(() => {
+    tampilkanPromoBerikutnya();
+  }, 200);
 }
 
 /* FUNGSI SUBKATEGORI POPUP - TANPA TOMBOL SEMUA & FORMAT TITLE CASE */
@@ -681,7 +695,8 @@ function tutupPopupSub() {
 function tutupSemuaOverlay() {
   closeMenu();
   tutupPopupSub();
-  tutupPromoPopup();
+  document.getElementById("promoPopupOverlay").style.display = "none";
+  promoPopupIndex = promoData.length; // Langsung hentikan sisa antrean promo
 }
 
 function tampilkan(data){
