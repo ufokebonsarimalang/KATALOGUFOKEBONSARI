@@ -552,27 +552,27 @@ async function loadProduk(){
  try{
   const cache = localStorage.getItem("ufo_cache_v1");
   if(cache){
-    const c = JSON.parse(cache);
-    semuaProduk = c.data?.produk || [];
-    settingData = c.data?.setting || {};
-    bannerData = c.data?.banner || [];
-    promoData = c.data?.promo || [];
-    renderSetting();
-    updateFloatingWA();
-    renderBanner();
-    buatBrandMenu(semuaProduk);
-    buatKategori(semuaProduk);
-    tampilkan(semuaProduk);
-    
-    // Mulai tampilkan pop-up beruntun dari cache
-    mulaiPromoPopup();
+   const c = JSON.parse(cache);
+   semuaProduk = c.data?.produk || [];
+   settingData = c.data?.setting || {};
+   bannerData = c.data?.banner || [];
+   promoData = c.data?.promo || [];
+   renderSetting();
+   updateFloatingWA();
+   renderBanner();
+   buatBrandMenu(semuaProduk);
+   buatKategori(semuaProduk);
+   tampilkan(semuaProduk);
+   
+   // HAPUS ATAU KOMENTARI MULAI PROMO DI SINI AGAR TIDAK DOUBLE KETIKA ADA CACHE
+   // mulaiPromoPopup(); 
 
-    const params = new URLSearchParams(window.location.search);
-    const slugProduk = params.get("produk");
-    if (slugProduk){
-      const produk = semuaProduk.find(p=>slug(p)===slugProduk);
-      if(produk) detail(produk);
-    }
+   const params = new URLSearchParams(window.location.search);
+   const slugProduk = params.get("produk");
+   if (slugProduk){
+     const produk = semuaProduk.find(p=>slug(p)===slugProduk);
+     if(produk) detail(produk);
+   }
   }
 
   const res=await fetch(API_URL);
@@ -593,7 +593,7 @@ async function loadProduk(){
   buatKategori(semuaProduk);
   tampilkan(semuaProduk);
 
-  // Mulai tampilkan pop-up beruntun dari server
+  // Cukup biarkan 1 pemanggilan saja di sini (setelah data server dimuat)
   mulaiPromoPopup();
 
  }catch(err){
