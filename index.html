@@ -88,7 +88,7 @@
   white-space:nowrap;
   max-width: 1200px;
   margin: 0 auto;
-  scrollbar-width: none; /* Hide scrollbar for clean look */
+  scrollbar-width: none;
 }
 #kategoriBar::-webkit-scrollbar { display: none; }
 #kategoriBar button{
@@ -293,12 +293,21 @@
   font-weight: 600;
   color: #334155;
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .related-item:hover{
   background:#f0f9ff;
   border-color: #0077c8;
   color: #0077c8;
   transform:translateX(4px);
+}
+.related-item svg {
+  width: 18px;
+  height: 18px;
+  fill: #0077c8;
+  flex-shrink: 0;
 }
 #mNama{
   font-size:24px;
@@ -606,7 +615,6 @@
 <div class="search-bg">
   <div class="search-wrap">
     <button class="menu-btn" onclick="toggleMenu()" title="Menu">
-      <!-- Icon Modern Hamburger SVG -->
       <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
     </button>
     <input id="search" placeholder="Cari merk atau tipe elektronik...">
@@ -621,7 +629,6 @@
 <div id="modal" class="modal">
   <div class="modal-content">
     <div class="close" onclick="tutupDetail()" title="Tutup">
-      <!-- Icon Close Modern SVG -->
       <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
     </div>
     <img id="mFoto">
@@ -650,21 +657,17 @@
       <div id="mRelated"></div>
     </div>
     <button id="shareBtn" class="btn share">
-      <!-- Icon Share SVG -->
       <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
       Bagikan Produk Ini
     </button>
   </div>
 </div>
 
-<!-- TOMBOL BACK TO TOP DENGAN ICON MODERN -->
 <button id="backToTop" title="Kembali ke Atas">
   <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
 </button>
 
-<!-- TOMBOL FLOATING WHATSAPP RESMI -->
 <a href="#" id="floatingWA" target="_blank" class="floating-wa" title="Hubungi WhatsApp">
-  <!-- Icon Official WhatsApp SVG -->
   <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
 </a>
 
@@ -920,7 +923,12 @@ function detail(p){
   related = related.slice(0,4);
   mRelated.innerHTML = "";
   related.forEach(item=>{
-    mRelated.innerHTML += `<div class="related-item" onclick='detail(${JSON.stringify(item)})'>📦 ${item.brand} ${item.tipe}</div>`;
+    mRelated.innerHTML += `
+      <div class="related-item" onclick='detail(${JSON.stringify(item)})'>
+        <svg viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44A.991.991 0 013 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L5.04 8 12 11.85 18.96 8 12 4.15zM5 15.91l6 3.38v-6.71L5 9.21v6.7zm14 0v-6.7l-6 3.37v6.71l6-3.38z"/></svg>
+        <span>${item.brand} ${item.tipe}</span>
+      </div>
+    `;
   });
 
   const url = window.location.origin + window.location.pathname + "?produk=" + encodeURIComponent(slug(p));
