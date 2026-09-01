@@ -16,7 +16,6 @@
   margin:0;
   text-align:center
 }
-
 .header-banner{
   width:100%;
   background:#0077c8;
@@ -38,7 +37,6 @@
   z-index:9998;
   transition:all .3s ease;
 }
-
 #backToTop:hover{
   transform:translateY(-3px);
 }
@@ -48,7 +46,6 @@
   border-radius:0 0 18px 18px;
   box-shadow:0 4px 12px rgba(0,0,0,.15);
 }
-
 @media (min-width:768px){
   .header-banner{
     background:#0077c8;
@@ -69,7 +66,6 @@
   grid-template-columns:repeat(2,1fr);
   gap:8px;
 }
-
 @media(min-width:768px){
   .container{
     grid-template-columns:repeat(4,1fr);
@@ -173,7 +169,6 @@
   font-weight:700;
   color:#111827;
 }
-
 #mRelated{
   display:flex;
   flex-direction:column;
@@ -191,7 +186,6 @@
   background:#f8fafc;
   transform:translateX(4px);
 }
-
 #mNama{
   font-size:28px;
   font-weight:700;
@@ -223,7 +217,6 @@
 .badge-area{
   min-height:40px;
 }
-
 #kategoriBar{
   display:flex;
   gap:10px;
@@ -251,7 +244,6 @@
   background:#0077c8;
   color:#fff;
 } 
-
 #subKategoriBar{
   display:none; 
   gap:10px;
@@ -298,8 +290,6 @@
   from{ transform:translate(-50%,-50%) rotate(0deg); }
   to{ transform:translate(-50%,-50%) rotate(360deg); }
 }
-
-/* STYLE POPUP MODAL SUBKATEGORI DI TENGAH LAYAR */
 .popup-sub-modal {
   display: none;
   position: fixed;
@@ -362,8 +352,6 @@
   background: #f0f9ff;
   color: #0077c8;
 }
-
-/* STYLE POP-UP PROMO OTOMATIS BERUNTUN */
 .promo-popup-overlay {
   display: none;
   position: fixed;
@@ -446,21 +434,16 @@
     <div style="font-size:13px;opacity:.9;margin-top:4px;">Katalog Produk</div>
     <div onclick="closeMenu()" style="position:absolute;right:18px;top:14px;font-size:24px;cursor:pointer;user-select:none;">✕</div>
   </div>
-
   <div style="padding:12px 18px 6px;font-size:11px;font-weight:700;letter-spacing:1px;opacity:.75;">MENU</div>
   <div class="menu-item" onclick="showHome()">🏠 Beranda</div>
   <div class="menu-item" onclick="showPromo()">🔥 Promo Bulan Ini</div>
   <div class="menu-item" onclick="showUnggulan()">⭐ Produk Unggulan</div>
-
   <hr style="border:none;border-top:1px solid rgba(255,255,255,.15);margin:8px 0;">
-
   <div style="padding:12px 18px 6px;font-size:11px;font-weight:700;letter-spacing:1px;opacity:.75;">INFORMASI</div>
   <div class="menu-item" onclick="window.open('https://maps.app.goo.gl/oGMAEKaJqjncurwD9')">📍 Lokasi Toko</div>
   <div class="menu-item" onclick="hubungiKami()">📞 Hubungi Kami</div>
   <div class="menu-item" onclick="showTentang()">🏪 Tentang Toko</div>
-
   <hr style="border:none;border-top:1px solid rgba(255,255,255,.15);margin:8px 0;">
-
   <div style="padding:12px 18px 6px;font-size:11px;font-weight:700;letter-spacing:1px;opacity:.75;">BRAND</div>
   <div id="brandList"></div>
 </div>
@@ -862,9 +845,26 @@ window.addEventListener("scroll", () => {
   if (window.scrollY > 300) {
     backToTop.style.display = "flex";
     backToTop.style.alignItems = "center";
-    backToTop.style.justifyContent = "center";
+    backToTop.style.justifyContent: "center";
   } else {
     backToTop.style.display = "none";
   }
 });
-backToTop.addEventListener("click", () => { window.scrollTo({ top:
+backToTop.addEventListener("click", () => { window.scrollTo({ top: 0, behavior: "smooth" }); });
+
+function updateFloatingWA(){
+  const wa = settingData.wa || "6289524391002";
+  let pesan = "";
+  if(produkAktif){
+    pesan = `Halo Admin UFO Kebonsari.\n\nSaya ingin menanyakan produk berikut:\n\nBrand : ${produkAktif.brand}\nTipe : ${produkAktif.tipe}\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
+  }else{
+    pesan = `Halo Admin UFO Kebonsari.\n\nSaya ingin bertanya mengenai produk yang ada di katalog.\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
+  }
+  floatingWA.href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(pesan);
+}
+</script>
+<footer class="footer">
+  © 2026 UFO Kebonsari Malang 
+</footer>
+</body>
+</html>
