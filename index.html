@@ -6,9 +6,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>UFO Kebonsari Malang</title>
 <meta name="description" content="Katalog Produk UFO Kebonsari Malang">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Poppins,sans-serif;background:#f4f6f9}
+*{box-sizing:border-box}body{margin:0;font-family:'Inter',sans-serif;background:#f4f6f9}
 #promoBanner{display:none}
 .header{
   background:#0077c8;
@@ -344,7 +344,7 @@
   border: 1px solid #e2e8f0;
   background: #fff;
   border-radius: 12px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 13px;
   font-weight: 600;
   color: #334155;
@@ -433,7 +433,6 @@
 </head>
 <body id="bodyWeb">
 
-<!-- POP-UP PROMO OTOMATIS -->
 <div id="promoPopupOverlay" class="promo-popup-overlay">
   <div class="promo-popup-box">
     <div class="promo-popup-close" onclick="tutupPromoPopup()">✕</div>
@@ -466,10 +465,8 @@
   <div id="brandList"></div>
 </div>
 
-<!-- OVERLAY BACKDROP -->
 <div id="overlay" onclick="tutupSemuaOverlay()"></div>
 
-<!-- POPUP MODAL DI TENGAH LAYAR UNTUK SUBKATEGORI -->
 <div id="popupSubMenu" class="popup-sub-modal">
     <div class="popup-sub-header">
         <span id="popupSubTitle">Sub Kategori Pilihan</span>
@@ -539,7 +536,7 @@ let produkAktif = null;
 let kategoriAktif = "SEMUA";
 let subKategoriAktif = "SEMUA";
 
-let promoPopupIndex = 0; // Variabel pelacak urutan pop-up promo
+let promoPopupIndex = 0;
 
 const foto = f => {
   if (!f) return "images/noimage.jpg";
@@ -563,9 +560,6 @@ async function loadProduk(){
    buatBrandMenu(semuaProduk);
    buatKategori(semuaProduk);
    tampilkan(semuaProduk);
-   
-   // HAPUS ATAU KOMENTARI MULAI PROMO DI SINI AGAR TIDAK DOUBLE KETIKA ADA CACHE
-   // mulaiPromoPopup(); 
 
    const params = new URLSearchParams(window.location.search);
    const slugProduk = params.get("produk");
@@ -579,8 +573,8 @@ async function loadProduk(){
   const data=await res.json();
 
   localStorage.setItem("ufo_cache_v1", JSON.stringify({
-    time: Date.now(),
-    data: data
+   time: Date.now(),
+   data: data
   }));
 
   semuaProduk = data.produk || [];
@@ -593,7 +587,6 @@ async function loadProduk(){
   buatKategori(semuaProduk);
   tampilkan(semuaProduk);
 
-  // Cukup biarkan 1 pemanggilan saja di sini (setelah data server dimuat)
   mulaiPromoPopup();
 
  }catch(err){
@@ -601,7 +594,6 @@ async function loadProduk(){
  }
 }
 
-/* FUNGSI POP-UP PROMO BERUNTUN */
 function mulaiPromoPopup() {
   promoPopupIndex = 0;
   tampilkanPromoBerikutnya();
@@ -624,14 +616,12 @@ function tampilkanPromoBerikutnya() {
 
 function tutupPromoPopup() {
   document.getElementById("promoPopupOverlay").style.display = "none";
-  promoPopupIndex++; // Pindah ke indeks gambar promo berikutnya
-  // Berikan jeda sangat singkat agar animasi penutupan mulus sebelum memunculkan gambar berikutnya
+  promoPopupIndex++;
   setTimeout(() => {
     tampilkanPromoBerikutnya();
   }, 200);
 }
 
-/* FUNGSI SUBKATEGORI POPUP - TANPA TOMBOL SEMUA & FORMAT TITLE CASE */
 function buatSubKategori(kategori){
   if(kategori==="SEMUA"){
     tutupPopupSub();
@@ -696,7 +686,7 @@ function tutupSemuaOverlay() {
   closeMenu();
   tutupPopupSub();
   document.getElementById("promoPopupOverlay").style.display = "none";
-  promoPopupIndex = promoData.length; // Langsung hentikan sisa antrean promo
+  promoPopupIndex = promoData.length;
 }
 
 function tampilkan(data){
@@ -877,21 +867,4 @@ window.addEventListener("scroll", () => {
     backToTop.style.display = "none";
   }
 });
-backToTop.addEventListener("click", () => { window.scrollTo({ top: 0, behavior: "smooth" }); });
-
-function updateFloatingWA(){
-  const wa = settingData.wa || "6289524391002";
-  let pesan = "";
-  if(produkAktif){
-    pesan = `Halo Admin UFO Kebonsari.\n\nSaya ingin menanyakan produk berikut:\n\nBrand : ${produkAktif.brand}\nTipe : ${produkAktif.tipe}\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
-  }else{
-    pesan = `Halo Admin UFO Kebonsari.\n\nSaya ingin bertanya mengenai produk yang ada di katalog.\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
-  }
-  floatingWA.href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(pesan);
-}
-</script>
-<footer class="footer">
-  © 2026 UFO Kebonsari Malang 
-</footer>
-</body>
-</html>
+backToTop.addEventListener("click", () => { window.scrollTo({ top:
