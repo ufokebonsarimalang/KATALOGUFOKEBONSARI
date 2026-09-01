@@ -845,7 +845,7 @@ window.addEventListener("scroll", () => {
   if (window.scrollY > 300) {
     backToTop.style.display = "flex";
     backToTop.style.alignItems = "center";
-    backToTop.style.justifyContent: "center";
+    backToTop.style.justifyContent = "center"; // Diperbaiki dari titik dua (:) menjadi sama dengan (=)
   } else {
     backToTop.style.display = "none";
   }
@@ -858,7 +858,7 @@ function updateFloatingWA(){
   if(produkAktif){
     pesan = `Halo Admin UFO Kebonsari.\n\nSaya ingin menanyakan produk berikut:\n\nBrand : ${produkAktif.brand}\nTipe : ${produkAktif.tipe}\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
   }else{
-    pesan = `Halo Admin UFO Kebonsari.\n\nSaya ingin bertanya mengenai produk yang ada di katalog.\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
+    pesan = `Halo Admin UFO Kebonsari.\n\nIgin bertanya mengenai produk yang ada di katalog.\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
   }
   floatingWA.href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(pesan);
 }
