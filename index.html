@@ -10,6 +10,8 @@
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:'Inter',sans-serif;background:#f4f6f9}
 #promoBanner{display:none}
+
+/* HEADER & BANNER */
 .header{
   background:#0077c8;
   padding:0;
@@ -20,75 +22,152 @@
   width:100%;
   background:#0077c8;
 }
-#backToTop{
-  position:fixed;
-  right:20px;
-  bottom:95px;
-  width:50px;
-  height:50px;
-  border:none;
-  border-radius:50%;
-  background:#0d6efd;
-  color:#fff;
-  font-size:22px;
-  cursor:pointer;
-  box-shadow:0 4px 12px rgba(0,0,0,.2);
-  display:none;
-  z-index:9998;
-  transition:all .3s ease;
-}
-#backToTop:hover{
-  transform:translateY(-3px);
-}
 .header-banner img{
   width:100%;
+  max-width: 520px;
+  margin: 0 auto;
   display:block;
   border-radius:0 0 18px 18px;
   box-shadow:0 4px 12px rgba(0,0,0,.15);
 }
-@media (min-width:768px){
-  .header-banner{
-    background:#0077c8;
-  }
-  .header-banner img{
-    width:60%;
-    margin:0 auto;
-    display:block;
-  }
+
+/* NAVIGATION & SEARCH BAR */
+.search-bg {
+  background:#0077c8;
+  position:sticky;
+  top:0;
+  z-index:50;
 }
-.search-wrap{display:flex;gap:10px;padding:12px;background:#0077c8;position:sticky;top:0;z-index:50}
-.menu-btn{width:48px;border:none;border-radius:12px;cursor:pointer;background:#fff;font-size:18px;color:#0077c8;font-weight:bold}
-#search{flex:1;padding:12px;border:none;border-radius:30px}
-#productCount{padding:12px;font-weight:600}
+.search-wrap{
+  display:flex;
+  gap:12px;
+  padding:12px 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+.menu-btn{
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background:#fff;
+  color:#0077c8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: all 0.2s;
+}
+.menu-btn:hover {
+  background: #f0f9ff;
+}
+.menu-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+#search{
+  flex:1;
+  padding:12px 18px;
+  border:none;
+  border-radius:30px;
+  outline:none;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* KATEGORI BAR */
+#kategoriBar{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding:12px 16px;
+  background:#fff;
+  white-space:nowrap;
+  max-width: 1200px;
+  margin: 0 auto;
+  scrollbar-width: none; /* Hide scrollbar for clean look */
+}
+#kategoriBar::-webkit-scrollbar { display: none; }
+#kategoriBar button{
+  flex:0 0 auto;
+  padding:10px 18px;
+  border:none;
+  border-radius:999px;
+  background:#f1f5f9;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.2s;
+  color: #475569;
+}
+#kategoriBar button:hover{
+  background:#e2e8f0;
+  transform:translateY(-1px);
+}
+#kategoriBar button.active{
+  background:#0077c8;
+  color:#fff;
+  box-shadow: 0 4px 12px rgba(0,119,200,0.3);
+} 
+
+/* BANNER PROMO UTAMA */
+#bannerArea {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* CONTAINER KATALOG PRODUK */
 .container{
-  padding:8px;
+  padding:16px 8px;
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:8px;
+  gap:12px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
+
 @media(min-width:768px){
   .container{
     grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    padding:20px 16px;
   }
 }
+@media(min-width:1024px){
+  .container{
+    grid-template-columns:repeat(5,1fr);
+  }
+}
+
+/* KARTU PRODUK */
 .card{
   background:#fff;
   border-radius:16px;
   overflow:hidden;
   border:1px solid #e5e7eb;
-  box-shadow:0 3px 10px rgba(0,0,0,.08);
+  box-shadow:0 3px 10px rgba(0,0,0,.06);
   cursor:pointer;
   display:flex;
   flex-direction:column;
+  transition: all 0.25s ease;
+}
+.card:hover{
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  border-color: #cbd5e1;
 }
 .card img{
   width:100%;
   aspect-ratio:1/1;
   object-fit:cover;
   display:block;
+  background: #f8fafc;
 }
 .card-body{
-  padding:10px;
+  padding:12px;
   display:flex;
   flex-direction:column;
 }
@@ -97,63 +176,93 @@
   align-items:center;
   background:#0077c8;
   color:#fff;
-  padding:4px 8px;
+  padding:4px 9px;
   border-radius:999px;
-  font-size:12px;
+  font-size:11px;
   font-weight:700;
   width:fit-content;
 }
 .tipe{
   font-weight:800;
-  font-size:15px;
-  line-height:1.2;
+  font-size:14px;
+  line-height:1.3;
   margin-top:8px;
-  min-height:45px;
+  min-height:40px;
   display:flex;
   align-items:flex-start;
-}
-.harga{
-  color:#e11d48;
-  font-size:20px;
-  font-weight:700;
-  margin-top:8px;
+  color: #1e293b;
 }
 .status,.unggulan{
   display:inline-flex;
   align-items:center;
-  padding:5px 8px;
+  padding:4px 8px;
   border-radius:6px;
   font-size:10px;
   font-weight:700;
-  margin:2px 2px 6px 0;
+  margin:2px 4px 6px 0;
   width:fit-content;
 }
 .baru{background:#8b5cf6;color:#fff}
 .promo{background:#dc2626;color:#fff}
 .best{background:#f59e0b;color:#fff}
 .unggulan{background:#16a34a;color:#fff}
+.badge-area{
+  min-height:34px;
+}
 
-.modal{display:none;position:fixed;inset:0;background:#fff;overflow:auto;z-index:9999}
+/* MODAL & OVERLAY */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);overflow:auto;z-index:9999}
 .modal-content{
-  max-width:700px;
-  margin:auto;
-  padding:25px;
+  max-width:650px;
+  margin:40px auto;
+  padding:28px;
+  background:#fff;
+  border-radius:24px;
+  box-shadow:0 25px 50px rgba(0,0,0,0.25);
+  position: relative;
+  animation: modalScale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes modalScale {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 .modal img{
   width:100%;
-  max-height:420px;
+  max-height:380px;
   object-fit:contain;
   border-radius:16px;
-  background:#fff;
-  margin-bottom:20px;
+  background:#f8fafc;
+  margin-bottom:15px;
 }
-.close{font-size:30px;cursor:pointer;float:right}
+.close{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #f1f5f9;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.close:hover {
+  background: #e2e8f0;
+}
+.close svg {
+  width: 18px;
+  height: 18px;
+  fill: #475569;
+}
+
 .detail-box{
   background:#f8fafc;
-  border-radius:12px;
-  padding:15px;
-  margin:15px 0;
-  border:1px solid #e5e7eb;
+  border-radius:16px;
+  padding:18px;
+  margin:16px 0;
+  border:1px solid #e2e8f0;
 }
 .detail-row{
   display:flex;
@@ -167,7 +276,7 @@
 }
 .detail-value{
   font-weight:700;
-  color:#111827;
+  color:#1e293b;
 }
 #mRelated{
   display:flex;
@@ -175,121 +284,147 @@
   gap:10px;
 }
 .related-item{
-  padding:12px;
-  border:1px solid #e5e7eb;
-  border-radius:10px;
+  padding:12px 14px;
+  border:1px solid #e2e8f0;
+  border-radius:12px;
   cursor:pointer;
-  transition:.2s;
+  transition:all .2s;
   background:#fff;
+  font-weight: 600;
+  color: #334155;
+  font-size: 14px;
 }
 .related-item:hover{
-  background:#f8fafc;
+  background:#f0f9ff;
+  border-color: #0077c8;
+  color: #0077c8;
   transform:translateX(4px);
 }
 #mNama{
-  font-size:28px;
+  font-size:24px;
   font-weight:700;
-  color:#1f2937;
-  margin-top:20px;
+  color:#1e293b;
+  margin-top:10px;
   margin-bottom:10px;
   line-height:1.3;
 }
-#mHarga{
-  color:#dc2626;
-  font-size:32px;
-  font-weight:700;
-  margin-bottom:8px;
-}
-.btn{display:block;text-align:center;color:#fff;text-decoration:none;padding:14px;border-radius:10px;margin-top:10px;border:none;width:100%;font-weight:700}
-.wa{background:#25D366}.share{background:#0077c8}.copy{background:#444}
-#sideMenu{position:fixed;left:-300px;top:0;width:300px;height:100%;background:#0077c8;color:#fff;z-index:9999;transition:.3s;overflow:auto}
-.menu-item{padding:14px 18px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.1)}
-#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9998}
-.floating-wa{position:fixed;right:20px;bottom:20px;width:60px;height:60px;background:#25D366;color:#fff;text-decoration:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;z-index:9999}
-.info-box{grid-column:1/-1;background:#fff;padding:20px;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
-.footer{
-  text-align:center;
-  padding:20px 10px;
-  color:#666;
-  font-size:13px;
-  margin-top:20px;
-}
-.badge-area{
-  min-height:40px;
-}
-#kategoriBar{
+.btn{
   display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding:10px;
-  background:#fff;
-  white-space:nowrap;
-}
-#kategoriBar button{
-  flex:0 0 auto;
-  padding:10px 16px;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  text-align:center;
+  color:#fff;
+  text-decoration:none;
+  padding:14px;
+  border-radius:12px;
+  margin-top:12px;
   border:none;
-  border-radius:999px;
-  background:#f1f5f9;
-  font-size:13px;
-  font-weight:600;
+  width:100%;
+  font-weight:700;
   cursor:pointer;
-  transition:0.2s;
+  font-size: 15px;
+  transition: opacity 0.2s;
 }
-#kategoriBar button:hover{
-  background:#e2e8f0;
-  transform:translateY(-1px);
-}
-#kategoriBar button.active{
+.btn:hover { opacity: 0.9; }
+.btn svg { width: 18px; height: 18px; fill: currentColor; }
+.share{background:#0077c8}
+
+/* SIDE MENU DRAWER */
+#sideMenu{
+  position:fixed;
+  left:-320px;
+  top:0;
+  width:320px;
+  height:100%;
   background:#0077c8;
   color:#fff;
-} 
-#subKategoriBar{
-  display:none; 
-  gap:10px;
-  overflow-x:auto;
-  padding:10px;
-  background:#fff;
-  white-space:nowrap;
+  z-index:9999;
+  transition:left .3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow:auto;
+  box-shadow: 5px 0 25px rgba(0,0,0,0.3);
 }
-#subKategoriBar button{
-  flex:0 0 auto;
-  padding:10px 16px;
-  border:none;
-  border-radius:999px;
-  background:#f1f5f9;
-  font-size:13px;
-  font-weight:600;
+.menu-item{
+  padding:14px 20px;
   cursor:pointer;
-  transition:.2s;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s;
 }
-#subKategoriBar button:hover{
-  background:#e2e8f0;
+.menu-item:hover {
+  background: rgba(255,255,255,0.1);
 }
-#subKategoriBar button.active{
-    background:#FFD600;
-    color:#222;
-    border-color:#FFD600;
-    font-weight:700;
-}
-.loading-spinner{
-  display:none;
+#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;backdrop-filter: blur(2px);}
+
+/* FLOATING WHATSAPP BUTTON (SVG OFFICIAL) */
+.floating-wa{
   position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  width:50px;
-  height:50px;
-  border:5px solid #e5e7eb;
-  border-top:5px solid #0077c8;
+  right:20px;
+  bottom:20px;
+  width:58px;
+  height:58px;
+  background:#25D366;
+  color:#fff;
+  text-decoration:none;
   border-radius:50%;
-  animation:putar 1s linear infinite;
-  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  box-shadow:0 6px 20px rgba(37,211,102,0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-@keyframes putar{
-  from{ transform:translate(-50%,-50%) rotate(0deg); }
-  to{ transform:translate(-50%,-50%) rotate(360deg); }
+.floating-wa:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(37,211,102,0.6);
 }
+.floating-wa svg {
+  width: 32px;
+  height: 32px;
+  fill: #fff;
+}
+
+/* BACK TO TOP BUTTON (SVG MODERN) */
+#backToTop{
+  position:fixed;
+  right:20px;
+  bottom:90px;
+  width:46px;
+  height:46px;
+  border:none;
+  border-radius:50%;
+  background:#334155;
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  display:none;
+  z-index:9998;
+  align-items: center;
+  justify-content: center;
+  transition:all .2s ease;
+}
+#backToTop:hover{
+  background: #0077c8;
+  transform:translateY(-3px);
+}
+#backToTop svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.info-box{grid-column:1/-1;background:#fff;padding:24px;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.06);max-width:1200px;margin:16px auto}
+.footer{
+  text-align:center;
+  padding:30px 10px;
+  color:#64748b;
+  font-size:13px;
+  margin-top:20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* POPUP SUBKATEGORI */
 .popup-sub-modal {
   display: none;
   position: fixed;
@@ -300,7 +435,7 @@
   max-width: 380px;
   background: #ffffff;
   border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
   z-index: 9999;
   overflow: hidden;
   animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -344,14 +479,13 @@
   align-items: center;
   transition: all 0.2s;
 }
-.popup-sub-item:active {
-  transform: scale(0.98);
-}
 .popup-sub-item:hover {
   border-color: #0077c8;
   background: #f0f9ff;
   color: #0077c8;
 }
+
+/* POPUP PROMO */
 .promo-popup-overlay {
   display: none;
   position: fixed;
@@ -421,6 +555,7 @@
 </head>
 <body id="bodyWeb">
 
+<!-- POP-UP PROMO OTOMATIS -->
 <div id="promoPopupOverlay" class="promo-popup-overlay">
   <div class="promo-popup-box">
     <div class="promo-popup-close" onclick="tutupPromoPopup()">✕</div>
@@ -429,22 +564,26 @@
 </div>
 
 <div id="sideMenu">
-  <div style="padding:16px 20px;background:#0066b3;position:relative;">
-    <div style="font-size:18px;font-weight:700;">🏪 UFO Kebonsari Malang</div>
-    <div style="font-size:13px;opacity:.9;margin-top:4px;">Katalog Produk</div>
-    <div onclick="closeMenu()" style="position:absolute;right:18px;top:14px;font-size:24px;cursor:pointer;user-select:none;">✕</div>
+  <div style="padding:18px 20px;background:#005fa3;position:relative;display:flex;align-items:center;justify-content:space-between;">
+    <div>
+      <div style="font-size:16px;font-weight:700;">🏪 UFO Kebonsari Malang</div>
+      <div style="font-size:12px;opacity:.85;margin-top:2px;">Katalog Produk Resmi</div>
+    </div>
+    <div onclick="closeMenu()" style="cursor:pointer;padding:6px;background:rgba(255,255,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#fff"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </div>
   </div>
-  <div style="padding:12px 18px 6px;font-size:11px;font-weight:700;letter-spacing:1px;opacity:.75;">MENU</div>
+  <div style="padding:14px 20px 6px;font-size:10px;font-weight:700;letter-spacing:1px;opacity:.7;color:#bae6fd;">MENU UTAMA</div>
   <div class="menu-item" onclick="showHome()">🏠 Beranda</div>
   <div class="menu-item" onclick="showPromo()">🔥 Promo Bulan Ini</div>
   <div class="menu-item" onclick="showUnggulan()">⭐ Produk Unggulan</div>
-  <hr style="border:none;border-top:1px solid rgba(255,255,255,.15);margin:8px 0;">
-  <div style="padding:12px 18px 6px;font-size:11px;font-weight:700;letter-spacing:1px;opacity:.75;">INFORMASI</div>
-  <div class="menu-item" onclick="window.open('https://maps.app.goo.gl/oGMAEKaJqjncurwD9')">📍 Lokasi Toko</div>
-  <div class="menu-item" onclick="hubungiKami()">📞 Hubungi Kami</div>
+  <div style="height:1px;background:rgba(255,255,255,0.1);margin:8px 0;"></div>
+  <div style="padding:14px 20px 6px;font-size:10px;font-weight:700;letter-spacing:1px;opacity:.7;color:#bae6fd;">INFORMASI TOKO</div>
+  <div class="menu-item" onclick="window.open('https://maps.app.goo.gl/oGMAEKaJqjncurwD9')">📍 Lokasi Toko di Maps</div>
+  <div class="menu-item" onclick="hubungiKami()">📞 Hubungi Admin WhatsApp</div>
   <div class="menu-item" onclick="showTentang()">🏪 Tentang Toko</div>
-  <hr style="border:none;border-top:1px solid rgba(255,255,255,.15);margin:8px 0;">
-  <div style="padding:12px 18px 6px;font-size:11px;font-weight:700;letter-spacing:1px;opacity:.75;">BRAND</div>
+  <div style="height:1px;background:rgba(255,255,255,0.1);margin:8px 0;"></div>
+  <div style="padding:14px 20px 6px;font-size:10px;font-weight:700;letter-spacing:1px;opacity:.7;color:#bae6fd;">FILTER BRAND</div>
   <div id="brandList"></div>
 </div>
 
@@ -453,7 +592,7 @@
 <div id="popupSubMenu" class="popup-sub-modal">
     <div class="popup-sub-header">
         <span id="popupSubTitle">Sub Kategori Pilihan</span>
-        <span onclick="tutupPopupSub()" style="cursor:pointer; font-size: 18px; padding: 0 5px;">✕</span>
+        <span onclick="tutupPopupSub()" style="cursor:pointer; display:flex; align-items:center; justify-content:center; width:28px; height:28px; background:rgba(255,255,255,0.2); border-radius:50%;">✕</span>
     </div>
     <div id="popupSubBody" class="popup-sub-body"></div>
 </div>
@@ -464,9 +603,14 @@
   </div>
 </div>
 
-<div class="search-wrap">
-  <button class="menu-btn" onclick="toggleMenu()">☰</button>
-  <input id="search" placeholder="Cari produk...">
+<div class="search-bg">
+  <div class="search-wrap">
+    <button class="menu-btn" onclick="toggleMenu()" title="Menu">
+      <!-- Icon Modern Hamburger SVG -->
+      <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+    </button>
+    <input id="search" placeholder="Cari merk atau tipe elektronik...">
+  </div>
 </div>
 
 <div id="kategoriBar"></div>
@@ -476,7 +620,10 @@
 
 <div id="modal" class="modal">
   <div class="modal-content">
-    <span class="close" onclick="tutupDetail()">×</span>
+    <div class="close" onclick="tutupDetail()" title="Tutup">
+      <!-- Icon Close Modern SVG -->
+      <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </div>
     <img id="mFoto">
     <h2 id="mNama"></h2>
     <h3 id="mHarga"></h3>
@@ -490,24 +637,36 @@
         <div class="detail-value" id="mKategori"></div>
       </div>
       <div class="detail-row">
-        <div class="detail-label">SubKategori</div>
+        <div class="detail-label">Sub Kategori</div>
         <div class="detail-value" id="mSubKategori"></div>
       </div>
     </div>
     <div class="detail-box">
-      <h3 style="margin-top:0">Spesifikasi</h3>
+      <h3 style="margin-top:0;font-size:15px;color:#334155;">Spesifikasi Produk</h3>
       <div id="mSpek"></div>
     </div>
     <div class="detail-box">
-      <h3 style="margin-top:0">Produk Terkait</h3>
+      <h3 style="margin-top:0;font-size:15px;color:#334155;">Produk Serupa</h3>
       <div id="mRelated"></div>
     </div>
-    <button id="shareBtn" class="btn share">📤 Bagikan Produk</button>
+    <button id="shareBtn" class="btn share">
+      <!-- Icon Share SVG -->
+      <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+      Bagikan Produk Ini
+    </button>
   </div>
 </div>
 
-<button id="backToTop" title="Kembali ke Atas">↑</button>
-<a href="#" id="floatingWA" target="_blank" class="floating-wa">💬</a>
+<!-- TOMBOL BACK TO TOP DENGAN ICON MODERN -->
+<button id="backToTop" title="Kembali ke Atas">
+  <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+</button>
+
+<!-- TOMBOL FLOATING WHATSAPP RESMI -->
+<a href="#" id="floatingWA" target="_blank" class="floating-wa" title="Hubungi WhatsApp">
+  <!-- Icon Official WhatsApp SVG -->
+  <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+</a>
 
 <script>
 const API_URL="https://script.google.com/macros/s/AKfycbwqnu2yJWk3Bb8JPSVy8ZSZxs5Ae4VGSNpRJl1j3Qgkoj-27FQX_ys4-8qyyyrbXJhQ/exec";
@@ -676,11 +835,11 @@ function tampilkan(data){
   let html = "";
   data.forEach(p=>{
     let badge = "";
-    if(p.status==="BARU") badge='<span class="status baru">🆕BARU</span>';
-    if(p.status==="PROMO") badge='<span class="status promo">🔥PROMO</span>';
-    if(p.status==="BESTSELLER") badge='<span class="status best">⭐BESTSELLER</span>';
+    if(p.status==="BARU") badge='<span class="status baru">🆕 BARU</span>';
+    if(p.status==="PROMO") badge='<span class="status promo">🔥 PROMO</span>';
+    if(p.status==="BESTSELLER") badge='<span class="status best">⭐ BESTSELLER</span>';
 
-    let unggulan = p.unggulan==="YA" ? '<span class="unggulan">⭐UNGGULAN</span>' : '';
+    let unggulan = p.unggulan==="YA" ? '<span class="unggulan">⭐ UNGGULAN</span>' : '';
 
     html += `
     <div class="card" onclick='detail(${JSON.stringify(p)})'>
@@ -689,7 +848,9 @@ function tampilkan(data){
         <div class="brand">${p.brand||""}</div>
         <div class="tipe">${p.tipe||""}</div>
         <div class="badge-area">${badge}${unggulan}</div>
-        <div style="color:#0077c8;font-size:14px;font-weight:700;margin-top:10px;">➡️ Lihat Detail</div>
+        <div style="color:#0077c8;font-size:13px;font-weight:700;margin-top:10px;display:flex;align-items:center;gap:4px;">
+          Lihat Detail &rarr;
+        </div>
       </div>
     </div>
     `;
@@ -705,7 +866,7 @@ function showPromo(){
     promoData.forEach(p=>{
       html += `
       <div style="margin-bottom:25px;">
-      <img src="${p.gambar}" alt="${p.judul}" style="width:100%;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.12);cursor:pointer;">
+      <img src="${p.gambar}" alt="${p.judul}" style="width:100%;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.12);">
       <div style="margin-top:10px;font-size:18px;font-weight:700;">${p.judul}</div>
       </div>
       `;
@@ -736,9 +897,9 @@ function detail(p){
   mNama.innerHTML=(p.brand||"")+" "+(p.tipe||"");
 
   mHarga.innerHTML=`
-  <div style="color:#16a34a;font-size:22px;font-weight:700;">💬 Hubungi Admin</div>
-  <div style="font-size:13px;color:#666;margin-top:8px;line-height:1.6;">
-  Harga tidak ditampilkan pada katalog ini.<br>Silakan hubungi kami untuk mendapatkan informasi harga, stok, dan promo terbaru.
+  <div style="color:#16a34a;font-size:20px;font-weight:700;">💬 Hubungi Admin via WhatsApp</div>
+  <div style="font-size:13px;color:#64748b;margin-top:6px;line-height:1.5;">
+  Harga spesial dapat ditanyakan langsung melalui WhatsApp admin kami.
   </div>
   `;
 
@@ -817,7 +978,7 @@ function renderBanner(){
 function hubungiKami(){ window.open("https://wa.me/" + (settingData.wa || "6289524391002")); }
 define=null;
 function toggleMenu(){sideMenu.style.left="0";overlay.style.display="block";}
-function closeMenu(){sideMenu.style.left="-300px";overlay.style.display="none";}
+function closeMenu(){sideMenu.style.left="-320px";overlay.style.display="none";}
 
 function filterKategori(k, el = null) {
   document.querySelectorAll('#kategoriBar button').forEach(btn => btn.classList.remove('active'));
@@ -844,8 +1005,6 @@ const backToTop = document.getElementById("backToTop");
 window.addEventListener("scroll", () => {
   if (window.scrollY > 300) {
     backToTop.style.display = "flex";
-    backToTop.style.alignItems = "center";
-    backToTop.style.justifyContent = "center"; // Diperbaiki dari titik dua (:) menjadi sama dengan (=)
   } else {
     backToTop.style.display = "none";
   }
@@ -858,13 +1017,13 @@ function updateFloatingWA(){
   if(produkAktif){
     pesan = `Halo Admin UFO Kebonsari.\n\nSaya ingin menanyakan produk berikut:\n\nBrand : ${produkAktif.brand}\nTipe : ${produkAktif.tipe}\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
   }else{
-    pesan = `Halo Admin UFO Kebonsari.\n\nIgin bertanya mengenai produk yang ada di katalog.\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
+    pesan = `Halo Admin UFO Kebonsari.\n\nSaya ingin bertanya mengenai produk yang ada di katalog.\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
   }
   floatingWA.href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(pesan);
 }
 </script>
 <footer class="footer">
-  © 2026 UFO Kebonsari Malang 
+  © 2026 UFO Kebonsari Malang &bull; All Rights Reserved
 </footer>
 </body>
 </html>
