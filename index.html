@@ -13,22 +13,22 @@
 
 /* HEADER & BANNER */
 .header{
-  background:#0077c8;
+  background:#05528a;
   padding:0;
   margin:0;
   text-align:center
 }
 .header-banner{
   width:100%;
-  background:#0077c8;
+  background:#05528a;
 }
 .header-banner img{
   width:100%;
   max-width: 520px;
   margin: 0 auto;
   display:block;
-  border-radius:0 0 18px 18px;
-  box-shadow:0 4px 12px rgba(0,0,0,.15);
+  border-radius:0;
+  box-shadow:none;
 }
 
 /* NAVIGATION & SEARCH BAR */
@@ -195,12 +195,19 @@
 .status,.unggulan{
   display:inline-flex;
   align-items:center;
+  gap:4px;
   padding:4px 8px;
   border-radius:6px;
   font-size:10px;
   font-weight:700;
   margin:2px 4px 6px 0;
   width:fit-content;
+}
+.status svg, .unggulan svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+  flex-shrink: 0;
 }
 .baru{background:#8b5cf6;color:#fff}
 .promo{background:#dc2626;color:#fff}
@@ -359,10 +366,19 @@
   border-bottom:1px solid rgba(255,255,255,0.08);
   font-size: 14px;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   transition: background 0.2s;
 }
 .menu-item:hover {
   background: rgba(255,255,255,0.1);
+}
+.menu-item svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  flex-shrink: 0;
 }
 #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;backdrop-filter: blur(2px);}
 
@@ -583,14 +599,26 @@
     </div>
   </div>
   <div style="padding:14px 20px 6px;font-size:10px;font-weight:700;letter-spacing:1px;opacity:.7;color:#bae6fd;">MENU UTAMA</div>
-  <div class="menu-item" onclick="showHome()">🏠 Beranda</div>
-  <div class="menu-item" onclick="showPromo()">🔥 Promo Bulan Ini</div>
-  <div class="menu-item" onclick="showUnggulan()">⭐ Produk Unggulan</div>
+  <div class="menu-item" onclick="showHome()">
+    <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> Beranda
+  </div>
+  <div class="menu-item" onclick="showPromo()">
+    <svg viewBox="0 0 24 24"><path d="M17.56 21.05c-2.55 1.03-5.59.56-7.7-1.12-2.12-1.68-3.08-4.43-2.38-7.01.7-2.58 2.85-4.52 5.5-4.94.39-.06.72-.34.82-.72.24-.91.73-3.23 2.5-4.26 1.77-1.02 3.84-.36 4.31-.19.34.12.55.48.47.84-.57 2.58-1.5 5.08-2.76 7.42-.42.78-.07 1.74.74 2.05.81.31 1.73-.08 2.05-.89 1.4-3.51 2.4-7.23 2.96-11.05.07-.46-.22-.89-.68-.97-.46-.07-.89.22-.97.68-.53 3.65-1.49 7.23-2.84 10.61-1.07-2.07-1.89-4.27-2.42-6.57.88-1.03 1.43-2.34 1.54-3.79.05-.66-.46-1.22-1.12-1.27-.66-.05-1.22.46-1.27 1.12-.08 1.05-.53 2.03-1.26 2.76-2.02.6-3.79 2.03-4.55 3.96-.76 1.93-.32 4.13 1.1 5.62 1.42 1.49 3.52 1.93 5.4 1.15.58-.24 1.25.04 1.49.62.24.58-.04 1.25-.62 1.49z"/></svg> Promo Bulan Ini
+  </div>
+  <div class="menu-item" onclick="showUnggulan()">
+    <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> Produk Unggulan
+  </div>
   <div style="height:1px;background:rgba(255,255,255,0.1);margin:8px 0;"></div>
   <div style="padding:14px 20px 6px;font-size:10px;font-weight:700;letter-spacing:1px;opacity:.7;color:#bae6fd;">INFORMASI TOKO</div>
-  <div class="menu-item" onclick="window.open('https://maps.app.goo.gl/oGMAEKaJqjncurwD9')">📍 Lokasi Toko di Maps</div>
-  <div class="menu-item" onclick="hubungiKami()">📞 Hubungi Admin WhatsApp</div>
-  <div class="menu-item" onclick="showTentang()">🏪 Tentang Toko</div>
+  <div class="menu-item" onclick="window.open('https://maps.app.goo.gl/oGMAEKaJqjncurwD9')">
+    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> Lokasi Toko di Maps
+  </div>
+  <div class="menu-item" onclick="hubungiKami()">
+    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg> Hubungi Admin WhatsApp
+  </div>
+  <div class="menu-item" onclick="showTentang()">
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> Tentang Toko
+  </div>
   <div style="height:1px;background:rgba(255,255,255,0.1);margin:8px 0;"></div>
   <div style="padding:14px 20px 6px;font-size:10px;font-weight:700;letter-spacing:1px;opacity:.7;color:#bae6fd;">FILTER BRAND</div>
   <div id="brandList"></div>
@@ -838,11 +866,11 @@ function tampilkan(data){
   let html = "";
   data.forEach(p=>{
     let badge = "";
-    if(p.status==="BARU") badge='<span class="status baru">🆕 BARU</span>';
-    if(p.status==="PROMO") badge='<span class="status promo">🔥 PROMO</span>';
-    if(p.status==="BESTSELLER") badge='<span class="status best">⭐ BESTSELLER</span>';
+    if(p.status==="BARU") badge=`<span class="status baru"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> BARU</span>`;
+    if(p.status==="PROMO") badge=`<span class="status promo"><svg viewBox="0 0 24 24"><path d="M17.56 21.05c-2.55 1.03-5.59.56-7.7-1.12-2.12-1.68-3.08-4.43-2.38-7.01.7-2.58 2.85-4.52 5.5-4.94.39-.06.72-.34.82-.72.24-.91.73-3.23 2.5-4.26 1.77-1.02 3.84-.36 4.31-.19.34.12.55.48.47.84-.57 2.58-1.5 5.08-2.76 7.42-.42.78-.07 1.74.74 2.05.81.31 1.73-.08 2.05-.89 1.4-3.51 2.4-7.23 2.96-11.05.07-.46-.22-.89-.68-.97-.46-.07-.89.22-.97.68-.53 3.65-1.49 7.23-2.84 10.61-1.07-2.07-1.89-4.27-2.42-6.57.88-1.03 1.43-2.34 1.54-3.79.05-.66-.46-1.22-1.12-1.27-.66-.05-1.22.46-1.27 1.12-.08 1.05-.53 2.03-1.26 2.76-2.02.6-3.79 2.03-4.55 3.96-.76 1.93-.32 4.13 1.1 5.62 1.42 1.49 3.52 1.93 5.4 1.15.58-.24 1.25.04 1.49.62.24.58-.04 1.25-.62 1.49z"/></svg> PROMO</span>`;
+    if(p.status==="BESTSELLER") badge=`<span class="status best"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> BESTSELLER</span>`;
 
-    let unggulan = p.unggulan==="YA" ? '<span class="unggulan">⭐ UNGGULAN</span>' : '';
+    let unggulan = p.unggulan==="YA" ? `<span class="unggulan"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> UNGGULAN</span>` : '';
 
     html += `
     <div class="card" onclick='detail(${JSON.stringify(p)})'>
@@ -946,8 +974,8 @@ search.addEventListener("keyup",function(){
 
 function buatBrandMenu(data){
  const brand=[...new Set(data.map(x=>x.brand).filter(Boolean))].sort();
- brandList.innerHTML='<div class="menu-item" onclick="showHome()">Semua Brand</div>';
- brand.forEach(b=>brandList.innerHTML+=`<div class="menu-item" onclick="tampilkan(semuaProduk.filter(x=>x.brand==='${b}'));closeMenu()">${b}</div>`);
+ brandList.innerHTML='<div class="menu-item" onclick="showHome()"><svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg> Semua Brand</div>';
+ brand.forEach(b=>brandList.innerHTML+=`<div class="menu-item" onclick="tampilkan(semuaProduk.filter(x=>x.brand==='${b}'));closeMenu()"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg> ${b}</div>`);
 }
 
 function buatKategori(data){
