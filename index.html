@@ -10,9 +10,10 @@
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:'Inter',sans-serif;background:#f4f6f9}
 #promoBanner{display:none}
-/* HEADER & BANNER */
+
+/* HEADER & BANNER - Disamakan persis dengan warna biru logo (#005ec6) */
 .header{
-  background:#006bd8;
+  background:#005ec6;
   padding:0;
   margin:0;
   text-align:center;
@@ -20,22 +21,21 @@
 
 .header-banner{
   width:100%;
-  background:#006bd8;
+  background:#005ec6;
 }
 
-.header-banner img {
-  width: 100%;
-  max-width: 520px;
-  margin: 0 auto;
-  display: block;
-  border-radius: 0;
-  box-shadow: none;
-  mix-blend-mode: screen; /* Ganti pakai screen atau lighten agar latar birunya ikut melebur */
-  background: transparent;
+.header-banner img{
+  width:100%;
+  max-width:520px;
+  margin:0 auto;
+  display:block;
+  border-radius:0;
+  box-shadow:none;
 }
-/* NAVIGATION & SEARCH BAR */
+
+/* NAVIGATION & SEARCH BAR - Warna disamakan agar menyatu mulus */
 .search-bg {
-  background:#0077c8;
+  background:#005ec6;
   position:sticky;
   top:0;
   z-index:50;
@@ -55,7 +55,7 @@
   border-radius:12px;
   cursor:pointer;
   background:#fff;
-  color:#0077c8;
+  color:#005ec6;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -110,9 +110,9 @@
   transform:translateY(-1px);
 }
 #kategoriBar button.active{
-  background:#0077c8;
+  background:#005ec6;
   color:#fff;
-  box-shadow: 0 4px 12px rgba(0,119,200,0.3);
+  box-shadow: 0 4px 12px rgba(0,94,198,0.3);
 } 
 
 /* BANNER PROMO UTAMA */
@@ -176,7 +176,7 @@
 .brand{
   display:inline-flex;
   align-items:center;
-  background:#0077c8;
+  background:#005ec6;
   color:#fff;
   padding:4px 9px;
   border-radius:999px;
@@ -308,14 +308,14 @@
 }
 .related-item:hover{
   background:#f0f9ff;
-  border-color: #0077c8;
-  color: #0077c8;
+  border-color: #005ec6;
+  color: #005ec6;
   transform:translateX(4px);
 }
 .related-item svg {
   width: 18px;
   height: 18px;
-  fill: #0077c8;
+  fill: #005ec6;
   flex-shrink: 0;
 }
 #mNama{
@@ -346,7 +346,7 @@
 }
 .btn:hover { opacity: 0.9; }
 .btn svg { width: 18px; height: 18px; fill: currentColor; }
-.share{background:#0077c8}
+.share{background:#005ec6}
 
 /* SIDE MENU DRAWER */
 #sideMenu{
@@ -355,7 +355,7 @@
   top:0;
   width:320px;
   height:100%;
-  background:#0077c8;
+  background:#005ec6;
   color:#fff;
   z-index:9999;
   transition:left .3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -384,7 +384,7 @@
 }
 #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;backdrop-filter: blur(2px);}
 
-/* FLOATING WHATSAPP BUTTON (SVG OFFICIAL) */
+/* FLOATING WHATSAPP BUTTON */
 .floating-wa{
   position:fixed;
   right:20px;
@@ -412,7 +412,7 @@
   fill: #fff;
 }
 
-/* BACK TO TOP BUTTON (SVG MODERN) */
+/* BACK TO TOP BUTTON */
 #backToTop{
   position:fixed;
   right:20px;
@@ -432,7 +432,7 @@
   transition:all .2s ease;
 }
 #backToTop:hover{
-  background: #0077c8;
+  background: #005ec6;
   transform:translateY(-3px);
 }
 #backToTop svg {
@@ -473,7 +473,7 @@
 }
 .popup-sub-header {
   padding: 16px 20px;
-  background: #0077c8;
+  background: #005ec6;
   color: #fff;
   font-weight: 600;
   font-size: 15px;
@@ -507,9 +507,9 @@
   transition: all 0.2s;
 }
 .popup-sub-item:hover {
-  border-color: #0077c8;
+  border-color: #005ec6;
   background: #f0f9ff;
-  color: #0077c8;
+  color: #005ec6;
 }
 
 /* POPUP PROMO */
@@ -591,7 +591,7 @@
 </div>
 
 <div id="sideMenu">
-  <div style="padding:18px 20px;background:#005fa3;position:relative;display:flex;align-items:center;justify-content:space-between;">
+  <div style="padding:18px 20px;background:#004b9e;position:relative;display:flex;align-items:center;justify-content:space-between;">
     <div>
       <div style="font-size:16px;font-weight:700;">🏪 UFO Kebonsari Malang</div>
       <div style="font-size:12px;opacity:.85;margin-top:2px;">Katalog Produk Resmi</div>
@@ -881,7 +881,7 @@ function tampilkan(data){
         <div class="brand">${p.brand||""}</div>
         <div class="tipe">${p.tipe||""}</div>
         <div class="badge-area">${badge}${unggulan}</div>
-        <div style="color:#0077c8;font-size:13px;font-weight:700;margin-top:10px;display:flex;align-items:center;gap:4px;">
+        <div style="color:#005ec6;font-size:13px;font-weight:700;margin-top:10px;display:flex;align-items:center;gap:4px;">
           Lihat Detail &rarr;
         </div>
       </div>
@@ -1055,7 +1055,7 @@ function updateFloatingWA(){
   if(produkAktif){
     pesan = `Halo Admin UFO Kebonsari.\n\nSaya ingin menanyakan produk berikut:\n\nBrand : ${produkAktif.brand}\nTipe : ${produkAktif.tipe}\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
   }else{
-    pesan = `Halo Admin UFO Kebonsari.\n\nSaya ingin bertanya mengenai produk yang ada di katalog.\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
+    pesan = `Halo Admin UFO Kebonsari.\n\nIgin bertanya mengenai produk yang ada di katalog.\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
   }
   floatingWA.href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(pesan);
 }
