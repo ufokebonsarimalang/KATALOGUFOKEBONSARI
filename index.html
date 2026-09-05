@@ -736,23 +736,21 @@ const foto = f => {
 const rupiah=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n||0);
 const slug=p=>((p.brand||"")+"-"+(p.tipe||"")).toLowerCase().replace(/[^a-z0-9]+/g,"-");
 
+// HANYA BAGIAN LOAD PRODUK INI YANG DISESUAIKAN KE FIREBASE
 async function loadProduk(){
  try{
-  // 1. Ambil Data Produk dari Koleksi 'katalog_produk'
   const produkSnap = await getDocs(collection(db, "katalog_produk"));
   semuaProduk = [];
   produkSnap.forEach((docSnap) => {
       semuaProduk.push(docSnap.data());
   });
 
-  // Urutkan produk persis seperti logic lama (unggulan dulu, lalu berdasarkan urutan)
   semuaProduk.sort((a,b)=>{
     if (String(a.unggulan).toUpperCase() === "YA" && String(b.unggulan).toUpperCase() !== "YA") return -1;
     if (String(a.unggulan).toUpperCase() !== "YA" && String(b.unggulan).toUpperCase() === "YA") return 1;
     return (Number(a.urutan) || 999) - (Number(b.urutan) || 999);
   });
 
-  // 2. Ambil Data Setting dari Koleksi 'katalog_setting'
   const settingSnap = await getDocs(collection(db, "katalog_setting"));
   let rawSetting = {};
   settingSnap.forEach((docSnap) => {
@@ -760,7 +758,6 @@ async function loadProduk(){
       rawSetting[docSnap.id] = d.value || "";
   });
 
-  // Petakan ke objek settingData persis seperti format JSON lama GAS Anda
   settingData = {
     promo: rawSetting.PROMO || "",
     tentang: rawSetting.TENTANG || "",
@@ -769,7 +766,6 @@ async function loadProduk(){
     subjudul: rawSetting.SUBJUDUL || ""
   };
 
-  // 3. Ambil Data Banner dari Koleksi 'katalog_banner'
   const bannerSnap = await getDocs(collection(db, "katalog_banner"));
   bannerData = [];
   bannerSnap.forEach((docSnap) => {
@@ -777,7 +773,6 @@ async function loadProduk(){
   });
   bannerData.sort((a,b)=>(Number(a.urutan)||999)-(Number(b.urutan)||999));
 
-  // 4. Ambil Data Promo dari Koleksi 'katalog_promo'
   const promoSnap = await getDocs(collection(db, "katalog_promo"));
   promoData = [];
   promoSnap.forEach((docSnap) => {
@@ -790,13 +785,13 @@ async function loadProduk(){
   renderBanner();
   buatBrandMenu(semuaProduk);
   buatKategori(semuaProduk);
-  tampilkan(semuaProduk);
+  window.tampilkan(semuaProduk);
 
   const params = new URLSearchParams(window.location.search);
   const slugProduk = params.get("produk");
   if (slugProduk){
     const produk = semuaProduk.find(p=>slug(p)===slugProduk);
-    if(produk) detail(produk);
+    if(produk) window.detail(produk);
   }
 
   mulaiPromoPopup();
@@ -818,7 +813,6 @@ function tampilkanPromoBerikutnya() {
       <img src="${p.gambar}" alt="${p.judul || 'Promo'}" class="promo-popup-img">
       ${p.judul ? `<div class="promo-popup-title">${p.judul}</div>` : ''}
     `;
-
     document.getElementById("promoPopupContent").innerHTML = html;
     document.getElementById("promoPopupOverlay").style.display = "flex";
   } else {
@@ -826,7 +820,7 @@ function tampilkanPromoBerikutnya() {
   }
 }
 
-function tutupPromoPopup() {
+window.tutupPromoPopup = function() {
   document.getElementById("promoPopupOverlay").style.display = "none";
   promoPopupIndex++;
   setTimeout(() => {
@@ -861,7 +855,6 @@ function buatSubKategori(kategori){
   body.innerHTML = "";
 
   let html = "";
-
   daftar.forEach(s => {
     let subRapih = s.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
     html += `
@@ -871,7 +864,6 @@ function buatSubKategori(kategori){
       </button>
     `;
   });
-
   body.innerHTML = html;
 
   document.getElementById("overlay").style.display = "block";
@@ -883,7 +875,7 @@ window.eksekusiFilter = function(kategori, subKategori) {
   if(subKategori !== "SEMUA"){
     hasil = hasil.filter(p => String(p.subKategori||"").trim().toUpperCase() === subKategori.toUpperCase());
   }
-  tampilkan(hasil);
+  window.tampilkan(hasil);
   tutupPopupSub();
 }
 
@@ -895,13 +887,13 @@ window.tutupPopupSub = function() {
 }
 
 window.tutupSemuaOverlay = function() {
-  closeMenu();
-  tutupPopupSub();
+  window.closeMenu();
+  window.tutupPopupSub();
   document.getElementById("promoPopupOverlay").style.display = "none";
   promoPopupIndex = promoData.length;
 }
 
-function tampilkan(data){
+window.tampilkan = function(data){
   let html = "";
   data.forEach(p=>{
     let badge = "";
@@ -947,16 +939,16 @@ window.showPromo = function(){
  }
  html += `</div>`;
  produk.innerHTML = html;
- closeMenu();
+ window.closeMenu();
 }
 
 window.showTentang = function(){
  produk.innerHTML=`<div class="info-box"><h2>🏪 Tentang Toko</h2><p>${settingData.tentang||"-"}</p></div>`;
- closeMenu();
+ window.closeMenu();
 }
 
-window.showHome = function(){tampilkan(semuaProduk);closeMenu();}
-window.showUnggulan = function(){tampilkan(semuaProduk.filter(x=>x.unggulan==="YA"));closeMenu();}
+window.showHome = function(){window.tampilkan(semuaProduk);window.closeMenu();}
+window.showUnggulan = function(){window.tampilkan(semuaProduk.filter(x=>x.unggulan==="YA"));window.closeMenu();}
 
 window.detail = function(p){
   produkAktif = p;
@@ -1008,13 +1000,11 @@ window.detail = function(p){
 
 document.getElementById("search").addEventListener("keyup",function(){
  const k=this.value.toLowerCase();
- tampilkan(semuaProduk.filter(p=>(p.brand||"").toLowerCase().includes(k)||(p.tipe||"").toLowerCase().includes(k)));
+ window.tampilkan(semuaProduk.filter(p=>(p.brand||"").toLowerCase().includes(k)||(p.tipe||"").toLowerCase().includes(k)));
 });
 
 function buatBrandMenu(data){
- // Daftar kata/setting yang wajib disaring agar tidak masuk sebagai brand
  const kataSaring = ["AKTIF", "JUDUL_WEB", "KEY", "WA", "TENTANG", "PROMO", "SUBJUDUL", "USER", "LOGIN", "TIDAK", "UFO2020", "WA_ADMIN"];
- 
  const brand = [...new Set(
    data.map(x => String(x.brand || "").trim().toUpperCase())
        .filter(b => b && !kataSaring.includes(b))
@@ -1023,7 +1013,6 @@ function buatBrandMenu(data){
  brandList.innerHTML='<div class="menu-item" onclick="showHome()"><svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg> Semua Brand</div>';
  
  brand.forEach(b => {
-   // Tampilkan nama brand dengan rapi (huruf kapital di awal)
    let brandRapih = b.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
    brandList.innerHTML += `<div class="menu-item" onclick="tampilkan(semuaProduk.filter(x=>String(x.brand||'').trim().toUpperCase()==='${b}'));closeMenu()"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg> ${brandRapih}</div>`;
  });
@@ -1073,7 +1062,7 @@ function filterKategori(k, el = null) {
   if (k === "SEMUA") { hasil = semuaProduk; } 
   else { hasil = semuaProduk.filter(p => String(p.kategori || "").toUpperCase() === k.toUpperCase()); }
   buatSubKategori(k);
-  tampilkan(hasil);
+  window.tampilkan(hasil);
 } 
 
 window.tutupDetail = function(){
