@@ -987,9 +987,21 @@ document.getElementById("search").addEventListener("keyup",function(){
 });
 
 function buatBrandMenu(data){
- const brand=[...new Set(data.map(x=>x.brand).filter(Boolean))].sort();
+ // Daftar kata/setting yang wajib disaring agar tidak masuk sebagai brand
+ const kataSaring = ["AKTIF", "JUDUL_WEB", "KEY", "WA", "TENTANG", "PROMO", "SUBJUDUL", "USER", "LOGIN", "TIDAK", "UFO2020", "WA_ADMIN"];
+ 
+ const brand = [...new Set(
+   data.map(x => String(x.brand || "").trim().toUpperCase())
+       .filter(b => b && !kataSaring.includes(b))
+ )].sort();
+
  brandList.innerHTML='<div class="menu-item" onclick="showHome()"><svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg> Semua Brand</div>';
- brand.forEach(b=>brandList.innerHTML+=`<div class="menu-item" onclick="tampilkan(semuaProduk.filter(x=>x.brand==='${b}'));closeMenu()"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg> ${b}</div>`);
+ 
+ brand.forEach(b => {
+   // Tampilkan nama brand dengan rapi (huruf kapital di awal)
+   let brandRapih = b.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+   brandList.innerHTML += `<div class="menu-item" onclick="tampilkan(semuaProduk.filter(x=>String(x.brand||'').trim().toUpperCase()==='${b}'));closeMenu()"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg> ${brandRapih}</div>`;
+ });
 }
 
 function buatKategori(data){
