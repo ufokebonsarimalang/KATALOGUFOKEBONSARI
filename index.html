@@ -738,28 +738,52 @@ const slug=p=>((p.brand||"")+"-"+(p.tipe||"")).toLowerCase().replace(/[^a-z0-9]+
 
 async function loadProduk(){
  try{
-  // 1. Ambil Data Produk dari Firebase
+  // 1. Ambil Data Produk dari Koleksi 'katalog_produk'
   const produkSnap = await getDocs(collection(db, "katalog_produk"));
   semuaProduk = [];
   produkSnap.forEach((docSnap) => {
-      semuaProduk.push({ id: docSnap.id, ...docSnap.data() });
+      semuaProduk.push(docSnap.data());
   });
 
-  // 2. Ambil Data Setting dari Firebase (untuk Judul, WhatsApp, Tentang, dll)
+  // Urutkan produk persis seperti logic lama (unggulan dulu, lalu berdasarkan urutan)
+  semuaProduk.sort((a,b)=>{
+    if (String(a.unggulan).toUpperCase() === "YA" && String(b.unggulan).toUpperCase() !== "YA") return -1;
+    if (String(a.unggulan).toUpperCase() !== "YA" && String(b.unggulan).toUpperCase() === "YA") return 1;
+    return (Number(a.urutan) || 999) - (Number(b.urutan) || 999);
+  });
+
+  // 2. Ambil Data Setting dari Koleksi 'katalog_setting'
   const settingSnap = await getDocs(collection(db, "katalog_setting"));
-  settingData = {};
+  let rawSetting = {};
   settingSnap.forEach((docSnap) => {
-      // Menyesuaikan bentuk struktur data setting agar mudah dibaca web
-      const data = docSnap.data();
-      settingData[docSnap.id] = data.value || data.val || Object.values(data)[0];
+      const d = docSnap.data();
+      rawSetting[docSnap.id] = d.value || "";
   });
 
-  // 3. Ambil Data Promo dari Firebase
+  // Petakan ke objek settingData persis seperti format JSON lama GAS Anda
+  settingData = {
+    promo: rawSetting.PROMO || "",
+    tentang: rawSetting.TENTANG || "",
+    wa: rawSetting.WA_ADMIN || "",
+    judul: rawSetting.JUDUL_WEB || "",
+    subjudul: rawSetting.SUBJUDUL || ""
+  };
+
+  // 3. Ambil Data Banner dari Koleksi 'katalog_banner'
+  const bannerSnap = await getDocs(collection(db, "katalog_banner"));
+  bannerData = [];
+  bannerSnap.forEach((docSnap) => {
+      bannerData.push(docSnap.data());
+  });
+  bannerData.sort((a,b)=>(Number(a.urutan)||999)-(Number(b.urutan)||999));
+
+  // 4. Ambil Data Promo dari Koleksi 'katalog_promo'
   const promoSnap = await getDocs(collection(db, "katalog_promo"));
   promoData = [];
   promoSnap.forEach((docSnap) => {
       promoData.push(docSnap.data());
   });
+  promoData.sort((a,b)=>(Number(a.urutan)||999)-(Number(b.urutan)||999));
 
   renderSetting();
   updateFloatingWA();
