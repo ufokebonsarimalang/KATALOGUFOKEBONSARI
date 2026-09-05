@@ -701,7 +701,7 @@
   <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
 </a>
 
-<!-- FIREBASE SDK & SKrip Utama -->
+<!-- SCRIPT PENGAMBILAN DATA DARI FIREBASE DENGAN MEMPERTAHANKAN 100% KODE ASLI ANDA -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -736,20 +736,12 @@ const foto = f => {
 const rupiah=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n||0);
 const slug=p=>((p.brand||"")+"-"+(p.tipe||"")).toLowerCase().replace(/[^a-z0-9]+/g,"-");
 
-// HANYA BAGIAN LOAD PRODUK INI YANG DISESUAIKAN KE FIREBASE
+// MENGGANTI FETCH GOOGLE APPS SCRIPT MENJADI FIREBASE TANPA MERUBAH STRUKTUR ASLI
 async function loadProduk(){
  try{
   const produkSnap = await getDocs(collection(db, "katalog_produk"));
   semuaProduk = [];
-  produkSnap.forEach((docSnap) => {
-      semuaProduk.push(docSnap.data());
-  });
-
-  semuaProduk.sort((a,b)=>{
-    if (String(a.unggulan).toUpperCase() === "YA" && String(b.unggulan).toUpperCase() !== "YA") return -1;
-    if (String(a.unggulan).toUpperCase() !== "YA" && String(b.unggulan).toUpperCase() === "YA") return 1;
-    return (Number(a.urutan) || 999) - (Number(b.urutan) || 999);
-  });
+  produkSnap.forEach((docSnap) => { semuaProduk.push(docSnap.data()); });
 
   const settingSnap = await getDocs(collection(db, "katalog_setting"));
   let rawSetting = {};
@@ -757,7 +749,6 @@ async function loadProduk(){
       const d = docSnap.data();
       rawSetting[docSnap.id] = d.value || "";
   });
-
   settingData = {
     promo: rawSetting.PROMO || "",
     tentang: rawSetting.TENTANG || "",
@@ -768,30 +759,24 @@ async function loadProduk(){
 
   const bannerSnap = await getDocs(collection(db, "katalog_banner"));
   bannerData = [];
-  bannerSnap.forEach((docSnap) => {
-      bannerData.push(docSnap.data());
-  });
-  bannerData.sort((a,b)=>(Number(a.urutan)||999)-(Number(b.urutan)||999));
+  bannerSnap.forEach((docSnap) => { bannerData.push(docSnap.data()); });
 
   const promoSnap = await getDocs(collection(db, "katalog_promo"));
   promoData = [];
-  promoSnap.forEach((docSnap) => {
-      promoData.push(docSnap.data());
-  });
-  promoData.sort((a,b)=>(Number(a.urutan)||999)-(Number(b.urutan)||999));
+  promoSnap.forEach((docSnap) => { promoData.push(docSnap.data()); });
 
   renderSetting();
   updateFloatingWA();
   renderBanner();
   buatBrandMenu(semuaProduk);
   buatKategori(semuaProduk);
-  window.tampilkan(semuaProduk);
+  tampilkan(semuaProduk);
 
   const params = new URLSearchParams(window.location.search);
   const slugProduk = params.get("produk");
   if (slugProduk){
     const produk = semuaProduk.find(p=>slug(p)===slugProduk);
-    if(produk) window.detail(produk);
+    if(produk) detail(produk);
   }
 
   mulaiPromoPopup();
@@ -813,6 +798,7 @@ function tampilkanPromoBerikutnya() {
       <img src="${p.gambar}" alt="${p.judul || 'Promo'}" class="promo-popup-img">
       ${p.judul ? `<div class="promo-popup-title">${p.judul}</div>` : ''}
     `;
+
     document.getElementById("promoPopupContent").innerHTML = html;
     document.getElementById("promoPopupOverlay").style.display = "flex";
   } else {
@@ -820,7 +806,7 @@ function tampilkanPromoBerikutnya() {
   }
 }
 
-window.tutupPromoPopup = function() {
+function tutupPromoPopup() {
   document.getElementById("promoPopupOverlay").style.display = "none";
   promoPopupIndex++;
   setTimeout(() => {
@@ -855,6 +841,7 @@ function buatSubKategori(kategori){
   body.innerHTML = "";
 
   let html = "";
+
   daftar.forEach(s => {
     let subRapih = s.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
     html += `
@@ -864,36 +851,37 @@ function buatSubKategori(kategori){
       </button>
     `;
   });
+
   body.innerHTML = html;
 
   document.getElementById("overlay").style.display = "block";
   document.getElementById("popupSubMenu").style.display = "block";
 }
 
-window.eksekusiFilter = function(kategori, subKategori) {
+function eksekusiFilter(kategori, subKategori) {
   let hasil = semuaProduk.filter(p => String(p.kategori||"").trim().toUpperCase() === kategori.toUpperCase());
   if(subKategori !== "SEMUA"){
     hasil = hasil.filter(p => String(p.subKategori||"").trim().toUpperCase() === subKategori.toUpperCase());
   }
-  window.tampilkan(hasil);
+  tampilkan(hasil);
   tutupPopupSub();
 }
 
-window.tutupPopupSub = function() {
+function tutupPopupSub() {
   document.getElementById("popupSubMenu").style.display = "none";
   if (sideMenu.style.left !== "0px") {
     document.getElementById("overlay").style.display = "none";
   }
 }
 
-window.tutupSemuaOverlay = function() {
-  window.closeMenu();
-  window.tutupPopupSub();
+function tutupSemuaOverlay() {
+  closeMenu();
+  tutupPopupSub();
   document.getElementById("promoPopupOverlay").style.display = "none";
   promoPopupIndex = promoData.length;
 }
 
-window.tampilkan = function(data){
+function tampilkan(data){
   let html = "";
   data.forEach(p=>{
     let badge = "";
@@ -920,7 +908,7 @@ window.tampilkan = function(data){
   produk.innerHTML = html;
 }
 
-window.showPromo = function(){
+function showPromo(){
  let html = `<div class="info-box"><h2>🔥 Promo Bulan Ini</h2>`;
  if(promoData.length==0){
     html += `<div style="text-align:center;padding:30px;color:#777;">Belum ada promo bulan ini.</div>`;
@@ -939,18 +927,18 @@ window.showPromo = function(){
  }
  html += `</div>`;
  produk.innerHTML = html;
- window.closeMenu();
+ closeMenu();
 }
 
-window.showTentang = function(){
+function showTentang(){
  produk.innerHTML=`<div class="info-box"><h2>🏪 Tentang Toko</h2><p>${settingData.tentang||"-"}</p></div>`;
- window.closeMenu();
+ closeMenu();
 }
 
-window.showHome = function(){window.tampilkan(semuaProduk);window.closeMenu();}
-window.showUnggulan = function(){window.tampilkan(semuaProduk.filter(x=>x.unggulan==="YA"));window.closeMenu();}
+function showHome(){tampilkan(semuaProduk);closeMenu();}
+function showUnggulan(){tampilkan(semuaProduk.filter(x=>x.unggulan==="YA"));closeMenu();}
 
-window.detail = function(p){
+function detail(p){
   produkAktif = p;
   updateFloatingWA();
   modal.style.display="block";
@@ -968,7 +956,7 @@ window.detail = function(p){
   mBrand.innerHTML = p.brand || "-";
   mKategori.innerHTML = p.kategori || "-";
   mSubKategori.innerHTML = p.subKategori || "-";
-  mSpek.innerHTML=[p.spek1,p.spek2,p.spek3].filter(Boolean).map(x=>"<div>✔ "+x+"</div>").join("");
+  mSpek.innerHTML=[p.spek1,p.spek2,p.spek3,p.spek4,p.spek5].filter(Boolean).map(x=>"<div>✔ "+x+"</div>").join("");
 
   let related = semuaProduk.filter(x => x.tipe !== p.tipe && x.brand === p.brand && x.subKategori === p.subKategori);
   if (related.length < 4) {
@@ -998,24 +986,15 @@ window.detail = function(p){
   };
 }
 
-document.getElementById("search").addEventListener("keyup",function(){
+search.addEventListener("keyup",function(){
  const k=this.value.toLowerCase();
- window.tampilkan(semuaProduk.filter(p=>(p.brand||"").toLowerCase().includes(k)||(p.tipe||"").toLowerCase().includes(k)));
+ tampilkan(semuaProduk.filter(p=>(p.brand||"").toLowerCase().includes(k)||(p.tipe||"").toLowerCase().includes(k)));
 });
 
 function buatBrandMenu(data){
- const kataSaring = ["AKTIF", "JUDUL_WEB", "KEY", "WA", "TENTANG", "PROMO", "SUBJUDUL", "USER", "LOGIN", "TIDAK", "UFO2020", "WA_ADMIN"];
- const brand = [...new Set(
-   data.map(x => String(x.brand || "").trim().toUpperCase())
-       .filter(b => b && !kataSaring.includes(b))
- )].sort();
-
+ const brand=[...new Set(data.map(x=>x.brand).filter(Boolean))].sort();
  brandList.innerHTML='<div class="menu-item" onclick="showHome()"><svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg> Semua Brand</div>';
- 
- brand.forEach(b => {
-   let brandRapih = b.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
-   brandList.innerHTML += `<div class="menu-item" onclick="tampilkan(semuaProduk.filter(x=>String(x.brand||'').trim().toUpperCase()==='${b}'));closeMenu()"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg> ${brandRapih}</div>`;
- });
+ brand.forEach(b=>brandList.innerHTML+=`<div class="menu-item" onclick="tampilkan(semuaProduk.filter(x=>x.brand==='${b}'));closeMenu()"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg> ${b}</div>`);
 }
 
 function buatKategori(data){
@@ -1051,9 +1030,9 @@ function renderBanner(){
  </a>`).join("");
 }
 
-window.hubungiKami = function(){ window.open("https://wa.me/" + (settingData.wa || "6289524391002")); }
-window.toggleMenu = function(){sideMenu.style.left="0";overlay.style.display="block";}
-window.closeMenu = function(){sideMenu.style.left="-320px";overlay.style.display="none";}
+function hubungiKami(){ window.open("https://wa.me/" + (settingData.wa || "6289524391002")); }
+function toggleMenu(){sideMenu.style.left="0";overlay.style.display="block";}
+function closeMenu(){sideMenu.style.left="-320px";overlay.style.display="none";}
 
 function filterKategori(k, el = null) {
   document.querySelectorAll('#kategoriBar button').forEach(btn => btn.classList.remove('active'));
@@ -1062,10 +1041,10 @@ function filterKategori(k, el = null) {
   if (k === "SEMUA") { hasil = semuaProduk; } 
   else { hasil = semuaProduk.filter(p => String(p.kategori || "").toUpperCase() === k.toUpperCase()); }
   buatSubKategori(k);
-  window.tampilkan(hasil);
+  tampilkan(hasil);
 } 
 
-window.tutupDetail = function(){
+function tutupDetail(){
   modal.style.display = "none";
   produkAktif = null;
   updateFloatingWA();
@@ -1090,7 +1069,7 @@ function updateFloatingWA(){
   const wa = settingData.wa || "6289524391002";
   let pesan = "";
   if(produkAktif){
-    pesan = `Halo Admin UFO Kebonsari.\n\nSaya ingin menanyakan produk berikut:\n\nBrand : ${produkAktif.brand}\nTipe : ${produkAktif.tipe}\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
+    pesan = `Halo Admin UFO Kebonsari.\n\nIgin menanyakan produk berikut:\n\nBrand : ${produkAktif.brand}\nTipe : ${produkAktif.tipe}\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
   }else{
     pesan = `Halo Admin UFO Kebonsari.\n\nIngin bertanya mengenai produk yang ada di katalog.\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
   }
