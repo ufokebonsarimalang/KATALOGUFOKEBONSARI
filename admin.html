@@ -111,8 +111,7 @@ input[type="file"]{
     </div>
   </div>
 </div>
-
-<!-- Firebase SDK & Script Admin -->
+<!-- Bagian Script di dalam admin.html untuk membaca urutan kolom baru -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -159,16 +158,24 @@ window.prosesUploadKatalogToFirebase = function() {
                     const row = jsonData[i];
                     if (!row || row.length < 2) continue;
 
+                    // Urutan kolom sesuai permintaan Anda:
+                    // 0: Brand, 1: Tipe, 2: Harga, 3: Kategori, 4: SubKategori, 
+                    // 5: Spek1, 6: Spek2, 7: Spek3, 8: Spek4, 9: Spek5, 
+                    // 10: Foto, 11: Status, 12: Unggulan, 13: Urutan
                     const brand = String(row[0] || "").trim();
                     const tipe = String(row[1] || "").trim();
-                    const kategori = String(row[2] || "").trim();
-                    const subKategori = String(row[3] || "").trim();
-                    const foto = String(row[4] || "").trim();
-                    const status = String(row[5] || "").trim().toUpperCase();
-                    const unggulan = String(row[6] || "").trim().toUpperCase();
-                    const spek1 = String(row[7] || "").trim();
-                    const spek2 = String(row[8] || "").trim();
-                    const spek3 = String(row[9] || "").trim();
+                    const harga = String(row[2] || "").trim();
+                    const kategori = String(row[3] || "").trim();
+                    const subKategori = String(row[4] || "").trim();
+                    const spek1 = String(row[5] || "").trim();
+                    const spek2 = String(row[6] || "").trim();
+                    const spek3 = String(row[7] || "").trim();
+                    const spek4 = String(row[8] || "").trim();
+                    const spek5 = String(row[9] || "").trim();
+                    const foto = String(row[10] || "").trim();
+                    const status = String(row[11] || "").trim().toUpperCase();
+                    const unggulan = String(row[12] || "").trim().toUpperCase();
+                    const urutan = Number(row[13] || 0);
 
                     if (i === 0 && (brand.toLowerCase() === 'brand' || brand.toLowerCase() === 'merk')) continue;
                     if (!brand || !tipe) continue;
@@ -179,14 +186,18 @@ window.prosesUploadKatalogToFirebase = function() {
                     await setDoc(doc(db, "katalog_produk", docId), {
                         brand,
                         tipe,
+                        harga,
                         kategori,
                         subKategori,
-                        foto,
-                        status,
-                        unggulan,
                         spek1,
                         spek2,
                         spek3,
+                        spek4,
+                        spek5,
+                        foto,
+                        status,
+                        unggulan,
+                        urutan,
                         updated_at: new Date().toISOString()
                     });
 
@@ -206,7 +217,6 @@ window.prosesUploadKatalogToFirebase = function() {
     reader.readAsArrayBuffer(file);
 };
 </script>
-
 <footer class="footer">
   © 2026 UFO Kebonsari Malang &bull; All Rights Reserved
 </footer>
