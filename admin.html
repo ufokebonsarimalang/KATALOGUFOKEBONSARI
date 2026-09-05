@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Panel - UFO Kebonsari Malang</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- SheetJS untuk Membaca Excel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:'Inter',sans-serif;background:#f4f6f9}
+.header{
+  background:#005ec6;
+  padding:0;
+  margin:0;
+  text-align:center;
+}
+.header-banner{
+  width:100%;
+  background:#005ec6;
+}
+.header-banner img{
+  width:100%;
+  max-width:520px;
+  margin:0 auto;
+  display:block;
+}
+.container{
+  max-width:800px;
+  margin:30px auto;
+  padding:16px;
+}
+.admin-card{
+  background:#fff;
+  border-radius:20px;
+  padding:28px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.08);
+  border:1px solid #e2e8f0;
+  margin-bottom:20px;
+}
+h1, h2 { color: #1e293b; margin-top: 0; }
+p { color: #64748b; font-size: 14px; line-height: 1.5; }
+.info-box{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  padding:16px;
+  border-radius:12px;
+  margin:16px 0;
+  font-size:13px;
+  color:#334155;
+}
+code { color: #005ec6; font-weight: 700; background: #e0f2fe; padding: 2px 6px; border-radius: 4px; }
+input[type="file"]{
+  display:block;
+  width:100%;
+  padding:12px;
+  border:2px dashed #cbd5e1;
+  border-radius:12px;
+  background:#f8fafc;
+  cursor:pointer;
+  margin-bottom:16px;
+  font-size:13px;
+}
+.btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  text-align:center;
+  color:#fff;
+  background:#005ec6;
+  text-decoration:none;
+  padding:14px;
+  border-radius:12px;
+  border:none;
+  width:100%;
+  font-weight:700;
+  cursor:pointer;
+  font-size:15px;
+  transition: opacity 0.2s;
+}
+.btn:hover { opacity: 0.9; }
+.footer{text-align:center;padding:30px 10px;color:#64748b;font-size:13px;margin-top:20px;border-top:1px solid #e2e8f0;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-banner">
+    <img src="images/header-ufo.png" alt="UFO Kebonsari Malang">
+  </div>
+</div>
+
+<div class="container">
+  <div class="admin-card">
+    <h1>🚀 Panel Admin Upload Produk</h1>
+    <p>Upload file Excel produk Anda di sini. Data akan langsung diperbarui secara instan ke Cloud Firebase untuk halaman katalog publik.</p>
+
+    <div class="info-box">
+      <strong>Format Urutan Kolom Excel:</strong><br>
+      <code>Brand | Tipe | Kategori | SubKategori | Foto | Status | Unggulan | Spek1 | Spek2 | Spek3</code>
+    </div>
+
+    <input type="file" id="excelFileKatalog" accept=".xlsx, .xls, .csv">
+    <button onclick="prosesUploadKatalogToFirebase()" class="btn">Proses & Upload ke Firebase</button>
+    <p id="statusUpload" style="font-weight:700; text-align:center; margin-top:12px;"></p>
+
+    <div style="text-align:center; margin-top:20px;">
+      <a href="index.html" target="_blank" style="color:#005ec6; font-weight:700; text-decoration:none; font-size:14px;">🔗 Buka Halaman Katalog Publik &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK & Script Admin -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAzDlIWFWrpHyf2xgLYMifLcGmBqc10EW0",
+    authDomain: "masterharga.firebaseapp.com",
+    projectId: "masterharga",
+    storageBucket: "masterharga.firebasestorage.app",
+    messagingSenderId: "761584806568",
+    appId: "1:761584806568:web:c6672e8fc0c695f15eb1067",
+    measurementId: "G-N660XBC2L4"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.prosesUploadKatalogToFirebase = function() {
+    const fileInput = document.getElementById('excelFileKatalog');
+    const statusEl = document.getElementById('statusUpload');
+
+    if (fileInput.files.length === 0) {
+        statusEl.style.color = "#dc2626";
+        statusEl.innerText = "⚠️ Pilih file Excel terlebih dahulu!";
+        return;
+    }
+
+    const file = fileInput.files[0];
+    statusEl.style.color = "#005ec6";
+    statusEl.innerText = "⏳ Membaca file & mengunggah ke Firebase...";
+
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+        try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            let successCount = 0;
+
+            for (let sheetName of workbook.SheetNames) {
+                const worksheet = workbook.Sheets[sheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                for (let i = 0; i < jsonData.length; i++) {
+                    const row = jsonData[i];
+                    if (!row || row.length < 2) continue;
+
+                    const brand = String(row[0] || "").trim();
+                    const tipe = String(row[1] || "").trim();
+                    const kategori = String(row[2] || "").trim();
+                    const subKategori = String(row[3] || "").trim();
+                    const foto = String(row[4] || "").trim();
+                    const status = String(row[5] || "").trim().toUpperCase();
+                    const unggulan = String(row[6] || "").trim().toUpperCase();
+                    const spek1 = String(row[7] || "").trim();
+                    const spek2 = String(row[8] || "").trim();
+                    const spek3 = String(row[9] || "").trim();
+
+                    if (i === 0 && (brand.toLowerCase() === 'brand' || brand.toLowerCase() === 'merk')) continue;
+                    if (!brand || !tipe) continue;
+
+                    const cleanTipe = tipe.replace(/[\/\\#,+()$~%.'":*?<>{} ]/g, '_');
+                    const docId = `${brand}_${cleanTipe}`;
+
+                    await setDoc(doc(db, "katalog_produk", docId), {
+                        brand,
+                        tipe,
+                        kategori,
+                        subKategori,
+                        foto,
+                        status,
+                        unggulan,
+                        spek1,
+                        spek2,
+                        spek3,
+                        updated_at: new Date().toISOString()
+                    });
+
+                    successCount++;
+                }
+            }
+
+            statusEl.style.color = "#16a34a";
+            statusEl.innerText = `✨ Berhasil! ${successCount} produk berhasil di-upload ke Firebase.`;
+            fileInput.value = "";
+        } catch (err) {
+            console.error(err);
+            statusEl.style.color = "#dc2626";
+            statusEl.innerText = "❌ Gagal memproses file. Periksa kembali format Excel Anda.";
+        }
+    };
+    reader.readAsArrayBuffer(file);
+};
+</script>
+
+<footer class="footer">
+  © 2026 UFO Kebonsari Malang &bull; All Rights Reserved
+</footer>
+</body>
+</html>
