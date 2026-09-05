@@ -805,6 +805,7 @@ async function loadProduk(){
   console.error("Gagal memuat data dari Firebase:", err);
  }
 }
+
 function mulaiPromoPopup() {
   promoPopupIndex = 0;
   tampilkanPromoBerikutnya();
@@ -1028,7 +1029,6 @@ function buatBrandMenu(data){
  });
 }
 
-function buatKategori(data){
 function buatKategori(data){
   const bar = document.getElementById("kategoriBar");
   if(!bar) return;
