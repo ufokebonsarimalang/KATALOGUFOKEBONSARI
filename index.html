@@ -1007,7 +1007,15 @@ function buatBrandMenu(data){
 function buatKategori(data){
   const bar = document.getElementById("kategoriBar");
   if(!bar) return;
-  const daftar = ["SEMUA", ...new Set(data.map(x => (x.kategori || "").trim()).filter(Boolean))];
+  
+  // Daftar kata yang dilarang muncul sebagai tombol kategori
+  const kategoriDilarang = ["LINK PRODUK", "BANNER", "SETTING", "PROMO"];
+
+  const daftar = ["SEMUA", ...new Set(
+    data.map(x => (x.kategori || "").trim().toUpperCase())
+        .filter(k => k && !kategoriDilarang.includes(k))
+  )];
+
   bar.innerHTML = "";
   daftar.forEach((k,index)=>{
     const btn = document.createElement("button");
