@@ -738,17 +738,28 @@ const slug=p=>((p.brand||"")+"-"+(p.tipe||"")).toLowerCase().replace(/[^a-z0-9]+
 
 async function loadProduk(){
  try{
-  // Ambil data dari Firebase Firestore (Koleksi: katalog_produk)
-  const querySnapshot = await getDocs(collection(db, "katalog_produk"));
+  // 1. Ambil Data Produk dari Firebase
+  const produkSnap = await getDocs(collection(db, "katalog_produk"));
   semuaProduk = [];
-  querySnapshot.forEach((docSnap) => {
+  produkSnap.forEach((docSnap) => {
       semuaProduk.push({ id: docSnap.id, ...docSnap.data() });
   });
 
-  // Contoh data setting/banner/promo dasar jika belum di-setup terpisah di Firebase
-  settingData = { judul: "UFO Kebonsari Malang", wa: "6289524391002" };
-  bannerData = [];
+  // 2. Ambil Data Setting dari Firebase (untuk Judul, WhatsApp, Tentang, dll)
+  const settingSnap = await getDocs(collection(db, "katalog_setting"));
+  settingData = {};
+  settingSnap.forEach((docSnap) => {
+      // Menyesuaikan bentuk struktur data setting agar mudah dibaca web
+      const data = docSnap.data();
+      settingData[docSnap.id] = data.value || data.val || Object.values(data)[0];
+  });
+
+  // 3. Ambil Data Promo dari Firebase
+  const promoSnap = await getDocs(collection(db, "katalog_promo"));
   promoData = [];
+  promoSnap.forEach((docSnap) => {
+      promoData.push(docSnap.data());
+  });
 
   renderSetting();
   updateFloatingWA();
@@ -770,7 +781,6 @@ async function loadProduk(){
   console.error("Gagal memuat data dari Firebase:", err);
  }
 }
-
 function mulaiPromoPopup() {
   promoPopupIndex = 0;
   tampilkanPromoBerikutnya();
