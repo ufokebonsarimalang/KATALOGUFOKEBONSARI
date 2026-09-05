@@ -94,16 +94,18 @@ input[type="file"]{
 
 <div class="container">
   <div class="admin-card">
-    <h1>🚀 Panel Admin Upload Produk</h1>
-    <p>Upload file Excel produk Anda di sini. Data akan langsung diperbarui secara instan ke Cloud Firebase untuk halaman katalog publik.</p>
+    <h1>🚀 Panel Admin Upload Multi-Sheet</h1>
+    <p>Upload file Excel utama Anda (yang berisi sheet <code>KATALOG</code>, <code>SETTING</code>, <code>PROMO</code>, dll.). Sistem akan otomatis memilah data sesuai sheet-nya ke Firebase.</p>
 
     <div class="info-box">
-      <strong>Format Urutan Kolom Excel:</strong><br>
-      <code>Brand | Tipe | Kategori | SubKategori | Foto | Status | Unggulan | Spek1 | Spek2 | Spek3</code>
+      <strong>Sheet yang Didukung Otomatis:</strong><br>
+      - <code>KATALOG</code> (Masuk ke data produk utama)<br>
+      - <code>SETTING</code> (Masuk ke pengaturan toko/WhatsApp)<br>
+      - <code>PROMO</code> (Masuk ke daftar banner promo)
     </div>
 
-    <input type="file" id="excelFileKatalog" accept=".xlsx, .xls, .csv">
-    <button onclick="prosesUploadKatalogToFirebase()" class="btn">Proses & Upload ke Firebase</button>
+    <input type="file" id="excelFileMaster" accept=".xlsx, .xls, .csv">
+    <button onclick="prosesUploadMultiSheet()" class="btn">Proses & Upload ke Firebase</button>
     <p id="statusUpload" style="font-weight:700; text-align:center; margin-top:12px;"></p>
 
     <div style="text-align:center; margin-top:20px;">
@@ -111,7 +113,8 @@ input[type="file"]{
     </div>
   </div>
 </div>
-<!-- Bagian Script di dalam admin.html untuk membaca urutan kolom baru -->
+
+<!-- Firebase SDK & Script Pemilah Multi-Sheet -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -129,8 +132,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-window.prosesUploadKatalogToFirebase = function() {
-    const fileInput = document.getElementById('excelFileKatalog');
+window.prosesUploadMultiSheet = function() {
+    const fileInput = document.getElementById('excelFileMaster');
     const statusEl = document.getElementById('statusUpload');
 
     if (fileInput.files.length === 0) {
@@ -141,82 +144,99 @@ window.prosesUploadKatalogToFirebase = function() {
 
     const file = fileInput.files[0];
     statusEl.style.color = "#005ec6";
-    statusEl.innerText = "⏳ Membaca file & mengunggah ke Firebase...";
+    statusEl.innerText = "⏳ Membaca seluruh sheet & mengunggah ke Firebase...";
 
     const reader = new FileReader();
     reader.onload = async function(e) {
         try {
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, { type: 'array' });
-            let successCount = 0;
+            let totalProduk = 0;
+            let totalSetting = 0;
+            let totalPromo = 0;
 
             for (let sheetName of workbook.SheetNames) {
+                const sheetUpper = sheetName.trim().toUpperCase();
                 const worksheet = workbook.Sheets[sheetName];
                 const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-                for (let i = 0; i < jsonData.length; i++) {
-                    const row = jsonData[i];
-                    if (!row || row.length < 2) continue;
+                // 1. PROSES SHEET KATALOG PRODUK
+                if (sheetUpper.includes("KATALOG")) {
+                    for (let i = 0; i < jsonData.length; i++) {
+                        const row = jsonData[i];
+                        if (!row || row.length < 2) continue;
 
-                    // Urutan kolom sesuai permintaan Anda:
-                    // 0: Brand, 1: Tipe, 2: Harga, 3: Kategori, 4: SubKategori, 
-                    // 5: Spek1, 6: Spek2, 7: Spek3, 8: Spek4, 9: Spek5, 
-                    // 10: Foto, 11: Status, 12: Unggulan, 13: Urutan
-                    const brand = String(row[0] || "").trim();
-                    const tipe = String(row[1] || "").trim();
-                    const harga = String(row[2] || "").trim();
-                    const kategori = String(row[3] || "").trim();
-                    const subKategori = String(row[4] || "").trim();
-                    const spek1 = String(row[5] || "").trim();
-                    const spek2 = String(row[6] || "").trim();
-                    const spek3 = String(row[7] || "").trim();
-                    const spek4 = String(row[8] || "").trim();
-                    const spek5 = String(row[9] || "").trim();
-                    const foto = String(row[10] || "").trim();
-                    const status = String(row[11] || "").trim().toUpperCase();
-                    const unggulan = String(row[12] || "").trim().toUpperCase();
-                    const urutan = Number(row[13] || 0);
+                        const brand = String(row[0] || "").trim();
+                        const tipe = String(row[1] || "").trim();
+                        const harga = String(row[2] || "").trim();
+                        const kategori = String(row[3] || "").trim();
+                        const subKategori = String(row[4] || "").trim();
+                        const spek1 = String(row[5] || "").trim();
+                        const spek2 = String(row[6] || "").trim();
+                        const spek3 = String(row[7] || "").trim();
+                        const spek4 = String(row[8] || "").trim();
+                        const spek5 = String(row[9] || "").trim();
+                        const foto = String(row[10] || "").trim();
+                        const status = String(row[11] || "").trim().toUpperCase();
+                        const unggulan = String(row[12] || "").trim().toUpperCase();
+                        const urutan = Number(row[13] || 0);
 
-                    if (i === 0 && (brand.toLowerCase() === 'brand' || brand.toLowerCase() === 'merk')) continue;
-                    if (!brand || !tipe) continue;
+                        if (i === 0 && (brand.toLowerCase() === 'brand' || brand.toLowerCase() === 'merk')) continue;
+                        if (!brand || !tipe) continue;
 
-                    const cleanTipe = tipe.replace(/[\/\\#,+()$~%.'":*?<>{} ]/g, '_');
-                    const docId = `${brand}_${cleanTipe}`;
+                        const cleanTipe = tipe.replace(/[\/\\#,+()$~%.'":*?<>{} ]/g, '_');
+                        const docId = `${brand}_${cleanTipe}`;
 
-                    await setDoc(doc(db, "katalog_produk", docId), {
-                        brand,
-                        tipe,
-                        harga,
-                        kategori,
-                        subKategori,
-                        spek1,
-                        spek2,
-                        spek3,
-                        spek4,
-                        spek5,
-                        foto,
-                        status,
-                        unggulan,
-                        urutan,
-                        updated_at: new Date().toISOString()
-                    });
+                        await setDoc(doc(db, "katalog_produk", docId), {
+                            brand, tipe, harga, kategori, subKategori, spek1, spek2, spek3, spek4, spek5, foto, status, unggulan, urutan, updated_at: new Date().toISOString()
+                        });
+                        totalProduk++;
+                    }
+                }
 
-                    successCount++;
+                // 2. PROSES SHEET SETTING TOKO
+                else if (sheetUpper.includes("SETTING")) {
+                    for (let i = 0; i < jsonData.length; i++) {
+                        const row = jsonData[i];
+                        if (!row || row.length < 2) continue;
+                        const key = String(row[0] || "").trim().toLowerCase();
+                        const val = String(row[1] || "").trim();
+                        if (!key || i === 0 && key === 'key') continue;
+
+                        await setDoc(doc(db, "katalog_setting", key), { value: val });
+                        totalSetting++;
+                    }
+                }
+
+                // 3. PROSES SHEET PROMO
+                else if (sheetUpper.includes("PROMO")) {
+                    for (let i = 0; i < jsonData.length; i++) {
+                        const row = jsonData[i];
+                        if (!row || row.length < 2) continue;
+                        const judul = String(row[0] || "").trim();
+                        const gambar = String(row[1] || "").trim();
+                        if (!judul && !gambar) continue;
+
+                        const docId = `promo_${i}`;
+                        await setDoc(doc(db, "katalog_promo", docId), { judul, gambar });
+                        totalPromo++;
+                    }
                 }
             }
 
             statusEl.style.color = "#16a34a";
-            statusEl.innerText = `✨ Berhasil! ${successCount} produk berhasil di-upload ke Firebase.`;
+            statusEl.innerText = `✨ Sukses! (${totalProduk} Produk, ${totalSetting} Setting, ${totalPromo} Promo) ter-upload ke Firebase!`;
             fileInput.value = "";
         } catch (err) {
             console.error(err);
             statusEl.style.color = "#dc2626";
-            statusEl.innerText = "❌ Gagal memproses file. Periksa kembali format Excel Anda.";
+            statusEl.innerText = "❌ Gagal memproses file multi-sheet.";
         }
     };
     reader.readAsArrayBuffer(file);
 };
 </script>
+
 <footer class="footer">
   © 2026 UFO Kebonsari Malang &bull; All Rights Reserved
 </footer>
