@@ -1,448 +1,366 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Admin - UFO Kebonsari</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Plus Jakarta Sans',sans-serif;background:#0b0f19;color:#dfe2f1}
-        .login-box{background:rgba(23,27,38,0.8);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.05);border-radius:2rem;padding:40px;max-width:400px;margin:100px auto;text-align:center}
-        .login-box h1{font-size:24px;font-weight:800;margin-bottom:8px}
-        .login-box p{color:#908fa0;margin-bottom:24px}
-        .btn-primary{background:linear-gradient(135deg,#c0c1ff,#a8a9ff);color:#1000a9;font-weight:700;padding:12px 24px;border-radius:1rem;border:none;cursor:pointer;font-size:16px;width:100%}
-        .btn-primary:hover{transform:scale(1.02)}
-        .btn-danger{background:#ff6b6b;color:#fff;padding:8px 16px;border:none;border-radius:0.75rem;cursor:pointer}
-        .btn-success{background:linear-gradient(135deg,#4edea3,#3acb92);color:#003824;font-weight:700;padding:10px 20px;border:none;border-radius:1rem;cursor:pointer;width:100%}
-        .input-field{width:100%;padding:12px 16px;background:rgba(15,19,29,0.8);border:1px solid rgba(255,255,255,0.06);border-radius:0.75rem;color:#dfe2f1;font-size:14px;outline:none;margin-bottom:12px}
-        .input-field:focus{border-color:#c0c1ff}
-        .glass-card{background:rgba(23,27,38,0.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.05);border-radius:1.5rem;padding:24px}
-        #adminContent{display:none;padding:20px;max-width:1400px;margin:0 auto}
-        .admin-header{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.05);margin-bottom:24px;flex-wrap:wrap;gap:12px}
-        .admin-header h1{font-size:24px;font-weight:800}
-        .brand{color:#c0c1ff}
-        .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:24px}
-        .stat-card{background:rgba(23,27,38,0.6);border:1px solid rgba(255,255,255,0.05);border-radius:1rem;padding:16px 20px;text-align:center}
-        .stat-card .number{font-size:28px;font-weight:800;color:#c0c1ff}
-        .stat-card .label{font-size:11px;color:#908fa0;text-transform:uppercase;letter-spacing:0.05em;margin-top:4px}
-        .tab-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:12px}
-        .tab-nav button{padding:8px 20px;border:none;border-radius:0.75rem;background:transparent;color:#908fa0;font-weight:600;font-size:13px;cursor:pointer}
-        .tab-nav button.active{background:rgba(192,193,255,0.12);color:#c0c1ff}
-        .tab-content{display:none}
-        .tab-content.active{display:block}
-        .table-wrap{overflow-x:auto}
-        .table-wrap table{width:100%;border-collapse:collapse;font-size:13px}
-        .table-wrap thead th{text-align:left;padding:10px 12px;font-weight:600;color:#908fa0;font-size:11px;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,0.06);background:#0b0f19;position:sticky;top:0}
-        .table-wrap tbody td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.03)}
-        .table-wrap tbody tr:hover{background:rgba(255,255,255,0.02)}
-        .form-group{margin-bottom:16px}
-        .form-group label{display:block;font-size:12px;font-weight:600;color:#908fa0;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em}
-        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-        .badge-status{display:inline-block;padding:2px 12px;border-radius:9999px;font-size:10px;font-weight:700}
-        .badge-status.baru{background:rgba(139,92,246,0.15);color:#a78bfa}
-        .badge-status.promo{background:rgba(239,68,68,0.15);color:#f87171}
-        .badge-status.bestseller{background:rgba(245,158,11,0.15);color:#fbbf24}
-        .badge-status.unggulan{background:rgba(78,222,163,0.15);color:#4edea3}
-        .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:9999;justify-content:center;align-items:center;padding:20px}
-        .modal-overlay.show{display:flex}
-        .modal-box{background:#171b26;border:1px solid rgba(255,255,255,0.05);border-radius:1.5rem;padding:32px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto}
-        .modal-box .close-btn{float:right;background:none;border:none;color:#908fa0;font-size:24px;cursor:pointer}
-        .modal-box .close-btn:hover{color:#dfe2f1}
-        .file-input-wrapper input[type="file"]{width:100%;padding:12px;background:rgba(15,19,29,0.6);border:1px solid rgba(255,255,255,0.06);border-radius:0.75rem;color:#c7c4d7;font-size:13px;cursor:pointer}
-        .status-message{font-size:0.75rem;font-weight:600;text-align:center;padding:0.5rem;border-radius:0.75rem;margin-top:0.5rem}
-        .status-message.success{color:#4edea3}
-        .status-message.error{color:#ffb4ab}
-        .status-message.loading{color:#c0c1ff}
-        @media(max-width:768px){.form-row{grid-template-columns:1fr}.login-box{padding:24px;margin:16px}}
-    </style>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Katalog — UFO Kebonsari Malang</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:'Inter',sans-serif;background:#f4f6f9;color:#1e293b}
+
+.topbar{background:#005ec6;color:#fff;padding:16px 20px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:16px;margin:0;font-weight:700}
+.topbar span{font-size:12px;opacity:.85}
+#btnLogout{background:rgba(255,255,255,0.15);color:#fff;border:none;padding:8px 14px;border-radius:10px;font-weight:600;font-size:13px;cursor:pointer}
+#btnLogout:hover{background:rgba(255,255,255,0.25)}
+
+.wrap{max-width:720px;margin:0 auto;padding:24px 16px 60px}
+
+.card{background:#fff;border-radius:16px;padding:22px;box-shadow:0 3px 10px rgba(0,0,0,.06);border:1px solid #e5e7eb;margin-bottom:20px}
+.card h2{font-size:15px;margin:0 0 14px;color:#005ec6}
+.card p{font-size:13px;color:#64748b;line-height:1.6;margin:0 0 14px}
+
+label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:#334155}
+input[type=email],input[type=password],input[type=file]{
+  width:100%;padding:12px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:inherit;margin-bottom:14px;
+}
+input[type=email]:focus,input[type=password]:focus{outline:none;border-color:#005ec6}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:#005ec6;color:#fff;border:none;padding:12px 20px;border-radius:10px;
+  font-weight:700;font-size:14px;cursor:pointer;transition:opacity .2s;width:100%;
+}
+.btn:hover{opacity:.9}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.secondary{background:#f1f5f9;color:#334155}
+.btn.secondary:hover{background:#e2e8f0}
+
+#loginError{color:#dc2626;font-size:13px;margin-top:-6px;margin-bottom:12px;display:none}
+
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}
+th,td{border:1px solid #e2e8f0;padding:6px 8px;text-align:left}
+th{background:#f8fafc;color:#334155}
+
+#logBox{
+  background:#0f172a;color:#d1fae5;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;
+  border-radius:10px;padding:14px;max-height:260px;overflow-y:auto;white-space:pre-wrap;line-height:1.6;display:none;margin-top:14px;
+}
+
+#screenLogin, #screenDashboard{display:none}
+.badge-ok{color:#16a34a;font-weight:700}
+.badge-err{color:#dc2626;font-weight:700}
+</style>
 </head>
 <body>
 
-    <!-- LOGIN -->
-    <div id="loginPage">
-        <div class="login-box">
-            <h1>🔐 Admin Panel</h1>
-            <p>UFO Kebonsari Malang</p>
-            <input type="password" id="loginPassword" class="input-field" placeholder="Masukkan password...">
-            <button onclick="loginAction()" class="btn-primary">Login</button>
-            <p id="loginStatus" style="color:#ffb4ab;margin-top:8px;display:none;"></p>
-        </div>
+<div class="topbar">
+  <div>
+    <h1>🏪 Admin Katalog UFO Kebonsari</h1>
+    <span id="userEmail"></span>
+  </div>
+  <button id="btnLogout" onclick="logout()" style="display:none">Keluar</button>
+</div>
+
+<div class="wrap">
+
+  <!-- LOGIN -->
+  <div id="screenLogin" class="card">
+    <h2>Masuk ke Panel Admin</h2>
+    <p>Gunakan akun admin yang sudah dibuat di Firebase Authentication.</p>
+    <label>Email</label>
+    <input type="email" id="loginEmail" placeholder="admin@ufokebonsari.com" autocomplete="username">
+    <label>Password</label>
+    <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+    <div id="loginError"></div>
+    <button class="btn" onclick="login()">Masuk</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="screenDashboard">
+
+    <div class="card">
+      <h2>1. Format Excel</h2>
+      <p>File Excel harus punya 4 sheet dengan nama persis: <b>KATALOG</b>, <b>SETTING</b>, <b>BANNER</b>, <b>PROMO</b>. Baris pertama tiap sheet adalah judul kolom (akan dilewati). Kalau belum punya filenya, unduh template di bawah supaya urutan kolomnya pasti benar.</p>
+      <button class="btn secondary" onclick="unduhTemplate()">⬇️ Unduh Template Excel</button>
+
+      <table>
+        <tr><th colspan="2">Sheet KATALOG (kolom A–O)</th></tr>
+        <tr><td>A Brand</td><td>B Tipe</td></tr>
+        <tr><td>C Harga</td><td>D Kategori</td></tr>
+        <tr><td>E SubKategori</td><td>F–J Spek1–Spek5</td></tr>
+        <tr><td>K Foto (nama file saja)</td><td>L Status (BARU/PROMO/BESTSELLER)</td></tr>
+        <tr><td>M Unggulan (YA/kosong)</td><td>N Urutan (angka)</td></tr>
+        <tr><td>O Banner (opsional)</td><td></td></tr>
+      </table>
     </div>
 
-    <!-- ADMIN CONTENT -->
-    <div id="adminContent">
-        <div class="admin-header">
-            <div><h1>📊 <span class="brand">Admin</span> UFO Kebonsari</h1><p style="color:#908fa0;font-size:13px;">Kelola katalog produk</p></div>
-            <div><button onclick="logoutAction()" class="btn-danger">Logout</button></div>
-        </div>
-
-        <div class="stat-grid">
-            <div class="stat-card"><div class="number" id="statTotal">0</div><div class="label">Total Produk</div></div>
-            <div class="stat-card"><div class="number" id="statBrand">0</div><div class="label">Brand</div></div>
-            <div class="stat-card"><div class="number" id="statKategori">0</div><div class="label">Kategori</div></div>
-            <div class="stat-card"><div class="number" id="statUnggulan">0</div><div class="label">Unggulan</div></div>
-        </div>
-
-        <div class="tab-nav">
-            <button class="active" onclick="switchTabAction('produk')">📦 Produk</button>
-            <button onclick="switchTabAction('tambah')">➕ Tambah</button>
-            <button onclick="switchTabAction('upload')">📁 Upload</button>
-            <button onclick="switchTabAction('migrasi')">🔄 Migrasi</button>
-            <button onclick="switchTabAction('setting')">⚙️ Setting</button>
-        </div>
-
-        <!-- TAB PRODUK -->
-        <div id="tabProduk" class="tab-content active">
-            <div class="glass-card">
-                <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
-                    <h2 style="font-size:18px;font-weight:700;">Daftar Produk</h2>
-                    <div style="display:flex;gap:8px;">
-                        <input type="text" id="searchProduct" class="input-field" placeholder="Cari..." style="width:200px;padding:8px 12px;font-size:13px;" onkeyup="filterTableAction()">
-                        <button onclick="refreshProductsAction()" class="btn-primary" style="padding:8px 16px;font-size:13px;">🔄 Refresh</button>
-                    </div>
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead><tr><th>#</th><th>Brand</th><th>Tipe</th><th>Harga</th><th>Kategori</th><th>Status</th><th>Unggulan</th><th>Aksi</th></tr></thead>
-                        <tbody id="productTableBody"><tr><td colspan="8" style="text-align:center;padding:40px;color:#908fa0;">Memuat data...</td></tr></tbody>
-                    </table>
-                </div>
-                <div style="margin-top:12px;color:#908fa0;" id="productCount"></div>
-            </div>
-        </div>
-
-        <!-- TAB TAMBAH -->
-        <div id="tabTambah" class="tab-content">
-            <div class="glass-card">
-                <h2 style="font-size:18px;font-weight:700;margin-bottom:16px;">➕ Tambah Produk</h2>
-                <div class="form-row">
-                    <div class="form-group"><label>Brand *</label><input type="text" id="tambahBrand" class="input-field" placeholder="SAMSUNG"></div>
-                    <div class="form-group"><label>Tipe *</label><input type="text" id="tambahTipe" class="input-field" placeholder="UA43U8000FKXXD"></div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group"><label>Harga</label><input type="number" id="tambahHarga" class="input-field" placeholder="3798000"></div>
-                    <div class="form-group"><label>Kategori *</label><input type="text" id="tambahKategori" class="input-field" placeholder="ELEKTRONIK"></div>
-                </div>
-                <div class="form-group"><label>Sub Kategori</label><input type="text" id="tambahSubKategori" class="input-field" placeholder="Smart TV"></div>
-                <div class="form-row"><div class="form-group"><label>Spek 1</label><input type="text" id="tambahSpek1" class="input-field"></div><div class="form-group"><label>Spek 2</label><input type="text" id="tambahSpek2" class="input-field"></div></div>
-                <div class="form-row"><div class="form-group"><label>Spek 3</label><input type="text" id="tambahSpek3" class="input-field"></div><div class="form-group"><label>Spek 4</label><input type="text" id="tambahSpek4" class="input-field"></div></div>
-                <div class="form-group"><label>Spek 5</label><input type="text" id="tambahSpek5" class="input-field"></div>
-                <div class="form-row">
-                    <div class="form-group"><label>Foto</label><input type="text" id="tambahFoto" class="input-field" placeholder="nama.jpeg"></div>
-                    <div class="form-group"><label>Status</label><select id="tambahStatus" class="input-field"><option value="">-</option><option value="BARU">BARU</option><option value="PROMO">PROMO</option><option value="BESTSELLER">BESTSELLER</option></select></div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group"><label>Unggulan</label><select id="tambahUnggulan" class="input-field"><option value="">Tidak</option><option value="YA">YA</option></select></div>
-                    <div class="form-group"><label>Urutan</label><input type="number" id="tambahUrutan" class="input-field" value="999"></div>
-                </div>
-                <button onclick="tambahProdukAction()" class="btn-success">Simpan Produk</button>
-                <p id="tambahStatusMsg" class="status-message"></p>
-            </div>
-        </div>
-
-        <!-- TAB UPLOAD -->
-        <div id="tabUpload" class="tab-content">
-            <div class="glass-card">
-                <h2 style="font-size:18px;font-weight:700;margin-bottom:8px;">📁 Upload Excel</h2>
-                <p style="color:#908fa0;font-size:13px;margin-bottom:16px;">Upload file Excel dengan format 20 kolom.</p>
-                <div class="file-input-wrapper"><input type="file" id="excelFile" accept=".xlsx,.xls,.csv"></div>
-                <button onclick="uploadExcelAction()" class="btn-primary" style="width:100%;margin-top:12px;">📤 Upload ke Firebase</button>
-                <p id="uploadStatus" class="status-message"></p>
-            </div>
-            <div class="glass-card" style="margin-top:16px;">
-                <h2 style="font-size:16px;font-weight:700;margin-bottom:8px;">📥 Download Template</h2>
-                <button onclick="downloadTemplateAction()" class="btn-success" style="width:100%;">Download Template</button>
-            </div>
-        </div>
-
-        <!-- TAB MIGRASI -->
-        <div id="tabMigrasi" class="tab-content">
-            <div class="glass-card">
-                <h2 style="font-size:18px;font-weight:700;margin-bottom:8px;">🔄 Migrasi dari Google Sheets</h2>
-                <p style="color:#908fa0;font-size:13px;margin-bottom:16px;">Ambil semua data dari Google Sheets dan simpan ke Firebase.</p>
-                <div class="form-group"><label>Google Sheets API URL</label><input type="text" id="migrasiUrl" class="input-field" value="https://script.google.com/macros/s/AKfycbwqnu2yJWk3Bb8JPSVy8ZSZxs5Ae4VGSNpRJl1j3Qgkoj-27FQX_ys4-8qyyyrbXJhQ/exec"></div>
-                <button onclick="migrasiGoogleSheetsAction()" class="btn-success">🚀 Migrasi Sekarang</button>
-                <p id="migrasiStatus" class="status-message"></p>
-            </div>
-        </div>
-
-        <!-- TAB SETTING -->
-        <div id="tabSetting" class="tab-content">
-            <div class="glass-card">
-                <h2 style="font-size:18px;font-weight:700;margin-bottom:16px;">⚙️ Pengaturan</h2>
-                <div class="form-group"><label>Judul Web</label><input type="text" id="settingJudul" class="input-field"></div>
-                <div class="form-group"><label>WhatsApp Admin</label><input type="text" id="settingWa" class="input-field" placeholder="628xxxxxxxxx"></div>
-                <div class="form-group"><label>Tentang Toko</label><textarea id="settingTentang" class="input-field" rows="4"></textarea></div>
-                <div class="form-group"><label>Promo</label><textarea id="settingPromo" class="input-field" rows="3"></textarea></div>
-                <button onclick="saveSettingsAction()" class="btn-primary" style="width:100%;">💾 Simpan Pengaturan</button>
-                <p id="settingStatus" class="status-message"></p>
-            </div>
-        </div>
+    <div class="card">
+      <h2>2. Upload Excel</h2>
+      <p>
+        <b>Produk (KATALOG):</b> di-update berdasarkan Brand+Tipe — produk lama yang tidak ada di file ini tidak akan terhapus.<br>
+        <b>Setting:</b> hanya key yang ada di sheet ini yang diperbarui.<br>
+        <b>Banner &amp; Promo:</b> seluruh isi lama diganti total dengan isi sheet ini (karena tidak ada kolom kunci unik seperti Brand+Tipe).
+      </p>
+      <input type="file" id="fileInput" accept=".xlsx,.xls">
+      <button class="btn" id="btnUpload" onclick="prosesUpload()">Proses &amp; Simpan ke Firebase</button>
+      <div id="logBox"></div>
     </div>
 
-    <!-- MODAL EDIT -->
-    <div class="modal-overlay" id="editModal">
-        <div class="modal-box">
-            <button onclick="closeEditModalAction()" class="close-btn">✕</button>
-            <h2>✏️ Edit Produk</h2>
-            <input type="hidden" id="editId">
-            <div class="form-row"><div class="form-group"><label>Brand *</label><input type="text" id="editBrand" class="input-field"></div><div class="form-group"><label>Tipe *</label><input type="text" id="editTipe" class="input-field"></div></div>
-            <div class="form-row"><div class="form-group"><label>Harga</label><input type="number" id="editHarga" class="input-field"></div><div class="form-group"><label>Kategori *</label><input type="text" id="editKategori" class="input-field"></div></div>
-            <div class="form-group"><label>Sub Kategori</label><input type="text" id="editSubKategori" class="input-field"></div>
-            <div class="form-row"><div class="form-group"><label>Spek 1</label><input type="text" id="editSpek1" class="input-field"></div><div class="form-group"><label>Spek 2</label><input type="text" id="editSpek2" class="input-field"></div></div>
-            <div class="form-row"><div class="form-group"><label>Spek 3</label><input type="text" id="editSpek3" class="input-field"></div><div class="form-group"><label>Spek 4</label><input type="text" id="editSpek4" class="input-field"></div></div>
-            <div class="form-group"><label>Spek 5</label><input type="text" id="editSpek5" class="input-field"></div>
-            <div class="form-row"><div class="form-group"><label>Foto</label><input type="text" id="editFoto" class="input-field"></div><div class="form-group"><label>Status</label><select id="editStatus" class="input-field"><option value="">-</option><option value="BARU">BARU</option><option value="PROMO">PROMO</option><option value="BESTSELLER">BESTSELLER</option></select></div></div>
-            <div class="form-row"><div class="form-group"><label>Unggulan</label><select id="editUnggulan" class="input-field"><option value="">Tidak</option><option value="YA">YA</option></select></div><div class="form-group"><label>Urutan</label><input type="number" id="editUrutan" class="input-field" value="999"></div></div>
-            <button onclick="updateProdukAction()" class="btn-primary" style="width:100%;">💾 Update</button>
-            <p id="editStatusMsg" class="status-message"></p>
-        </div>
-    </div>
+  </div>
 
-    <!-- ============================================
-    SCRIPT - SEMUA FUNGSI
-    ============================================ -->
-    <script>
-        // ============================================
-        // PASSWORD
-        // ============================================
-        var PASSWORD = 'UFO2020';
-        var allProducts = [];
+</div>
 
-        // ============================================
-        // LOGIN
-        // ============================================
-        function loginAction() {
-            var pass = document.getElementById('loginPassword').value;
-            var statusEl = document.getElementById('loginStatus');
-            
-            if (pass === PASSWORD) {
-                document.getElementById('loginPage').style.display = 'none';
-                document.getElementById('adminContent').style.display = 'block';
-                statusEl.style.display = 'none';
-                loadProductsAction();
-                loadSettingsAction();
-            } else {
-                statusEl.style.display = 'block';
-                statusEl.innerHTML = '❌ Password salah!';
-            }
-        }
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+/* ======================================================
+   KONFIGURASI FIREBASE — samakan persis dengan index.html
+   ====================================================== */
+const firebaseConfig = {
+  apiKey: "AIzaSyBMokA92YiB87vwuqBREwNhHkkU_bXo8cI",
 
-        // ============================================
-        // LOGOUT
-        // ============================================
-        function logoutAction() {
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('adminContent').style.display = 'none';
-            document.getElementById('loginPassword').value = '';
-            document.getElementById('loginStatus').style.display = 'none';
-        }
+  authDomain: "ufokebonsariapps.firebaseapp.com",
 
-        // ============================================
-        // TAB
-        // ============================================
-        function switchTabAction(tab) {
-            document.querySelectorAll('.tab-content').forEach(function(el){ el.classList.remove('active'); });
-            document.querySelectorAll('.tab-nav button').forEach(function(el){ el.classList.remove('active'); });
-            var map = { produk:'tabProduk', tambah:'tabTambah', upload:'tabUpload', migrasi:'tabMigrasi', setting:'tabSetting' };
-            document.getElementById(map[tab]).classList.add('active');
-            document.querySelectorAll('.tab-nav button').forEach(function(btn){
-                if (btn.textContent.includes('Produk') && tab==='produk' ||
-                    btn.textContent.includes('Tambah') && tab==='tambah' ||
-                    btn.textContent.includes('Upload') && tab==='upload' ||
-                    btn.textContent.includes('Migrasi') && tab==='migrasi' ||
-                    btn.textContent.includes('Setting') && tab==='setting') {
-                    btn.classList.add('active');
-                }
-            });
-        }
+  projectId: "ufokebonsariapps",
 
-        // ============================================
-        // FILTER
-        // ============================================
-        function filterTableAction() {
-            var keyword = document.getElementById('searchProduct').value.toLowerCase();
-            document.querySelectorAll('#productTableBody tr').forEach(function(row){
-                row.style.display = row.textContent.toLowerCase().includes(keyword) ? '' : 'none';
-            });
-        }
+  storageBucket: "ufokebonsariapps.firebasestorage.app",
 
-        // ============================================
-        // CLOSE EDIT
-        // ============================================
-        function closeEditModalAction() {
-            document.getElementById('editModal').classList.remove('show');
-        }
+  messagingSenderId: "663266923207",
 
-        // ============================================
-        // DOWNLOAD TEMPLATE
-        // ============================================
-        function downloadTemplateAction() {
-            var headers = ['BRAND','TIPE','HARGA','KATEGORI','SUBKATEGORI','SPEK1','SPEK2','SPEK3','SPEK4','SPEK5','FOTO','STATUS','UNGGULAN','URUTAN'];
-            var wb = XLSX.utils.book_new();
-            var ws = XLSX.utils.aoa_to_sheet([headers]);
-            XLSX.utils.book_append_sheet(wb, ws, 'KATALOG');
-            XLSX.writeFile(wb, 'Template_Katalog_UFO.xlsx');
-        }
+  appId: "1:663266923207:web:af9a0abc268766c73724e2"
 
-        // ============================================
-        // REFRESH
-        // ============================================
-        function refreshProductsAction() {
-            loadProductsAction();
-        }
+};
 
-        // ============================================
-        // LOAD PRODUCTS
-        // ============================================
-        async function loadProductsAction() {
-            try {
-                var response = await fetch('https://firestore.googleapis.com/v1/projects/masterharga/databases/(default)/documents/ufo_products');
-                var data = await response.json();
-                if (data.documents) {
-                    allProducts = data.documents.map(function(doc){
-                        var f = doc.fields;
-                        return {
-                            id: doc.name.split('/').pop(),
-                            brand: f.brand ? f.brand.stringValue : '',
-                            tipe: f.tipe ? f.tipe.stringValue : '',
-                            harga: f.harga ? Number(f.harga.integerValue) : 0,
-                            kategori: f.kategori ? f.kategori.stringValue : '',
-                            subKategori: f.subKategori ? f.subKategori.stringValue : '',
-                            spek1: f.spek1 ? f.spek1.stringValue : '',
-                            spek2: f.spek2 ? f.spek2.stringValue : '',
-                            spek3: f.spek3 ? f.spek3.stringValue : '',
-                            spek4: f.spek4 ? f.spek4.stringValue : '',
-                            spek5: f.spek5 ? f.spek5.stringValue : '',
-                            foto: f.foto ? f.foto.stringValue : '',
-                            status: f.status ? f.status.stringValue : '',
-                            unggulan: f.unggulan ? f.unggulan.stringValue : '',
-                            urutan: f.urutan ? Number(f.urutan.integerValue) : 999
-                        };
-                    });
-                    renderTableAction(allProducts);
-                    updateStatsAction(allProducts);
-                }
-            } catch (error) {
-                document.getElementById('productTableBody').innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#ffb4ab;">❌ Gagal: ' + error.message + '</td></tr>';
-            }
-        }
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-        // ============================================
-        // RENDER TABLE
-        // ============================================
-        function renderTableAction(products) {
-            var tbody = document.getElementById('productTableBody');
-            if (!products.length) {
-                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#908fa0;">Belum ada produk.</td></tr>';
-                document.getElementById('productCount').textContent = 'Total: 0 produk';
-                return;
-            }
-            var html = '';
-            products.forEach(function(p, i){
-                var statusClass = p.status ? p.status.toLowerCase() : '';
-                var statusBadge = p.status ? '<span class="badge-status ' + statusClass + '">' + p.status + '</span>' : '-';
-                var unggulanBadge = p.unggulan === 'YA' ? '<span class="badge-status unggulan">⭐ UNGGULAN</span>' : '-';
-                var harga = p.harga ? 'Rp ' + Number(p.harga).toLocaleString('id-ID') : '-';
-                html += '<tr><td>' + (i+1) + '</td><td><strong>' + (p.brand || '') + '</strong></td><td>' + (p.tipe || '') + '</td><td>' + harga + '</td><td>' + (p.kategori || '') + '</td><td>' + statusBadge + '</td><td>' + unggulanBadge + '</td><td><button onclick="editProdukAction(\'' + p.id + '\')" class="btn-primary" style="padding:4px 12px;font-size:11px;margin-right:4px;">✏️</button><button onclick="hapusProdukAction(\'' + p.id + '\')" class="btn-danger" style="padding:4px 12px;font-size:11px;">🗑️</button></td></tr>';
-            });
-            tbody.innerHTML = html;
-            document.getElementById('productCount').textContent = 'Total: ' + products.length + ' produk';
-        }
+/* ---------- AUTH ---------- */
+auth.onAuthStateChanged(user=>{
+  if(user){
+    document.getElementById("screenLogin").style.display = "none";
+    document.getElementById("screenDashboard").style.display = "block";
+    document.getElementById("btnLogout").style.display = "inline-flex";
+    document.getElementById("userEmail").textContent = user.email;
+  }else{
+    document.getElementById("screenLogin").style.display = "block";
+    document.getElementById("screenDashboard").style.display = "none";
+    document.getElementById("btnLogout").style.display = "none";
+    document.getElementById("userEmail").textContent = "";
+  }
+});
 
-        // ============================================
-        // UPDATE STATS
-        // ============================================
-        function updateStatsAction(products) {
-            document.getElementById('statTotal').textContent = products.length;
-            var brands = new Set();
-            var categories = new Set();
-            var unggulan = 0;
-            products.forEach(function(p){
-                if (p.brand) brands.add(p.brand);
-                if (p.kategori) categories.add(p.kategori);
-                if (p.unggulan === 'YA') unggulan++;
-            });
-            document.getElementById('statBrand').textContent = brands.size;
-            document.getElementById('statKategori').textContent = categories.size;
-            document.getElementById('statUnggulan').textContent = unggulan;
-        }
+async function login(){
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  const errBox = document.getElementById("loginError");
+  errBox.style.display = "none";
+  try{
+    await auth.signInWithEmailAndPassword(email, password);
+  }catch(err){
+    errBox.textContent = "Login gagal: " + terjemahkanErrorAuth(err);
+    errBox.style.display = "block";
+  }
+}
 
-        // ============================================
-        // TAMBAH PRODUK
-        // ============================================
-        async function tambahProdukAction() {
-            var statusEl = document.getElementById('tambahStatusMsg');
-            var data = {
-                brand: document.getElementById('tambahBrand').value.trim(),
-                tipe: document.getElementById('tambahTipe').value.trim(),
-                harga: Number(document.getElementById('tambahHarga').value) || 0,
-                kategori: document.getElementById('tambahKategori').value.trim(),
-                subKategori: document.getElementById('tambahSubKategori').value.trim(),
-                spek1: document.getElementById('tambahSpek1').value.trim(),
-                spek2: document.getElementById('tambahSpek2').value.trim(),
-                spek3: document.getElementById('tambahSpek3').value.trim(),
-                spek4: document.getElementById('tambahSpek4').value.trim(),
-                spek5: document.getElementById('tambahSpek5').value.trim(),
-                foto: document.getElementById('tambahFoto').value.trim(),
-                status: document.getElementById('tambahStatus').value,
-                unggulan: document.getElementById('tambahUnggulan').value,
-                urutan: Number(document.getElementById('tambahUrutan').value) || 999
-            };
-            if (!data.brand || !data.tipe || !data.kategori) {
-                statusEl.className = 'status-message error';
-                statusEl.textContent = '⚠️ Brand, Tipe, dan Kategori wajib diisi!';
-                return;
-            }
-            try {
-                statusEl.className = 'status-message loading';
-                statusEl.textContent = '⏳ Menyimpan...';
-                var docId = (data.brand + '_' + data.tipe).replace(/[\/\\#,+()$~%.'":*?<>{} ]/g, '_');
-                await fetch('https://firestore.googleapis.com/v1/projects/masterharga/databases/(default)/documents/ufo_products/' + docId, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        fields: {
-                            brand: { stringValue: data.brand },
-                            tipe: { stringValue: data.tipe },
-                            harga: { integerValue: data.harga },
-                            kategori: { stringValue: data.kategori },
-                            subKategori: { stringValue: data.subKategori },
-                            spek1: { stringValue: data.spek1 },
-                            spek2: { stringValue: data.spek2 },
-                            spek3: { stringValue: data.spek3 },
-                            spek4: { stringValue: data.spek4 },
-                            spek5: { stringValue: data.spek5 },
-                            foto: { stringValue: data.foto },
-                            status: { stringValue: data.status },
-                            unggulan: { stringValue: data.unggulan },
-                            urutan: { integerValue: data.urutan }
-                        }
-                    })
-                });
-                statusEl.className = 'status-message success';
-                statusEl.textContent = '✅ Produk berhasil ditambahkan!';
-                document.getElementById('tambahForm').reset();
-                loadProductsAction();
-            } catch (error) {
-                statusEl.className = 'status-message error';
-                statusEl.textContent = '❌ Gagal: ' + error.message;
-            }
-        }
+function logout(){
+  auth.signOut();
+}
 
-        // ============================================
-        // EDIT PRODUK
-        // ============================================
-        function editProdukAction(id) {
-            var p = allProducts.find(function(x){ return x.id === id; });
-            if (!p) return;
-            document.getElementById('editId').value = id;
-            document.getElementById('editBrand').value = p.brand || '';
-            document.getElementById('editTipe').value = p.tipe || '';
-            document.getElementById('editHarga').value = p.harga || '';
-            document.getElementById('editKategori').value = p.kategori || '';
-            document.getElementById('editSubKategori').value = p.subKategori || '';
-            document.getElementById('editSpek1').value = p.spek1 || '';
-            document.getElementById('editSpek2').value = p.spek2 || '';
-            document.getElementById('editSpek3').value = p.spek3 || '';
-            document.getElementById('editSpek4').value = p.spek
+function terjemahkanErrorAuth(err){
+  const kode = err.code || "";
+  if(kode.includes("wrong-password") || kode.includes("invalid-credential")) return "email atau password salah.";
+  if(kode.includes("user-not-found")) return "akun tidak ditemukan.";
+  if(kode.includes("too-many-requests")) return "terlalu banyak percobaan, coba lagi nanti.";
+  return err.message || "terjadi kesalahan.";
+}
+
+/* ---------- HELPER ---------- */
+function slugId(brand, tipe){
+  return ((brand||"")+"-"+(tipe||"")).toLowerCase().replace(/[^a-z0-9]+/g,"-");
+}
+
+function bacaSheet(wb, namaSheet){
+  const ws = wb.Sheets[namaSheet];
+  if(!ws) return null;
+  return XLSX.utils.sheet_to_json(ws, { header:1, defval:"" });
+}
+
+function log(pesan){
+  const box = document.getElementById("logBox");
+  box.style.display = "block";
+  box.textContent += pesan + "\n";
+  box.scrollTop = box.scrollHeight;
+}
+
+// Firestore batch dibatasi 500 operasi, jadi commit per-chunk supaya aman untuk katalog besar
+async function commitBertahap(ops){
+  const UKURAN_CHUNK = 400;
+  for(let i=0; i<ops.length; i+=UKURAN_CHUNK){
+    const batch = db.batch();
+    const bagian = ops.slice(i, i+UKURAN_CHUNK);
+    bagian.forEach(op=>{
+      if(op.tipe === "set") batch.set(op.ref, op.data, op.opsi||{});
+      if(op.tipe === "delete") batch.delete(op.ref);
+    });
+    await batch.commit();
+  }
+}
+
+/* ---------- UPLOAD EXCEL ---------- */
+async function prosesUpload(){
+  const fileInput = document.getElementById("fileInput");
+  const btn = document.getElementById("btnUpload");
+  const file = fileInput.files[0];
+  document.getElementById("logBox").textContent = "";
+
+  if(!file){
+    alert("Pilih file Excel dulu.");
+    return;
+  }
+
+  btn.disabled = true;
+  try{
+    log("Membaca file " + file.name + " ...");
+    const buf = await file.arrayBuffer();
+    const wb = XLSX.read(buf, { type:"array" });
+
+    const ops = [];
+    let jumlahProduk = 0, jumlahBanner = 0, jumlahPromo = 0, setelanBerubah = false;
+
+    // ===== KATALOG (upsert per Brand+Tipe) =====
+    const rowsKatalog = bacaSheet(wb, "KATALOG");
+    if(rowsKatalog){
+      for(let i=1; i<rowsKatalog.length; i++){
+        const r = rowsKatalog[i];
+        if(!r[0] || !r[1]) continue; // brand & tipe wajib diisi
+        const produkObj = {
+          brand: String(r[0]).trim(),
+          tipe: String(r[1]).trim(),
+          harga: r[2] || "",
+          kategori: String(r[3]||"").trim(),
+          subKategori: String(r[4]||"").trim(),
+          spek1: r[5]||"", spek2: r[6]||"", spek3: r[7]||"", spek4: r[8]||"", spek5: r[9]||"",
+          foto: r[10]||"",
+          status: r[11]||"",
+          unggulan: r[12]||"",
+          urutan: Number(r[13])||999,
+          banner: r[14]||""
+        };
+        const id = slugId(produkObj.brand, produkObj.tipe);
+        ops.push({ tipe:"set", ref: db.collection("produk").doc(id), data: produkObj });
+        jumlahProduk++;
+      }
+      log(jumlahProduk + " baris produk siap di-upsert.");
+    } else {
+      log("(sheet KATALOG tidak ditemukan, dilewati)");
+    }
+
+    // ===== SETTING (merge) =====
+    const rowsSetting = bacaSheet(wb, "SETTING");
+    if(rowsSetting){
+      const settingObj = {};
+      for(let i=1; i<rowsSetting.length; i++){
+        const r = rowsSetting[i];
+        if(!r[0]) continue;
+        settingObj[String(r[0]).trim()] = r[1];
+      }
+      if(Object.keys(settingObj).length){
+        ops.push({ tipe:"set", ref: db.collection("setting").doc("main"), data: settingObj, opsi:{merge:true} });
+        setelanBerubah = true;
+      }
+      log("Setting: " + Object.keys(settingObj).length + " key akan diperbarui.");
+    } else {
+      log("(sheet SETTING tidak ditemukan, dilewati)");
+    }
+
+    // ===== BANNER (replace total) =====
+    const rowsBanner = bacaSheet(wb, "BANNER");
+    if(rowsBanner){
+      const lama = await db.collection("banner").get();
+      lama.forEach(doc => ops.push({ tipe:"delete", ref: doc.ref }));
+      for(let i=1; i<rowsBanner.length; i++){
+        const r = rowsBanner[i];
+        if(!r[0]) continue;
+        ops.push({ tipe:"set", ref: db.collection("banner").doc(), data:{
+          judul: r[0], gambar: r[1]||"", link: r[2]||"", urutan: Number(r[3])||999
+        }});
+        jumlahBanner++;
+      }
+      log(jumlahBanner + " banner akan menggantikan seluruh banner lama.");
+    } else {
+      log("(sheet BANNER tidak ditemukan, dilewati)");
+    }
+
+    // ===== PROMO (replace total) =====
+    const rowsPromo = bacaSheet(wb, "PROMO");
+    if(rowsPromo){
+      const lama = await db.collection("promo").get();
+      lama.forEach(doc => ops.push({ tipe:"delete", ref: doc.ref }));
+      for(let i=1; i<rowsPromo.length; i++){
+        const r = rowsPromo[i];
+        if(!r[1]) continue; // judul wajib
+        ops.push({ tipe:"set", ref: db.collection("promo").doc(), data:{
+          aktif: r[0]||"", judul: r[1], gambar: r[2]||"", link: r[3]||"", urutan: Number(r[4])||999
+        }});
+        jumlahPromo++;
+      }
+      log(jumlahPromo + " promo akan menggantikan seluruh promo lama.");
+    } else {
+      log("(sheet PROMO tidak ditemukan, dilewati)");
+    }
+
+    log("Menyimpan ke Firebase (" + ops.length + " operasi)...");
+    await commitBertahap(ops);
+
+    log("");
+    log("✅ Selesai! " + jumlahProduk + " produk, " + jumlahBanner + " banner, " + jumlahPromo + " promo diproses" + (setelanBerubah ? ", setting diperbarui." : "."));
+
+  }catch(err){
+    console.error(err);
+    log("❌ Gagal: " + (err.message||err));
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+/* ---------- UNDUH TEMPLATE ---------- */
+function unduhTemplate(){
+  const wb = XLSX.utils.book_new();
+
+  const katalog = [
+    ["BRAND","TIPE","HARGA","KATEGORI","SUBKATEGORI","SPEK1","SPEK2","SPEK3","SPEK4","SPEK5","FOTO","STATUS","UNGGULAN","URUTAN","BANNER"],
+    ["Sharp","AH-A5ZCY","","Elektronik","Ac Split","1 PK","Low Watt","Remote","Anti Bakteri","Garansi 3 Tahun","sharp-ah-a5zcy.jpg","BARU","YA",1,""]
+  ];
+  const setting = [
+    ["KEY","VALUE"],
+    ["JUDUL_WEB","UFO Kebonsari Malang"],
+    ["SUBJUDUL","Katalog Produk Resmi"],
+    ["WA_ADMIN","6289524391002"],
+    ["PROMO","Tulis info promo bulan ini di sini"],
+    ["TENTANG","Tulis deskripsi toko di sini"]
+  ];
+  const banner = [
+    ["JUDUL","GAMBAR","LINK","URUTAN"],
+    ["Promo Agustus","images/banner/promo-agustus.jpg","https://wa.me/6289524391002",1]
+  ];
+  const promo = [
+    ["AKTIF","JUDUL","GAMBAR","LINK","URUTAN"],
+    ["YA","Promo AC Sharp","promo-ac-sharp.jpg","https://wa.me/6289524391002",1]
+  ];
+
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(katalog), "KATALOG");
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(setting), "SETTING");
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(banner), "BANNER");
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(promo), "PROMO");
+
+  XLSX.writeFile(wb, "template-katalog-ufo.xlsx");
+}
+</script>
+</body>
+</html>
