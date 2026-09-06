@@ -701,8 +701,34 @@
   <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
 </a>
 
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
 <script>
-const API_URL="https://script.google.com/macros/s/AKfycbwqnu2yJWk3Bb8JPSVy8ZSZxs5Ae4VGSNpRJl1j3Qgkoj-27FQX_ys4-8qyyyrbXJhQ/exec";
+/* ======================================================
+   KONFIGURASI FIREBASE
+   Ganti nilai di bawah ini dengan config project Firebase kamu
+   (Firebase Console > Project Settings > General > Your apps > Web app)
+   ====================================================== */
+const firebaseConfig = {
+ const firebaseConfig = {
+
+  apiKey: "AIzaSyBMokA92YiB87vwuqBREwNhHkkU_bXo8cI",
+
+  authDomain: "ufokebonsariapps.firebaseapp.com",
+
+  projectId: "ufokebonsariapps",
+
+  storageBucket: "ufokebonsariapps.firebasestorage.app",
+
+  messagingSenderId: "663266923207",
+
+  appId: "1:663266923207:web:af9a0abc268766c73724e2"
+
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 let semuaProduk=[];
 let settingData={};
 let bannerData=[];
@@ -719,6 +745,56 @@ const foto = f => {
 };
 const rupiah=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n||0);
 const slug=p=>((p.brand||"")+"-"+(p.tipe||"")).toLowerCase().replace(/[^a-z0-9]+/g,"-");
+
+/* ======================================================
+   AMBIL DATA DARI FIREBASE FIRESTORE
+   (Menggantikan fetch ke Google Apps Script / Google Sheets)
+   ====================================================== */
+async function ambilDataFirestore(){
+  const [produkSnap, settingSnap, bannerSnap, promoSnap] = await Promise.all([
+    db.collection("produk").get(),
+    db.collection("setting").doc("main").get(),
+    db.collection("banner").orderBy("urutan").get(),
+    db.collection("promo").orderBy("urutan").get()
+  ]);
+
+  let produk = produkSnap.docs.map(d => d.data());
+
+  produk.sort((a,b)=>{
+    const aUnggulan = String(a.unggulan||"").toUpperCase() === "YA";
+    const bUnggulan = String(b.unggulan||"").toUpperCase() === "YA";
+    if (aUnggulan && !bUnggulan) return -1;
+    if (!aUnggulan && bUnggulan) return 1;
+    return (Number(a.urutan)||999) - (Number(b.urutan)||999);
+  });
+
+  const settingRaw = settingSnap.exists ? settingSnap.data() : {};
+
+  const banner = bannerSnap.docs.map(d => d.data());
+
+  const promo = promoSnap.docs
+    .map(d => d.data())
+    .filter(p => String(p.aktif||"").toUpperCase() === "YA")
+    .map(p => ({
+      judul: p.judul,
+      gambar: "images/promo/" + p.gambar,
+      link: p.link,
+      urutan: p.urutan
+    }));
+
+  return {
+    setting: {
+      promo: settingRaw.PROMO || "",
+      tentang: settingRaw.TENTANG || "",
+      wa: settingRaw.WA_ADMIN || "",
+      judul: settingRaw.JUDUL_WEB || "",
+      subjudul: settingRaw.SUBJUDUL || ""
+    },
+    banner,
+    promo,
+    produk
+  };
+}
 
 async function loadProduk(){
  try{
@@ -744,8 +820,7 @@ async function loadProduk(){
    }
   }
 
-  const res=await fetch(API_URL);
-  const data=await res.json();
+  const data = await ambilDataFirestore();
 
   localStorage.setItem("ufo_cache_v1", JSON.stringify({
    time: Date.now(),
