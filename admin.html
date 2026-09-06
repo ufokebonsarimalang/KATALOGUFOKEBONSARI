@@ -70,7 +70,8 @@
             <p>UFO Kebonsari Malang</p>
             <form id="loginForm" onsubmit="return false;">
                 <input type="password" id="loginPassword" class="input-field" placeholder="Masukkan password..." style="margin-bottom:12px;">
-                <button type="button" id="loginBtn" class="btn-primary" style="width:100%;">Login</button>
+                <!-- PAKAI ONCLICK LANGSUNG -->
+                <button type="button" onclick="handleLogin()" class="btn-primary" style="width:100%;">Login</button>
                 <p id="loginStatus" class="status-message" style="display:none;"></p>
             </form>
         </div>
@@ -80,7 +81,7 @@
     <div id="adminContent">
         <div class="admin-header">
             <div><h1>📊 <span class="brand">Admin</span> UFO Kebonsari</h1><p style="color:#908fa0;font-size:13px;">Kelola katalog produk</p></div>
-            <div><button id="logoutBtn" class="btn-danger" style="padding:8px 20px;">Logout</button></div>
+            <div><button onclick="logout()" class="btn-danger" style="padding:8px 20px;">Logout</button></div>
         </div>
 
         <div class="stat-grid">
@@ -91,11 +92,11 @@
         </div>
 
         <div class="tab-nav">
-            <button class="active" data-tab="produk">📦 Produk</button>
-            <button data-tab="tambah">➕ Tambah</button>
-            <button data-tab="upload">📁 Upload Excel</button>
-            <button data-tab="migrasi">🔄 Migrasi</button>
-            <button data-tab="setting">⚙️ Setting</button>
+            <button class="active" onclick="switchTab('produk')">📦 Produk</button>
+            <button onclick="switchTab('tambah')">➕ Tambah</button>
+            <button onclick="switchTab('upload')">📁 Upload Excel</button>
+            <button onclick="switchTab('migrasi')">🔄 Migrasi</button>
+            <button onclick="switchTab('setting')">⚙️ Setting</button>
         </div>
 
         <!-- TAB PRODUK -->
@@ -104,8 +105,8 @@
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
                     <h2 style="font-size:18px;font-weight:700;">Daftar Produk</h2>
                     <div style="display:flex;gap:8px;">
-                        <input type="text" id="searchProduct" class="input-field" placeholder="Cari..." style="width:200px;padding:8px 12px;font-size:13px;">
-                        <button id="refreshBtn" class="btn-primary" style="padding:8px 16px;font-size:13px;">🔄 Refresh</button>
+                        <input type="text" id="searchProduct" class="input-field" placeholder="Cari..." style="width:200px;padding:8px 12px;font-size:13px;" onkeyup="filterTable()">
+                        <button onclick="refreshProducts()" class="btn-primary" style="padding:8px 16px;font-size:13px;">🔄 Refresh</button>
                     </div>
                 </div>
                 <div class="table-wrap">
@@ -161,7 +162,7 @@
                         </div>
                         <div class="form-group"><label>Urutan</label><input type="number" id="tambahUrutan" class="input-field" value="999"></div>
                     </div>
-                    <button type="button" id="tambahBtn" class="btn-success" style="width:100%;">Simpan Produk</button>
+                    <button type="button" onclick="tambahProduk()" class="btn-success" style="width:100%;">Simpan Produk</button>
                     <p id="tambahStatusMsg" class="status-message"></p>
                 </form>
             </div>
@@ -175,13 +176,13 @@
                 <div class="file-input-wrapper">
                     <input type="file" id="excelFile" accept=".xlsx,.xls,.csv">
                 </div>
-                <button id="uploadBtn" class="btn-primary" style="width:100%;margin-top:12px;">📤 Upload ke Firebase</button>
+                <button onclick="uploadExcel()" class="btn-primary" style="width:100%;margin-top:12px;">📤 Upload ke Firebase</button>
                 <p id="uploadStatus" class="status-message"></p>
             </div>
             <div class="glass-card" style="margin-top:16px;">
                 <h2 style="font-size:16px;font-weight:700;margin-bottom:8px;">📥 Download Template</h2>
                 <p style="color:#908fa0;font-size:13px;margin-bottom:12px;">Download template Excel.</p>
-                <button id="downloadTemplateBtn" class="btn-success" style="width:100%;">Download Template</button>
+                <button onclick="downloadTemplate()" class="btn-success" style="width:100%;">Download Template</button>
             </div>
         </div>
 
@@ -203,7 +204,7 @@
                         placeholder="https://script.google.com/macros/s/.../exec" 
                         value="https://script.google.com/macros/s/AKfycbwqnu2yJWk3Bb8JPSVy8ZSZxs5Ae4VGSNpRJl1j3Qgkoj-27FQX_ys4-8qyyyrbXJhQ/exec">
                 </div>
-                <button id="migrasiBtn" class="btn-success" style="width:100%;">🚀 Migrasi Sekarang</button>
+                <button onclick="migrasiGoogleSheets()" class="btn-success" style="width:100%;">🚀 Migrasi Sekarang</button>
                 <p id="migrasiStatus" class="status-message"></p>
             </div>
         </div>
@@ -217,7 +218,7 @@
                 <div class="form-group"><label>WhatsApp Admin</label><input type="text" id="settingWa" class="input-field" placeholder="628xxxxxxxxx"></div>
                 <div class="form-group"><label>Tentang Toko</label><textarea id="settingTentang" class="input-field" rows="4"></textarea></div>
                 <div class="form-group"><label>Promo</label><textarea id="settingPromo" class="input-field" rows="3"></textarea></div>
-                <button id="settingSaveBtn" class="btn-primary" style="width:100%;">💾 Simpan Pengaturan</button>
+                <button onclick="saveSettings()" class="btn-primary" style="width:100%;">💾 Simpan Pengaturan</button>
                 <p id="settingStatus" class="status-message"></p>
             </div>
         </div>
@@ -226,7 +227,7 @@
     <!-- MODAL EDIT -->
     <div class="modal-overlay" id="editModal">
         <div class="modal-box">
-            <button id="closeEditBtn" class="close-btn">✕</button>
+            <button onclick="closeEditModal()" class="close-btn">✕</button>
             <h2>✏️ Edit Produk</h2>
             <form id="editForm" onsubmit="return false;">
                 <input type="hidden" id="editId">
@@ -268,54 +269,38 @@
                     </div>
                     <div class="form-group"><label>Urutan</label><input type="number" id="editUrutan" class="input-field" value="999"></div>
                 </div>
-                <button type="button" id="updateBtn" class="btn-primary" style="width:100%;">💾 Update Produk</button>
+                <button type="button" onclick="updateProduk()" class="btn-primary" style="width:100%;">💾 Update Produk</button>
                 <p id="editStatusMsg" class="status-message"></p>
             </form>
         </div>
     </div>
 
     <!-- ============================================
-    SCRIPT
+    SCRIPT - PAKAI ONCLICK SEMUA
     ============================================ -->
     <script>
         // ============================================
-        // GLOBAL FUNCTIONS
+        // PASSWORD
         // ============================================
         const PASSWORD = 'UFO2020';
         let allProducts = [];
 
         // ============================================
-        // HANDLE LOGIN
+        // HANDLE LOGIN - PAKAI ONCLICK
         // ============================================
         function handleLogin() {
-            console.log('🔍 handleLogin() dipanggil!');
+            console.log('🔍 Tombol Login diklik!');
             
             const pass = document.getElementById('loginPassword').value.trim();
             const statusEl = document.getElementById('loginStatus');
-            const loginPage = document.getElementById('loginPage');
-            const adminContent = document.getElementById('adminContent');
-            
-            console.log('Password yang dimasukkan:', pass);
-            console.log('Password yang benar:', PASSWORD);
             
             if (pass === PASSWORD) {
                 console.log('✅ Login berhasil!');
-                loginPage.style.display = 'none';
-                adminContent.style.display = 'block';
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
                 statusEl.style.display = 'none';
-                
-                // Load data
-                if (typeof loadProducts === 'function') {
-                    loadProducts();
-                } else {
-                    console.log('⚠️ loadProducts belum terdefinisi');
-                }
-                
-                if (typeof loadSettings === 'function') {
-                    loadSettings();
-                } else {
-                    console.log('⚠️ loadSettings belum terdefinisi');
-                }
+                loadProducts();
+                loadSettings();
             } else {
                 console.log('❌ Password salah!');
                 statusEl.style.display = 'block';
@@ -345,12 +330,11 @@
             document.getElementById(map[tab]).classList.add('active');
             
             document.querySelectorAll('.tab-nav button').forEach(btn => {
-                const txt = btn.textContent;
-                if (txt.includes('Produk') && tab==='produk' ||
-                    txt.includes('Tambah') && tab==='tambah' ||
-                    txt.includes('Upload') && tab==='upload' ||
-                    txt.includes('Migrasi') && tab==='migrasi' ||
-                    txt.includes('Setting') && tab==='setting') {
+                if (btn.textContent.includes('Produk') && tab==='produk' ||
+                    btn.textContent.includes('Tambah') && tab==='tambah' ||
+                    btn.textContent.includes('Upload') && tab==='upload' ||
+                    btn.textContent.includes('Migrasi') && tab==='migrasi' ||
+                    btn.textContent.includes('Setting') && tab==='setting') {
                     btn.classList.add('active');
                 }
             });
@@ -385,6 +369,13 @@
         }
 
         // ============================================
+        // REFRESH PRODUCTS
+        // ============================================
+        function refreshProducts() {
+            loadProducts();
+        }
+
+        // ============================================
         // LOAD PRODUCTS (REST API)
         // ============================================
         async function loadProducts() {
@@ -416,10 +407,10 @@
                     });
                     renderTable(allProducts);
                     updateStats(allProducts);
-                    console.log(`✅ ${allProducts.length} produk dimuat`);
+                    console.log('✅ ' + allProducts.length + ' produk dimuat');
                 }
             } catch (error) {
-                console.error('❌ Error loading products:', error);
+                console.error('❌ Error:', error);
                 document.getElementById('productTableBody').innerHTML = 
                     `<tr><td colspan="8" style="text-align:center;padding:40px;color:#ffb4ab;">❌ Gagal memuat data: ${error.message}</td></tr>`;
             }
@@ -443,3 +434,31 @@
                 const unggulanBadge = p.unggulan === 'YA' ? `<span class="badge-status unggulan">⭐ UNGGULAN</span>` : '-';
                 const harga = p.harga ? `Rp ${Number(p.harga).toLocaleString('id-ID')}` : '-';
                 
+                html += `
+                    <tr>
+                        <td>${i+1}</td>
+                        <td><strong>${p.brand || ''}</strong></td>
+                        <td>${p.tipe || ''}</td>
+                        <td>${harga}</td>
+                        <td>${p.kategori || ''}</td>
+                        <td>${statusBadge}</td>
+                        <td>${unggulanBadge}</td>
+                        <td>
+                            <button onclick="editProduk('${p.id}')" class="btn-primary" style="padding:4px 12px;font-size:11px;margin-right:4px;">✏️</button>
+                            <button onclick="hapusProduk('${p.id}')" class="btn-danger" style="padding:4px 12px;font-size:11px;">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+            document.getElementById('productCount').textContent = 'Total: ' + products.length + ' produk';
+        }
+
+        // ============================================
+        // UPDATE STATS
+        // ============================================
+        function updateStats(products) {
+            document.getElementById('statTotal').textContent = products.length;
+            document.getElementById('statBrand').textContent = new Set(products.map(p=>p.brand).filter(Boolean)).size;
+            document.getElementById('statKategori').textContent = new Set(products.map(p=>p.kategori).filter(Boolean)).size;
+            document.getElementById
