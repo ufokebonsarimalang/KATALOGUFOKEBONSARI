@@ -787,9 +787,14 @@ async function ambilDataFirestore(){
   };
 }
 
+const CACHE_KEY = "ufo_cache_v1";
+const CACHE_TTL_MS = 60 * 60 * 1000; // cache dipakai selama 1 jam sebelum ambil data baru dari Firestore lagi (ubah angka ini kalau mau durasi lain)
+
 async function loadProduk(){
  try{
-  const cache = localStorage.getItem("ufo_cache_v1");
+  const cache = localStorage.getItem(CACHE_KEY);
+  let cacheMasihBaru = false;
+
   if(cache){
    const c = JSON.parse(cache);
    semuaProduk = c.data?.produk || [];
@@ -809,11 +814,20 @@ async function loadProduk(){
      const produk = semuaProduk.find(p=>slug(p)===slugProduk);
      if(produk) detail(produk);
    }
+
+   const umurCache = Date.now() - (c.time || 0);
+   if(umurCache < CACHE_TTL_MS){
+     // Cache masih baru: cukup tampilkan dari cache, tidak perlu narik ulang dari Firestore
+     cacheMasihBaru = true;
+     mulaiPromoPopup();
+   }
   }
+
+  if(cacheMasihBaru) return;
 
   const data = await ambilDataFirestore();
 
-  localStorage.setItem("ufo_cache_v1", JSON.stringify({
+  localStorage.setItem(CACHE_KEY, JSON.stringify({
    time: Date.now(),
    data: data
   }));
