@@ -1,64 +1,47 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - UFO Kebonsari Malang</title>
+    <title>Admin - UFO</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0b0f19; color: #dfe2f1; min-height: 100vh; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0b0f19; color: #dfe2f1; }
+        .login-box { background: rgba(23,27,38,0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 2rem; padding: 40px; max-width: 400px; margin: 100px auto; text-align: center; }
+        .btn-primary { background: linear-gradient(135deg, #c0c1ff, #a8a9ff); color: #1000a9; font-weight: 700; padding: 12px 24px; border-radius: 1rem; border: none; cursor: pointer; font-size: 16px; width: 100%; }
+        .input-field { width: 100%; padding: 12px 16px; background: rgba(15,19,29,0.8); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; color: #dfe2f1; font-size: 14px; outline: none; margin-bottom: 12px; }
+        #adminContent { display: none; padding: 20px; max-width: 1400px; margin: 0 auto; }
         .glass-card { background: rgba(23,27,38,0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 1.5rem; padding: 24px; }
-        .btn-primary { background: linear-gradient(135deg, #c0c1ff, #a8a9ff); color: #1000a9; font-weight: 700; padding: 10px 20px; border-radius: 1rem; border: none; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .btn-primary:hover { transform: scale(1.02); }
-        .btn-danger { background: linear-gradient(135deg, #ff6b6b, #ee5a24); color: #fff; font-weight: 700; padding: 8px 16px; border-radius: 0.75rem; border: none; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; }
-        .btn-success { background: linear-gradient(135deg, #4edea3, #3acb92); color: #003824; font-weight: 700; padding: 10px 20px; border-radius: 1rem; border: none; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .input-field { width: 100%; padding: 12px 16px; background: rgba(15,19,29,0.8); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; color: #dfe2f1; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; outline: none; }
-        .input-field:focus { border-color: #c0c1ff; }
-        .status-message { font-size: 0.75rem; font-weight: 600; text-align: center; padding: 0.5rem; border-radius: 0.75rem; margin-top: 0.5rem; }
-        .status-message.success { color: #4edea3; }
-        .status-message.error { color: #ffb4ab; }
-        .status-message.loading { color: #c0c1ff; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 24px; }
+        .brand { color: #c0c1ff; }
         .table-wrap { overflow-x: auto; }
         .table-wrap table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        .table-wrap thead th { text-align: left; padding: 10px 12px; font-weight: 600; color: #908fa0; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.06); background: #0b0f19; position: sticky; top: 0; }
+        .table-wrap thead th { text-align: left; padding: 10px 12px; font-weight: 600; color: #908fa0; font-size: 11px; border-bottom: 1px solid rgba(255,255,255,0.06); }
         .table-wrap tbody td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.03); }
-        .table-wrap tbody tr:hover { background: rgba(255,255,255,0.02); }
-        #loginPage { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0b0f19; }
-        .login-box { background: rgba(23,27,38,0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 2rem; padding: 40px; width: 100%; max-width: 400px; }
-        .login-box h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 8px; }
-        .login-box p { text-align: center; color: #908fa0; font-size: 14px; margin-bottom: 24px; }
-        #adminContent { display: none; padding: 20px; max-width: 1400px; margin: 0 auto; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
-        .admin-header h1 { font-size: 24px; font-weight: 800; }
-        .admin-header .brand { color: #c0c1ff; }
         .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 16px; margin-bottom: 24px; }
         .stat-card { background: rgba(23,27,38,0.6); border: 1px solid rgba(255,255,255,0.05); border-radius: 1rem; padding: 16px 20px; text-align: center; }
         .stat-card .number { font-size: 28px; font-weight: 800; color: #c0c1ff; }
-        .stat-card .label { font-size: 11px; color: #908fa0; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
-        .tab-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
-        .tab-nav button { padding: 8px 20px; border: none; border-radius: 0.75rem; background: transparent; color: #908fa0; font-weight: 600; font-size: 13px; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .stat-card .label { font-size: 11px; color: #908fa0; }
+        .tab-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .tab-nav button { padding: 8px 20px; border: none; border-radius: 0.75rem; background: transparent; color: #908fa0; font-weight: 600; cursor: pointer; }
         .tab-nav button.active { background: rgba(192,193,255,0.12); color: #c0c1ff; }
-        .tab-nav button:hover:not(.active) { color: #dfe2f1; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+        .btn-danger { background: #ff6b6b; color: #fff; padding: 8px 16px; border: none; border-radius: 0.75rem; cursor: pointer; }
         .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-size: 12px; font-weight: 600; color: #908fa0; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .file-input-wrapper input[type="file"] { width: 100%; padding: 12px; background: rgba(15,19,29,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; color: #c7c4d7; font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; }
-        @media (max-width:768px){ .form-row { grid-template-columns:1fr; } .admin-header { flex-direction:column; align-items:flex-start; } .login-box { padding:24px; margin:16px; } }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; color: #908fa0; text-transform: uppercase; }
+        .input-field { width: 100%; padding: 10px 14px; background: rgba(15,19,29,0.8); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; color: #dfe2f1; outline: none; }
+        .btn-success { background: linear-gradient(135deg, #4edea3, #3acb92); color: #003824; font-weight: 700; padding: 10px 20px; border: none; border-radius: 1rem; cursor: pointer; width: 100%; }
         .badge-status { display: inline-block; padding: 2px 12px; border-radius: 9999px; font-size: 10px; font-weight: 700; }
         .badge-status.baru { background: rgba(139,92,246,0.15); color: #a78bfa; }
         .badge-status.promo { background: rgba(239,68,68,0.15); color: #f87171; }
         .badge-status.bestseller { background: rgba(245,158,11,0.15); color: #fbbf24; }
         .badge-status.unggulan { background: rgba(78,222,163,0.15); color: #4edea3; }
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 9999; justify-content: center; align-items: center; padding: 20px; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center; padding: 20px; }
         .modal-overlay.show { display: flex; }
-        .modal-box { background: #171b26; border: 1px solid rgba(255,255,255,0.05); border-radius: 1.5rem; padding: 32px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
-        .modal-box h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+        .modal-box { background: #171b26; border: 1px solid rgba(255,255,255,0.05); border-radius: 1.5rem; padding: 32px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; }
         .modal-box .close-btn { float: right; background: none; border: none; color: #908fa0; font-size: 24px; cursor: pointer; }
-        .modal-box .close-btn:hover { color: #dfe2f1; }
+        .file-input-wrapper input[type="file"] { width: 100%; padding: 12px; background: rgba(15,19,29,0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.75rem; color: #c7c4d7; font-size: 13px; cursor: pointer; }
+        @media (max-width:768px){ .form-row { grid-template-columns:1fr; } }
     </style>
 </head>
 <body>
@@ -68,20 +51,17 @@
         <div class="login-box">
             <h1>🔐 Admin Panel</h1>
             <p>UFO Kebonsari Malang</p>
-            <form id="loginForm" onsubmit="return false;">
-                <input type="password" id="loginPassword" class="input-field" placeholder="Masukkan password..." style="margin-bottom:12px;">
-                <!-- PAKAI ONCLICK LANGSUNG -->
-                <button type="button" onclick="handleLogin()" class="btn-primary" style="width:100%;">Login</button>
-                <p id="loginStatus" class="status-message" style="display:none;"></p>
-            </form>
+            <input type="password" id="loginPassword" class="input-field" placeholder="Masukkan password...">
+            <button onclick="handleLogin()" class="btn-primary">Login</button>
+            <p id="loginStatus" style="color:#ffb4ab;margin-top:8px;display:none;">❌ Password salah!</p>
         </div>
     </div>
 
     <!-- ADMIN -->
     <div id="adminContent">
         <div class="admin-header">
-            <div><h1>📊 <span class="brand">Admin</span> UFO Kebonsari</h1><p style="color:#908fa0;font-size:13px;">Kelola katalog produk</p></div>
-            <div><button onclick="logout()" class="btn-danger" style="padding:8px 20px;">Logout</button></div>
+            <div><h1>📊 <span class="brand">Admin</span> UFO Kebonsari</h1></div>
+            <div><button onclick="logout()" class="btn-danger">Logout</button></div>
         </div>
 
         <div class="stat-grid">
@@ -94,7 +74,7 @@
         <div class="tab-nav">
             <button class="active" onclick="switchTab('produk')">📦 Produk</button>
             <button onclick="switchTab('tambah')">➕ Tambah</button>
-            <button onclick="switchTab('upload')">📁 Upload Excel</button>
+            <button onclick="switchTab('upload')">📁 Upload</button>
             <button onclick="switchTab('migrasi')">🔄 Migrasi</button>
             <button onclick="switchTab('setting')">⚙️ Setting</button>
         </div>
@@ -102,12 +82,10 @@
         <!-- TAB PRODUK -->
         <div id="tabProduk" class="tab-content active">
             <div class="glass-card">
-                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
-                    <h2 style="font-size:18px;font-weight:700;">Daftar Produk</h2>
-                    <div style="display:flex;gap:8px;">
-                        <input type="text" id="searchProduct" class="input-field" placeholder="Cari..." style="width:200px;padding:8px 12px;font-size:13px;" onkeyup="filterTable()">
-                        <button onclick="refreshProducts()" class="btn-primary" style="padding:8px 16px;font-size:13px;">🔄 Refresh</button>
-                    </div>
+                <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+                    <h2 style="font-size:18px;">Daftar Produk</h2>
+                    <div><input type="text" id="searchProduct" class="input-field" placeholder="Cari..." style="width:200px;padding:8px 12px;font-size:13px;" onkeyup="filterTable()">
+                    <button onclick="refreshProducts()" class="btn-primary" style="padding:8px 16px;font-size:13px;">🔄 Refresh</button></div>
                 </div>
                 <div class="table-wrap">
                     <table>
@@ -115,63 +93,61 @@
                         <tbody id="productTableBody"><tr><td colspan="8" style="text-align:center;padding:40px;color:#908fa0;">Memuat data...</td></tr></tbody>
                     </table>
                 </div>
-                <div style="margin-top:12px;font-size:12px;color:#908fa0;" id="productCount"></div>
+                <div style="margin-top:12px;color:#908fa0;" id="productCount"></div>
             </div>
         </div>
 
         <!-- TAB TAMBAH -->
         <div id="tabTambah" class="tab-content">
             <div class="glass-card">
-                <h2 style="font-size:18px;font-weight:700;margin-bottom:16px;">➕ Tambah Produk</h2>
-                <form id="tambahForm" onsubmit="return false;">
-                    <div class="form-row">
-                        <div class="form-group"><label>Brand *</label><input type="text" id="tambahBrand" class="input-field" placeholder="SAMSUNG" required></div>
-                        <div class="form-group"><label>Tipe *</label><input type="text" id="tambahTipe" class="input-field" placeholder="UA43U8000FKXXD" required></div>
+                <h2 style="font-size:18px;margin-bottom:16px;">➕ Tambah Produk</h2>
+                <div class="form-row">
+                    <div class="form-group"><label>Brand *</label><input type="text" id="tambahBrand" class="input-field" placeholder="SAMSUNG"></div>
+                    <div class="form-group"><label>Tipe *</label><input type="text" id="tambahTipe" class="input-field" placeholder="UA43U8000FKXXD"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Harga</label><input type="number" id="tambahHarga" class="input-field" placeholder="3798000"></div>
+                    <div class="form-group"><label>Kategori *</label><input type="text" id="tambahKategori" class="input-field" placeholder="ELEKTRONIK"></div>
+                </div>
+                <div class="form-group"><label>Sub Kategori</label><input type="text" id="tambahSubKategori" class="input-field" placeholder="Smart TV"></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Spek 1</label><input type="text" id="tambahSpek1" class="input-field"></div>
+                    <div class="form-group"><label>Spek 2</label><input type="text" id="tambahSpek2" class="input-field"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Spek 3</label><input type="text" id="tambahSpek3" class="input-field"></div>
+                    <div class="form-group"><label>Spek 4</label><input type="text" id="tambahSpek4" class="input-field"></div>
+                </div>
+                <div class="form-group"><label>Spek 5</label><input type="text" id="tambahSpek5" class="input-field"></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Foto</label><input type="text" id="tambahFoto" class="input-field" placeholder="nama.jpeg"></div>
+                    <div class="form-group"><label>Status</label>
+                        <select id="tambahStatus" class="input-field">
+                            <option value="">-</option>
+                            <option value="BARU">BARU</option>
+                            <option value="PROMO">PROMO</option>
+                            <option value="BESTSELLER">BESTSELLER</option>
+                        </select>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group"><label>Harga</label><input type="number" id="tambahHarga" class="input-field" placeholder="3798000"></div>
-                        <div class="form-group"><label>Kategori *</label><input type="text" id="tambahKategori" class="input-field" placeholder="ELEKTRONIK" required></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Unggulan</label>
+                        <select id="tambahUnggulan" class="input-field">
+                            <option value="">Tidak</option>
+                            <option value="YA">YA</option>
+                        </select>
                     </div>
-                    <div class="form-group"><label>Sub Kategori</label><input type="text" id="tambahSubKategori" class="input-field" placeholder="Smart TV"></div>
-                    <div class="form-row">
-                        <div class="form-group"><label>Spek 1</label><input type="text" id="tambahSpek1" class="input-field" placeholder="Spek 1"></div>
-                        <div class="form-group"><label>Spek 2</label><input type="text" id="tambahSpek2" class="input-field" placeholder="Spek 2"></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group"><label>Spek 3</label><input type="text" id="tambahSpek3" class="input-field" placeholder="Spek 3"></div>
-                        <div class="form-group"><label>Spek 4</label><input type="text" id="tambahSpek4" class="input-field" placeholder="Spek 4"></div>
-                    </div>
-                    <div class="form-group"><label>Spek 5</label><input type="text" id="tambahSpek5" class="input-field" placeholder="Spek 5"></div>
-                    <div class="form-row">
-                        <div class="form-group"><label>Foto</label><input type="text" id="tambahFoto" class="input-field" placeholder="UA43U8000FKXXD.jpeg"></div>
-                        <div class="form-group"><label>Status</label>
-                            <select id="tambahStatus" class="input-field">
-                                <option value="">-</option>
-                                <option value="BARU">BARU</option>
-                                <option value="PROMO">PROMO</option>
-                                <option value="BESTSELLER">BESTSELLER</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group"><label>Unggulan</label>
-                            <select id="tambahUnggulan" class="input-field">
-                                <option value="">Tidak</option>
-                                <option value="YA">YA</option>
-                            </select>
-                        </div>
-                        <div class="form-group"><label>Urutan</label><input type="number" id="tambahUrutan" class="input-field" value="999"></div>
-                    </div>
-                    <button type="button" onclick="tambahProduk()" class="btn-success" style="width:100%;">Simpan Produk</button>
-                    <p id="tambahStatusMsg" class="status-message"></p>
-                </form>
+                    <div class="form-group"><label>Urutan</label><input type="number" id="tambahUrutan" class="input-field" value="999"></div>
+                </div>
+                <button onclick="tambahProduk()" class="btn-success">Simpan Produk</button>
+                <p id="tambahStatusMsg" class="status-message"></p>
             </div>
         </div>
 
         <!-- TAB UPLOAD -->
         <div id="tabUpload" class="tab-content">
             <div class="glass-card">
-                <h2 style="font-size:18px;font-weight:700;margin-bottom:8px;">📁 Upload Excel</h2>
+                <h2 style="font-size:18px;margin-bottom:8px;">📁 Upload Excel</h2>
                 <p style="color:#908fa0;font-size:13px;margin-bottom:16px;">Upload file Excel dengan format 20 kolom.</p>
                 <div class="file-input-wrapper">
                     <input type="file" id="excelFile" accept=".xlsx,.xls,.csv">
@@ -180,8 +156,7 @@
                 <p id="uploadStatus" class="status-message"></p>
             </div>
             <div class="glass-card" style="margin-top:16px;">
-                <h2 style="font-size:16px;font-weight:700;margin-bottom:8px;">📥 Download Template</h2>
-                <p style="color:#908fa0;font-size:13px;margin-bottom:12px;">Download template Excel.</p>
+                <h2 style="font-size:16px;margin-bottom:8px;">📥 Download Template</h2>
                 <button onclick="downloadTemplate()" class="btn-success" style="width:100%;">Download Template</button>
             </div>
         </div>
@@ -189,22 +164,13 @@
         <!-- TAB MIGRASI -->
         <div id="tabMigrasi" class="tab-content">
             <div class="glass-card">
-                <h2 style="font-size:18px;font-weight:700;margin-bottom:8px;">🔄 Migrasi dari Google Sheets</h2>
+                <h2 style="font-size:18px;margin-bottom:8px;">🔄 Migrasi dari Google Sheets</h2>
                 <p style="color:#908fa0;font-size:13px;margin-bottom:16px;">Ambil semua data dari Google Sheets dan simpan ke Firebase.</p>
-                <div style="background:rgba(15,19,29,0.6);padding:16px;border-radius:1rem;border:1px solid rgba(255,255,255,0.05);margin-bottom:16px;">
-                    <p style="font-size:13px;color:#c7c4d7;margin-bottom:8px;">📌 <strong>Pastikan:</strong></p>
-                    <ul style="font-size:12px;color:#908fa0;list-style:none;padding:0;">
-                        <li>✅ Google Sheets sudah di-publish sebagai API</li>
-                        <li>✅ Data di sheet "KATALOG" sesuai format</li>
-                    </ul>
-                </div>
                 <div class="form-group">
                     <label>Google Sheets API URL</label>
-                    <input type="text" id="migrasiUrl" class="input-field" 
-                        placeholder="https://script.google.com/macros/s/.../exec" 
-                        value="https://script.google.com/macros/s/AKfycbwqnu2yJWk3Bb8JPSVy8ZSZxs5Ae4VGSNpRJl1j3Qgkoj-27FQX_ys4-8qyyyrbXJhQ/exec">
+                    <input type="text" id="migrasiUrl" class="input-field" value="https://script.google.com/macros/s/AKfycbwqnu2yJWk3Bb8JPSVy8ZSZxs5Ae4VGSNpRJl1j3Qgkoj-27FQX_ys4-8qyyyrbXJhQ/exec">
                 </div>
-                <button onclick="migrasiGoogleSheets()" class="btn-success" style="width:100%;">🚀 Migrasi Sekarang</button>
+                <button onclick="migrasiGoogleSheets()" class="btn-success">🚀 Migrasi Sekarang</button>
                 <p id="migrasiStatus" class="status-message"></p>
             </div>
         </div>
@@ -212,9 +178,8 @@
         <!-- TAB SETTING -->
         <div id="tabSetting" class="tab-content">
             <div class="glass-card">
-                <h2 style="font-size:18px;font-weight:700;margin-bottom:16px;">⚙️ Pengaturan</h2>
+                <h2 style="font-size:18px;margin-bottom:16px;">⚙️ Pengaturan</h2>
                 <div class="form-group"><label>Judul Web</label><input type="text" id="settingJudul" class="input-field"></div>
-                <div class="form-group"><label>Sub Judul</label><input type="text" id="settingSubJudul" class="input-field"></div>
                 <div class="form-group"><label>WhatsApp Admin</label><input type="text" id="settingWa" class="input-field" placeholder="628xxxxxxxxx"></div>
                 <div class="form-group"><label>Tentang Toko</label><textarea id="settingTentang" class="input-field" rows="4"></textarea></div>
                 <div class="form-group"><label>Promo</label><textarea id="settingPromo" class="input-field" rows="3"></textarea></div>
@@ -229,82 +194,75 @@
         <div class="modal-box">
             <button onclick="closeEditModal()" class="close-btn">✕</button>
             <h2>✏️ Edit Produk</h2>
-            <form id="editForm" onsubmit="return false;">
-                <input type="hidden" id="editId">
-                <div class="form-row">
-                    <div class="form-group"><label>Brand *</label><input type="text" id="editBrand" class="input-field" required></div>
-                    <div class="form-group"><label>Tipe *</label><input type="text" id="editTipe" class="input-field" required></div>
+            <input type="hidden" id="editId">
+            <div class="form-row">
+                <div class="form-group"><label>Brand *</label><input type="text" id="editBrand" class="input-field"></div>
+                <div class="form-group"><label>Tipe *</label><input type="text" id="editTipe" class="input-field"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Harga</label><input type="number" id="editHarga" class="input-field"></div>
+                <div class="form-group"><label>Kategori *</label><input type="text" id="editKategori" class="input-field"></div>
+            </div>
+            <div class="form-group"><label>Sub Kategori</label><input type="text" id="editSubKategori" class="input-field"></div>
+            <div class="form-row">
+                <div class="form-group"><label>Spek 1</label><input type="text" id="editSpek1" class="input-field"></div>
+                <div class="form-group"><label>Spek 2</label><input type="text" id="editSpek2" class="input-field"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Spek 3</label><input type="text" id="editSpek3" class="input-field"></div>
+                <div class="form-group"><label>Spek 4</label><input type="text" id="editSpek4" class="input-field"></div>
+            </div>
+            <div class="form-group"><label>Spek 5</label><input type="text" id="editSpek5" class="input-field"></div>
+            <div class="form-row">
+                <div class="form-group"><label>Foto</label><input type="text" id="editFoto" class="input-field"></div>
+                <div class="form-group"><label>Status</label>
+                    <select id="editStatus" class="input-field">
+                        <option value="">-</option>
+                        <option value="BARU">BARU</option>
+                        <option value="PROMO">PROMO</option>
+                        <option value="BESTSELLER">BESTSELLER</option>
+                    </select>
                 </div>
-                <div class="form-row">
-                    <div class="form-group"><label>Harga</label><input type="number" id="editHarga" class="input-field"></div>
-                    <div class="form-group"><label>Kategori *</label><input type="text" id="editKategori" class="input-field" required></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Unggulan</label>
+                    <select id="editUnggulan" class="input-field">
+                        <option value="">Tidak</option>
+                        <option value="YA">YA</option>
+                    </select>
                 </div>
-                <div class="form-group"><label>Sub Kategori</label><input type="text" id="editSubKategori" class="input-field"></div>
-                <div class="form-row">
-                    <div class="form-group"><label>Spek 1</label><input type="text" id="editSpek1" class="input-field"></div>
-                    <div class="form-group"><label>Spek 2</label><input type="text" id="editSpek2" class="input-field"></div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group"><label>Spek 3</label><input type="text" id="editSpek3" class="input-field"></div>
-                    <div class="form-group"><label>Spek 4</label><input type="text" id="editSpek4" class="input-field"></div>
-                </div>
-                <div class="form-group"><label>Spek 5</label><input type="text" id="editSpek5" class="input-field"></div>
-                <div class="form-row">
-                    <div class="form-group"><label>Foto</label><input type="text" id="editFoto" class="input-field"></div>
-                    <div class="form-group"><label>Status</label>
-                        <select id="editStatus" class="input-field">
-                            <option value="">-</option>
-                            <option value="BARU">BARU</option>
-                            <option value="PROMO">PROMO</option>
-                            <option value="BESTSELLER">BESTSELLER</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group"><label>Unggulan</label>
-                        <select id="editUnggulan" class="input-field">
-                            <option value="">Tidak</option>
-                            <option value="YA">YA</option>
-                        </select>
-                    </div>
-                    <div class="form-group"><label>Urutan</label><input type="number" id="editUrutan" class="input-field" value="999"></div>
-                </div>
-                <button type="button" onclick="updateProduk()" class="btn-primary" style="width:100%;">💾 Update Produk</button>
-                <p id="editStatusMsg" class="status-message"></p>
-            </form>
+                <div class="form-group"><label>Urutan</label><input type="number" id="editUrutan" class="input-field" value="999"></div>
+            </div>
+            <button onclick="updateProduk()" class="btn-primary" style="width:100%;">💾 Update</button>
+            <p id="editStatusMsg" class="status-message"></p>
         </div>
     </div>
 
     <!-- ============================================
-    SCRIPT - PAKAI ONCLICK SEMUA
+    SCRIPT - SEMUA FUNGSI DI SINI
     ============================================ -->
     <script>
         // ============================================
-        // PASSWORD
+        // PASSWORD & STATE
         // ============================================
         const PASSWORD = 'UFO2020';
         let allProducts = [];
 
         // ============================================
-        // HANDLE LOGIN - PAKAI ONCLICK
+        // HANDLE LOGIN
         // ============================================
         function handleLogin() {
-            console.log('🔍 Tombol Login diklik!');
-            
             const pass = document.getElementById('loginPassword').value.trim();
             const statusEl = document.getElementById('loginStatus');
             
             if (pass === PASSWORD) {
-                console.log('✅ Login berhasil!');
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('adminContent').style.display = 'block';
                 statusEl.style.display = 'none';
                 loadProducts();
                 loadSettings();
             } else {
-                console.log('❌ Password salah!');
                 statusEl.style.display = 'block';
-                statusEl.className = 'status-message error';
                 statusEl.textContent = '❌ Password salah!';
             }
         }
@@ -325,10 +283,8 @@
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-nav button').forEach(el => el.classList.remove('active'));
-            
             const map = { produk:'tabProduk', tambah:'tabTambah', upload:'tabUpload', migrasi:'tabMigrasi', setting:'tabSetting' };
             document.getElementById(map[tab]).classList.add('active');
-            
             document.querySelectorAll('.tab-nav button').forEach(btn => {
                 if (btn.textContent.includes('Produk') && tab==='produk' ||
                     btn.textContent.includes('Tambah') && tab==='tambah' ||
@@ -369,21 +325,19 @@
         }
 
         // ============================================
-        // REFRESH PRODUCTS
+        // REFRESH
         // ============================================
         function refreshProducts() {
             loadProducts();
         }
 
         // ============================================
-        // LOAD PRODUCTS (REST API)
+        // LOAD PRODUCTS
         // ============================================
         async function loadProducts() {
             try {
-                console.log('🔄 Memuat produk...');
                 const response = await fetch('https://firestore.googleapis.com/v1/projects/masterharga/databases/(default)/documents/ufo_products');
                 const data = await response.json();
-                
                 if (data.documents) {
                     allProducts = data.documents.map(doc => {
                         const f = doc.fields;
@@ -407,12 +361,9 @@
                     });
                     renderTable(allProducts);
                     updateStats(allProducts);
-                    console.log('✅ ' + allProducts.length + ' produk dimuat');
                 }
             } catch (error) {
-                console.error('❌ Error:', error);
-                document.getElementById('productTableBody').innerHTML = 
-                    `<tr><td colspan="8" style="text-align:center;padding:40px;color:#ffb4ab;">❌ Gagal memuat data: ${error.message}</td></tr>`;
+                document.getElementById('productTableBody').innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:#ffb4ab;">❌ Gagal: ${error.message}</td></tr>`;
             }
         }
 
@@ -426,14 +377,12 @@
                 document.getElementById('productCount').textContent = 'Total: 0 produk';
                 return;
             }
-
             let html = '';
             products.forEach((p, i) => {
                 const statusClass = p.status ? p.status.toLowerCase() : '';
                 const statusBadge = p.status ? `<span class="badge-status ${statusClass}">${p.status}</span>` : '-';
                 const unggulanBadge = p.unggulan === 'YA' ? `<span class="badge-status unggulan">⭐ UNGGULAN</span>` : '-';
                 const harga = p.harga ? `Rp ${Number(p.harga).toLocaleString('id-ID')}` : '-';
-                
                 html += `
                     <tr>
                         <td>${i+1}</td>
@@ -461,4 +410,118 @@
             document.getElementById('statTotal').textContent = products.length;
             document.getElementById('statBrand').textContent = new Set(products.map(p=>p.brand).filter(Boolean)).size;
             document.getElementById('statKategori').textContent = new Set(products.map(p=>p.kategori).filter(Boolean)).size;
-            document.getElementById
+            document.getElementById('statUnggulan').textContent = products.filter(p=>p.unggulan==='YA').length;
+        }
+
+        // ============================================
+        // TAMBAH PRODUK
+        // ============================================
+        async function tambahProduk() {
+            const statusEl = document.getElementById('tambahStatusMsg');
+            const data = {
+                brand: document.getElementById('tambahBrand').value.trim(),
+                tipe: document.getElementById('tambahTipe').value.trim(),
+                harga: Number(document.getElementById('tambahHarga').value) || 0,
+                kategori: document.getElementById('tambahKategori').value.trim(),
+                subKategori: document.getElementById('tambahSubKategori').value.trim(),
+                spek1: document.getElementById('tambahSpek1').value.trim(),
+                spek2: document.getElementById('tambahSpek2').value.trim(),
+                spek3: document.getElementById('tambahSpek3').value.trim(),
+                spek4: document.getElementById('tambahSpek4').value.trim(),
+                spek5: document.getElementById('tambahSpek5').value.trim(),
+                foto: document.getElementById('tambahFoto').value.trim(),
+                status: document.getElementById('tambahStatus').value,
+                unggulan: document.getElementById('tambahUnggulan').value,
+                urutan: Number(document.getElementById('tambahUrutan').value) || 999
+            };
+            if (!data.brand || !data.tipe || !data.kategori) {
+                statusEl.className = 'status-message error';
+                statusEl.textContent = '⚠️ Brand, Tipe, dan Kategori wajib diisi!';
+                return;
+            }
+            try {
+                statusEl.className = 'status-message loading';
+                statusEl.textContent = '⏳ Menyimpan...';
+                const docId = `${data.brand}_${data.tipe}`.replace(/[\/\\#,+()$~%.'":*?<>{} ]/g, '_');
+                await fetch(`https://firestore.googleapis.com/v1/projects/masterharga/databases/(default)/documents/ufo_products/${docId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fields: {
+                            brand: { stringValue: data.brand },
+                            tipe: { stringValue: data.tipe },
+                            harga: { integerValue: data.harga },
+                            kategori: { stringValue: data.kategori },
+                            subKategori: { stringValue: data.subKategori },
+                            spek1: { stringValue: data.spek1 },
+                            spek2: { stringValue: data.spek2 },
+                            spek3: { stringValue: data.spek3 },
+                            spek4: { stringValue: data.spek4 },
+                            spek5: { stringValue: data.spek5 },
+                            foto: { stringValue: data.foto },
+                            status: { stringValue: data.status },
+                            unggulan: { stringValue: data.unggulan },
+                            urutan: { integerValue: data.urutan }
+                        }
+                    })
+                });
+                statusEl.className = 'status-message success';
+                statusEl.textContent = '✅ Produk berhasil ditambahkan!';
+                document.getElementById('tambahForm').reset();
+                loadProducts();
+            } catch (error) {
+                statusEl.className = 'status-message error';
+                statusEl.textContent = '❌ Gagal: ' + error.message;
+            }
+        }
+
+        // ============================================
+        // EDIT PRODUK
+        // ============================================
+        function editProduk(id) {
+            const p = allProducts.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('editId').value = id;
+            document.getElementById('editBrand').value = p.brand || '';
+            document.getElementById('editTipe').value = p.tipe || '';
+            document.getElementById('editHarga').value = p.harga || '';
+            document.getElementById('editKategori').value = p.kategori || '';
+            document.getElementById('editSubKategori').value = p.subKategori || '';
+            document.getElementById('editSpek1').value = p.spek1 || '';
+            document.getElementById('editSpek2').value = p.spek2 || '';
+            document.getElementById('editSpek3').value = p.spek3 || '';
+            document.getElementById('editSpek4').value = p.spek4 || '';
+            document.getElementById('editSpek5').value = p.spek5 || '';
+            document.getElementById('editFoto').value = p.foto || '';
+            document.getElementById('editStatus').value = p.status || '';
+            document.getElementById('editUnggulan').value = p.unggulan || '';
+            document.getElementById('editUrutan').value = p.urutan || 999;
+            document.getElementById('editModal').classList.add('show');
+        }
+
+        // ============================================
+        // UPDATE PRODUK
+        // ============================================
+        async function updateProduk() {
+            const id = document.getElementById('editId').value;
+            const statusEl = document.getElementById('editStatusMsg');
+            const data = {
+                brand: document.getElementById('editBrand').value.trim(),
+                tipe: document.getElementById('editTipe').value.trim(),
+                harga: Number(document.getElementById('editHarga').value) || 0,
+                kategori: document.getElementById('editKategori').value.trim(),
+                subKategori: document.getElementById('editSubKategori').value.trim(),
+                spek1: document.getElementById('editSpek1').value.trim(),
+                spek2: document.getElementById('editSpek2').value.trim(),
+                spek3: document.getElementById('editSpek3').value.trim(),
+                spek4: document.getElementById('editSpek4').value.trim(),
+                spek5: document.getElementById('editSpek5').value.trim(),
+                foto: document.getElementById('editFoto').value.trim(),
+                status: document.getElementById('editStatus').value,
+                unggulan: document.getElementById('editUnggulan').value,
+                urutan: Number(document.getElementById('editUrutan').value) || 999
+            };
+            try {
+                statusEl.className = 'status-message loading';
+                statusEl.textContent = '⏳ Menyimpan...';
+                await fetch(`https://firestore.googleapis.com/v1/projects
