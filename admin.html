@@ -1,244 +1,605 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta name="robots" content="noindex,nofollow">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin Panel - UFO Kebonsari Malang</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- SheetJS untuk Membaca Excel -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:'Inter',sans-serif;background:#f4f6f9}
-.header{
-  background:#005ec6;
-  padding:0;
-  margin:0;
-  text-align:center;
-}
-.header-banner{
-  width:100%;
-  background:#005ec6;
-}
-.header-banner img{
-  width:100%;
-  max-width:520px;
-  margin:0 auto;
-  display:block;
-}
-.container{
-  max-width:800px;
-  margin:30px auto;
-  padding:16px;
-}
-.admin-card{
-  background:#fff;
-  border-radius:20px;
-  padding:28px;
-  box-shadow:0 4px 20px rgba(0,0,0,0.08);
-  border:1px solid #e2e8f0;
-  margin-bottom:20px;
-}
-h1, h2 { color: #1e293b; margin-top: 0; }
-p { color: #64748b; font-size: 14px; line-height: 1.5; }
-.info-box{
-  background:#f8fafc;
-  border:1px solid #e2e8f0;
-  padding:16px;
-  border-radius:12px;
-  margin:16px 0;
-  font-size:13px;
-  color:#334155;
-}
-code { color: #005ec6; font-weight: 700; background: #e0f2fe; padding: 2px 6px; border-radius: 4px; }
-input[type="file"]{
-  display:block;
-  width:100%;
-  padding:12px;
-  border:2px dashed #cbd5e1;
-  border-radius:12px;
-  background:#f8fafc;
-  cursor:pointer;
-  margin-bottom:16px;
-  font-size:13px;
-}
-.btn{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  text-align:center;
-  color:#fff;
-  background:#005ec6;
-  text-decoration:none;
-  padding:14px;
-  border-radius:12px;
-  border:none;
-  width:100%;
-  font-weight:700;
-  cursor:pointer;
-  font-size:15px;
-  transition: opacity 0.2s;
-}
-.btn:hover { opacity: 0.9; }
-.footer{text-align:center;padding:30px 10px;color:#64748b;font-size:13px;margin-top:20px;border-top:1px solid #e2e8f0;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - UFO Kebonsari Malang</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0b0f19;
+            color: #dfe2f1;
+            min-height: 100vh;
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0b0f19; }
+        ::-webkit-scrollbar-thumb { background: #313540; border-radius: 9999px; }
+
+        .glass-card {
+            background: rgba(23, 27, 38, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover { border-color: rgba(192, 193, 255, 0.15); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #c0c1ff, #a8a9ff);
+            color: #1000a9;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .btn-primary:hover { transform: scale(1.02); box-shadow: 0 4px 20px rgba(192, 193, 255, 0.3); }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: #fff;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 0.75rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 12px;
+        }
+        .btn-danger:hover { transform: scale(1.02); box-shadow: 0 4px 20px rgba(255, 107, 107, 0.3); }
+
+        .btn-success {
+            background: linear-gradient(135deg, #4edea3, #3acb92);
+            color: #003824;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .btn-success:hover { transform: scale(1.02); box-shadow: 0 4px 20px rgba(78, 222, 163, 0.3); }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1e293b;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .btn-warning:hover { transform: scale(1.02); box-shadow: 0 4px 20px rgba(251, 191, 36, 0.3); }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(15, 19, 29, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 0.75rem;
+            color: #dfe2f1;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        .input-field:focus { border-color: #c0c1ff; box-shadow: 0 0 0 4px rgba(192, 193, 255, 0.08); }
+        .input-field::placeholder { color: #908fa0; }
+
+        .status-message {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        .status-message.success { color: #4edea3; }
+        .status-message.error { color: #ffb4ab; }
+        .status-message.loading { color: #c0c1ff; }
+
+        .table-wrap { overflow-x: auto; }
+        .table-wrap table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .table-wrap thead th {
+            text-align: left;
+            padding: 10px 12px;
+            font-weight: 600;
+            color: #908fa0;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            position: sticky;
+            top: 0;
+            background: #0b0f19;
+        }
+        .table-wrap tbody td { padding: 10px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); vertical-align: middle; }
+        .table-wrap tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
+
+        .badge-status {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 9999px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+        .badge-status.baru { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+        .badge-status.promo { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+        .badge-status.bestseller { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+        .badge-status.unggulan { background: rgba(78, 222, 163, 0.15); color: #4edea3; }
+
+        #loginPage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #0b0f19;
+        }
+        .login-box {
+            background: rgba(23, 27, 38, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 2rem;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-box h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 8px; }
+        .login-box p { text-align: center; color: #908fa0; font-size: 14px; margin-bottom: 24px; }
+
+        #adminContent { display: none; padding: 20px; max-width: 1400px; margin: 0 auto; }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .admin-header h1 { font-size: 24px; font-weight: 800; }
+        .admin-header .brand { color: #c0c1ff; }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: rgba(23, 27, 38, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 16px 20px;
+            text-align: center;
+        }
+        .stat-card .number { font-size: 28px; font-weight: 800; color: #c0c1ff; }
+        .stat-card .label { font-size: 11px; color: #908fa0; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+
+        .tab-nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 12px;
+        }
+        .tab-nav button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 0.75rem;
+            background: transparent;
+            color: #908fa0;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .tab-nav button.active { background: rgba(192, 193, 255, 0.12); color: #c0c1ff; }
+        .tab-nav button:hover:not(.active) { color: #dfe2f1; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: #171b26;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            padding: 32px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-box h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+        .modal-box .close-btn {
+            float: right;
+            background: none;
+            border: none;
+            color: #908fa0;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .modal-box .close-btn:hover { color: #dfe2f1; }
+
+        .file-input-wrapper input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            background: rgba(15, 19, 29, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 0.75rem;
+            color: #c7c4d7;
+            font-size: 13px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            cursor: pointer;
+        }
+        .file-input-wrapper input[type="file"]::file-selector-button {
+            padding: 6px 16px;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 600;
+            font-size: 12px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            cursor: pointer;
+            background: rgba(192, 193, 255, 0.12);
+            color: #c0c1ff;
+            margin-right: 12px;
+        }
+        .file-input-wrapper input[type="file"]::file-selector-button:hover { background: rgba(192, 193, 255, 0.2); }
+
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #908fa0;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+            .admin-header { flex-direction: column; align-items: flex-start; }
+            .login-box { padding: 24px; margin: 16px; }
+            .modal-box { padding: 20px; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-banner">
-    <img src="images/header-ufo.png" alt="UFO Kebonsari Malang">
-  </div>
-</div>
-
-<div class="container">
-  <div class="admin-card">
-    <h1>🚀 Panel Admin Upload Multi-Sheet</h1>
-    <p>Upload file Excel utama Anda (yang berisi sheet <code>KATALOG</code>, <code>SETTING</code>, <code>PROMO</code>, dll.). Sistem akan otomatis memilah data sesuai sheet-nya ke Firebase.</p>
-
-    <div class="info-box">
-      <strong>Sheet yang Didukung Otomatis:</strong><br>
-      - <code>KATALOG</code> (Masuk ke data produk utama)<br>
-      - <code>SETTING</code> (Masuk ke pengaturan toko/WhatsApp)<br>
-      - <code>PROMO</code> (Masuk ke daftar banner promo)
+    <!-- ============================================
+    LOGIN PAGE
+    ============================================ -->
+    <div id="loginPage">
+        <div class="login-box">
+            <h1>🔐 Admin Panel</h1>
+            <p>UFO Kebonsari Malang</p>
+            <form id="loginForm" onsubmit="return false;">
+                <input type="password" id="loginPassword" class="input-field" placeholder="Masukkan password..." style="margin-bottom:12px;">
+                <button type="button" onclick="handleLogin()" class="btn-primary" style="width:100%;">Login</button>
+                <p id="loginStatus" class="status-message" style="display:none;"></p>
+            </form>
+        </div>
     </div>
 
-    <input type="file" id="excelFileMaster" accept=".xlsx, .xls, .csv">
-    <button onclick="prosesUploadMultiSheet()" class="btn">Proses & Upload ke Firebase</button>
-    <p id="statusUpload" style="font-weight:700; text-align:center; margin-top:12px;"></p>
+    <!-- ============================================
+    ADMIN CONTENT
+    ============================================ -->
+    <div id="adminContent">
 
-    <div style="text-align:center; margin-top:20px;">
-      <a href="index.html" target="_blank" style="color:#005ec6; font-weight:700; text-decoration:none; font-size:14px;">🔗 Buka Halaman Katalog Publik &rarr;</a>
+        <div class="admin-header">
+            <div>
+                <h1>📊 <span class="brand">Admin</span> UFO Kebonsari</h1>
+                <p style="color:#908fa0;font-size:13px;">Kelola katalog produk</p>
+            </div>
+            <div>
+                <button onclick="logout()" class="btn-danger" style="padding:8px 20px;">Logout</button>
+            </div>
+        </div>
+
+        <div class="stat-grid" id="statGrid">
+            <div class="stat-card"><div class="number" id="statTotal">0</div><div class="label">Total Produk</div></div>
+            <div class="stat-card"><div class="number" id="statBrand">0</div><div class="label">Brand</div></div>
+            <div class="stat-card"><div class="number" id="statKategori">0</div><div class="label">Kategori</div></div>
+            <div class="stat-card"><div class="number" id="statUnggulan">0</div><div class="label">Unggulan</div></div>
+        </div>
+
+        <div class="tab-nav">
+            <button class="active" onclick="switchTab('produk')">📦 Produk</button>
+            <button onclick="switchTab('tambah')">➕ Tambah</button>
+            <button onclick="switchTab('upload')">📁 Upload Excel</button>
+            <button onclick="switchTab('migrasi')">🔄 Migrasi</button>
+            <button onclick="switchTab('setting')">⚙️ Setting</button>
+        </div>
+
+        <!-- TAB PRODUK -->
+        <div id="tabProduk" class="tab-content active">
+            <div class="glass-card">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+                    <h2 style="font-size:18px;font-weight:700;">Daftar Produk</h2>
+                    <div style="display:flex;gap:8px;">
+                        <input type="text" id="searchProduct" class="input-field" placeholder="Cari..." style="width:200px;padding:8px 12px;font-size:13px;" onkeyup="filterTable()">
+                        <button onclick="refreshProducts()" class="btn-primary" style="padding:8px 16px;font-size:13px;">🔄 Refresh</button>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>#</th><th>Brand</th><th>Tipe</th><th>Harga</th><th>Kategori</th><th>Status</th><th>Unggulan</th><th>Aksi</th></tr></thead>
+                        <tbody id="productTableBody"><tr><td colspan="8" style="text-align:center;padding:40px;color:#908fa0;">Memuat data...</td></tr></tbody>
+                    </table>
+                </div>
+                <div style="margin-top:12px;font-size:12px;color:#908fa0;" id="productCount"></div>
+            </div>
+        </div>
+
+        <!-- TAB TAMBAH -->
+        <div id="tabTambah" class="tab-content">
+            <div class="glass-card">
+                <h2 style="font-size:18px;font-weight:700;margin-bottom:16px;">➕ Tambah Produk</h2>
+                <form id="tambahForm" onsubmit="return false;">
+                    <div class="form-row">
+                        <div class="form-group"><label>Brand *</label><input type="text" id="tambahBrand" class="input-field" placeholder="SAMSUNG" required></div>
+                        <div class="form-group"><label>Tipe *</label><input type="text" id="tambahTipe" class="input-field" placeholder="UA43U8000FKXXD" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Harga</label><input type="number" id="tambahHarga" class="input-field" placeholder="3798000"></div>
+                        <div class="form-group"><label>Kategori *</label><input type="text" id="tambahKategori" class="input-field" placeholder="ELEKTRONIK" required></div>
+                    </div>
+                    <div class="form-group"><label>Sub Kategori</label><input type="text" id="tambahSubKategori" class="input-field" placeholder="Smart TV"></div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Spek 1</label><input type="text" id="tambahSpek1" class="input-field" placeholder="Spesifikasi 1"></div>
+                        <div class="form-group"><label>Spek 2</label><input type="text" id="tambahSpek2" class="input-field" placeholder="Spesifikasi 2"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Spek 3</label><input type="text" id="tambahSpek3" class="input-field" placeholder="Spesifikasi 3"></div>
+                        <div class="form-group"><label>Spek 4</label><input type="text" id="tambahSpek4" class="input-field" placeholder="Spesifikasi 4"></div>
+                    </div>
+                    <div class="form-group"><label>Spek 5</label><input type="text" id="tambahSpek5" class="input-field" placeholder="Spesifikasi 5"></div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Foto</label><input type="text" id="tambahFoto" class="input-field" placeholder="UA43U8000FKXXD.jpeg"></div>
+                        <div class="form-group"><label>Status</label>
+                            <select id="tambahStatus" class="input-field">
+                                <option value="">-</option>
+                                <option value="BARU">BARU</option>
+                                <option value="PROMO">PROMO</option>
+                                <option value="BESTSELLER">BESTSELLER</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Unggulan</label>
+                            <select id="tambahUnggulan" class="input-field">
+                                <option value="">Tidak</option>
+                                <option value="YA">YA</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Urutan</label><input type="number" id="tambahUrutan" class="input-field" value="999"></div>
+                    </div>
+                    <button type="button" onclick="tambahProduk()" class="btn-success" style="width:100%;">Simpan Produk</button>
+                    <p id="tambahStatusMsg" class="status-message"></p>
+                </form>
+            </div>
+        </div>
+
+        <!-- TAB UPLOAD EXCEL -->
+        <div id="tabUpload" class="tab-content">
+            <div class="glass-card">
+                <h2 style="font-size:18px;font-weight:700;margin-bottom:8px;">📁 Upload Excel</h2>
+                <p style="color:#908fa0;font-size:13px;margin-bottom:16px;">Upload file Excel dengan format 20 kolom sesuai template.</p>
+                <div class="file-input-wrapper">
+                    <input type="file" id="excelFile" accept=".xlsx,.xls,.csv">
+                </div>
+                <button onclick="uploadExcel()" class="btn-primary" style="width:100%;margin-top:12px;">📤 Upload ke Firebase</button>
+                <p id="uploadStatus" class="status-message"></p>
+            </div>
+            <div class="glass-card" style="margin-top:16px;">
+                <h2 style="font-size:16px;font-weight:700;margin-bottom:8px;">📥 Download Template</h2>
+                <p style="color:#908fa0;font-size:13px;margin-bottom:12px;">Download template Excel kosong untuk diisi.</p>
+                <button onclick="downloadTemplate()" class="btn-warning" style="width:100%;">Download Template</button>
+            </div>
+        </div>
+
+        <!-- TAB MIGRASI -->
+        <div id="tabMigrasi" class="tab-content">
+            <div class="glass-card">
+                <h2 style="font-size:18px;font-weight:700;margin-bottom:8px;">🔄 Migrasi dari Google Sheets</h2>
+                <p style="color:#908fa0;font-size:13px;margin-bottom:16px;">Ambil semua data dari Google Sheets dan simpan ke Firebase.</p>
+                <div style="background:rgba(15,19,29,0.6);padding:16px;border-radius:1rem;border:1px solid rgba(255,255,255,0.05);margin-bottom:16px;">
+                    <p style="font-size:13px;color:#c7c4d7;margin-bottom:8px;">📌 <strong>Pastikan:</strong></p>
+                    <ul style="font-size:12px;color:#908fa0;list-style:none;padding:0;">
+                        <li>✅ Google Sheets sudah di-publish sebagai API</li>
+                        <li>✅ Data di sheet "KATALOG" sesuai format</li>
+                    </ul>
+                </div>
+                <div class="form-group">
+                    <label>Google Sheets API URL</label>
+                    <input type="text" id="migrasiUrl" class="input-field" 
+                        placeholder="https://script.google.com/macros/s/.../exec" 
+                        value="https://script.google.com/macros/s/AKfycbwqnu2yJWk3Bb8JPSVy8ZSZxs5Ae4VGSNpRJl1j3Qgkoj-27FQX_ys4-8qyyyrbXJhQ/exec">
+                </div>
+                <button onclick="migrasiGoogleSheets()" class="btn-success" style="width:100%;">🚀 Migrasi Sekarang</button>
+                <p id="migrasiStatus" class="status-message"></p>
+            </div>
+        </div>
+
+        <!-- TAB SETTING -->
+        <div id="tabSetting" class="tab-content">
+            <div class="glass-card">
+                <h2 style="font-size:18px;font-weight:700;margin-bottom:16px;">⚙️ Pengaturan</h2>
+                <div class="form-group"><label>Judul Web</label><input type="text" id="settingJudul" class="input-field" placeholder="Judul website"></div>
+                <div class="form-group"><label>Sub Judul</label><input type="text" id="settingSubJudul" class="input-field" placeholder="Sub judul"></div>
+                <div class="form-group"><label>WhatsApp Admin</label><input type="text" id="settingWa" class="input-field" placeholder="628xxxxxxxxx"></div>
+                <div class="form-group"><label>Tentang Toko</label><textarea id="settingTentang" class="input-field" rows="4" placeholder="Deskripsi toko..."></textarea></div>
+                <div class="form-group"><label>Promo</label><textarea id="settingPromo" class="input-field" rows="3" placeholder="Info promo..."></textarea></div>
+                <button onclick="saveSettings()" class="btn-primary" style="width:100%;">💾 Simpan Pengaturan</button>
+                <p id="settingStatus" class="status-message"></p>
+            </div>
+        </div>
+
     </div>
-  </div>
-</div>
 
-<!-- Firebase SDK & Script Pemilah Multi-Sheet -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <!-- MODAL EDIT -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-box">
+            <button class="close-btn" onclick="closeEditModal()">✕</button>
+            <h2>✏️ Edit Produk</h2>
+            <form id="editForm" onsubmit="return false;">
+                <input type="hidden" id="editId">
+                <div class="form-row">
+                    <div class="form-group"><label>Brand *</label><input type="text" id="editBrand" class="input-field" required></div>
+                    <div class="form-group"><label>Tipe *</label><input type="text" id="editTipe" class="input-field" required></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Harga</label><input type="number" id="editHarga" class="input-field"></div>
+                    <div class="form-group"><label>Kategori *</label><input type="text" id="editKategori" class="input-field" required></div>
+                </div>
+                <div class="form-group"><label>Sub Kategori</label><input type="text" id="editSubKategori" class="input-field"></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Spek 1</label><input type="text" id="editSpek1" class="input-field"></div>
+                    <div class="form-group"><label>Spek 2</label><input type="text" id="editSpek2" class="input-field"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Spek 3</label><input type="text" id="editSpek3" class="input-field"></div>
+                    <div class="form-group"><label>Spek 4</label><input type="text" id="editSpek4" class="input-field"></div>
+                </div>
+                <div class="form-group"><label>Spek 5</label><input type="text" id="editSpek5" class="input-field"></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Foto</label><input type="text" id="editFoto" class="input-field" placeholder="nama_file.jpeg"></div>
+                    <div class="form-group"><label>Status</label>
+                        <select id="editStatus" class="input-field">
+                            <option value="">-</option>
+                            <option value="BARU">BARU</option>
+                            <option value="PROMO">PROMO</option>
+                            <option value="BESTSELLER">BESTSELLER</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Unggulan</label>
+                        <select id="editUnggulan" class="input-field">
+                            <option value="">Tidak</option>
+                            <option value="YA">YA</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Urutan</label><input type="number" id="editUrutan" class="input-field" value="999"></div>
+                </div>
+                <button type="button" onclick="updateProduk()" class="btn-primary" style="width:100%;">💾 Update Produk</button>
+                <p id="editStatusMsg" class="status-message"></p>
+            </form>
+        </div>
+    </div>
 
-const firebaseConfig = {
-    apiKey: "AIzaSyAzDlIWFWrpHyf2xgLYMifLcGmBqc10EW0",
-    authDomain: "masterharga.firebaseapp.com",
-    projectId: "masterharga",
-    storageBucket: "masterharga.firebasestorage.app",
-    messagingSenderId: "761584806568",
-    appId: "1:761584806568:web:c6672e8fc0c695f15eb1067",
-    measurementId: "G-N660XBC2L4"
-};
+    <!-- ============================================
+    SCRIPT
+    ============================================ -->
+    <script type="module">
+        // ============================================
+        // FIREBASE IMPORTS
+        // ============================================
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            getDocs, 
+            doc, 
+            setDoc, 
+            deleteDoc, 
+            query, 
+            orderBy,
+            addDoc,
+            updateDoc,
+            where
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+        const firebaseConfig = {
+            apiKey: "AIzaSyAzDlIWFWrpHyf2xgLYMifLcGmBqc10EW0",
+            authDomain: "masterharga.firebaseapp.com",
+            projectId: "masterharga",
+            storageBucket: "masterharga.firebasestorage.app",
+            messagingSenderId: "761584806568",
+            appId: "1:761584806568:web:c6672e8fc0c695f15eb09d"
+        };
 
-window.prosesUploadMultiSheet = function() {
-    const fileInput = document.getElementById('excelFileMaster');
-    const statusEl = document.getElementById('statusUpload');
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-    if (fileInput.files.length === 0) {
-        statusEl.style.color = "#dc2626";
-        statusEl.innerText = "⚠️ Pilih file Excel terlebih dahulu!";
-        return;
-    }
+        // ============================================
+        // GLOBAL STATE
+        // ============================================
+        let allProducts = [];
+        const PASSWORD = "UFO2020"; // dari sheet LOGIN
 
-    const file = fileInput.files[0];
-    statusEl.style.color = "#005ec6";
-    statusEl.innerText = "⏳ Membaca seluruh sheet & mengunggah ke Firebase...";
+        // ============================================
+        // DOM REFS
+        // ============================================
+        const loginPage = document.getElementById('loginPage');
+        const adminContent = document.getElementById('adminContent');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginStatus = document.getElementById('loginStatus');
+        const productTableBody = document.getElementById('productTableBody');
+        const productCount = document.getElementById('productCount');
 
-    const reader = new FileReader();
-    reader.onload = async function(e) {
-        try {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, { type: 'array' });
-            let totalProduk = 0;
-            let totalSetting = 0;
-            let totalPromo = 0;
-
-            for (let sheetName of workbook.SheetNames) {
-                const sheetUpper = sheetName.trim().toUpperCase();
-                const worksheet = workbook.Sheets[sheetName];
-                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-                // 1. PROSES SHEET KATALOG PRODUK
-                if (sheetUpper.includes("KATALOG")) {
-                    for (let i = 0; i < jsonData.length; i++) {
-                        const row = jsonData[i];
-                        if (!row || row.length < 2) continue;
-
-                        const brand = String(row[0] || "").trim();
-                        const tipe = String(row[1] || "").trim();
-                        const harga = String(row[2] || "").trim();
-                        const kategori = String(row[3] || "").trim();
-                        const subKategori = String(row[4] || "").trim();
-                        const spek1 = String(row[5] || "").trim();
-                        const spek2 = String(row[6] || "").trim();
-                        const spek3 = String(row[7] || "").trim();
-                        const spek4 = String(row[8] || "").trim();
-                        const spek5 = String(row[9] || "").trim();
-                        const foto = String(row[10] || "").trim();
-                        const status = String(row[11] || "").trim().toUpperCase();
-                        const unggulan = String(row[12] || "").trim().toUpperCase();
-                        const urutan = Number(row[13] || 0);
-
-                        if (i === 0 && (brand.toLowerCase() === 'brand' || brand.toLowerCase() === 'merk')) continue;
-                        if (!brand || !tipe) continue;
-
-                        const cleanTipe = tipe.replace(/[\/\\#,+()$~%.'":*?<>{} ]/g, '_');
-                        const docId = `${brand}_${cleanTipe}`;
-
-                        await setDoc(doc(db, "katalog_produk", docId), {
-                            brand, tipe, harga, kategori, subKategori, spek1, spek2, spek3, spek4, spek5, foto, status, unggulan, urutan, updated_at: new Date().toISOString()
-                        });
-                        totalProduk++;
-                    }
-                }
-
-                // 2. PROSES SHEET SETTING TOKO
-                else if (sheetUpper.includes("SETTING")) {
-                    for (let i = 0; i < jsonData.length; i++) {
-                        const row = jsonData[i];
-                        if (!row || row.length < 2) continue;
-                        const key = String(row[0] || "").trim().toLowerCase();
-                        const val = String(row[1] || "").trim();
-                        if (!key || i === 0 && key === 'key') continue;
-
-                        await setDoc(doc(db, "katalog_setting", key), { value: val });
-                        totalSetting++;
-                    }
-                }
-
-                // 3. PROSES SHEET PROMO
-                else if (sheetUpper.includes("PROMO")) {
-                    for (let i = 0; i < jsonData.length; i++) {
-                        const row = jsonData[i];
-                        if (!row || row.length < 2) continue;
-                        const judul = String(row[0] || "").trim();
-                        const gambar = String(row[1] || "").trim();
-                        if (!judul && !gambar) continue;
-
-                        const docId = `promo_${i}`;
-                        await setDoc(doc(db, "katalog_promo", docId), { judul, gambar });
-                        totalPromo++;
-                    }
-                }
+        // ============================================
+        // LOGIN
+        // ============================================
+        window.handleLogin = function() {
+            const pass = loginPassword.value.trim();
+            if (pass === PASSWORD) {
+                loginPage.style.display = 'none';
+                adminContent.style.display = 'block';
+                loginStatus.style.display = 'none';
+                loadProducts();
+                loadSettings();
+            } else {
+                loginStatus.style.display = 'block';
+                loginStatus.className = 'status-message error';
+                loginStatus.textContent = '❌ Password salah!';
             }
+        };
 
-            statusEl.style.color = "#16a34a";
-            statusEl.innerText = `✨ Sukses! (${totalProduk} Produk, ${totalSetting} Setting, ${totalPromo} Promo) ter-upload ke Firebase!`;
-            fileInput.value = "";
-        } catch (err) {
-            console.error(err);
-            statusEl.style.color = "#dc2626";
-            statusEl.innerText = "❌ Gagal memproses file multi-sheet.";
-        }
-    };
-    reader.readAsArrayBuffer(file);
-};
-</script>
+        window.logout = function() {
+            loginPage.style.display = 'flex';
+            adminContent.style.display = 'none';
+            loginPassword.value = '';
+            loginStatus.style.display = 'none';
+        };
 
-<footer class="footer">
-  © 2026 UFO Kebonsari Malang &bull; All Rights Reserved
-</footer>
-</body>
-</html>
+        // ============================================
+        // TAB SWITCHER
+        // ============================================
+        window.switchTab = function(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-nav button').forEach(el => el.classList.remove('active'));
+            
+            const tabMap = {
+                'produk': 'tabProduk',
+                'tambah': 'tabTambah',
+                'upload': 'tabUpload',
+                'migrasi': '
