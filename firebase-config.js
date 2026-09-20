@@ -32,11 +32,11 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const COLLECTIONS = {
-    PRODUCTS: "ufo_products",
+    PRODUCTS: "produk", // Ubah jadi "produk"
     SETTINGS: "ufo_settings",
     USERS: "ufo_users",
     PROMO: "ufo_promo"
 };
 
 export { db, collection, getDocs, getDoc, doc, setDoc, deleteDoc, query, where, orderBy, addDoc, updateDoc, COLLECTIONS };
-jadi ini jadi satu halaman di index html?gak digabung di index?
+
