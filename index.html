@@ -4,580 +4,126 @@
 <meta name="robots" content="noindex,nofollow">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>UFO Kebonsari Malang</title>
-<meta name="description" content="Katalog Produk UFO Kebonsari Malang">
+<title>UFO Elektronik Malang</title>
+<meta name="description" content="Katalog Produk UFO Elektronik Malang - Kebonsari & Sutoyo">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:'Inter',sans-serif;background:#f4f6f9}
 #promoBanner{display:none}
 
-/* HEADER & BANNER - Disamakan persis dengan warna biru logo (#005ec6) */
-.header{
-  background:#005ec6;
-  padding:0;
-  margin:0;
-  text-align:center;
-}
+/* HEADER & BANNER */
+.header{background:#005ec6;padding:0;margin:0;text-align:center;}
+.header-banner{width:100%;background:#005ec6;}
+.header-banner img{width:100%;max-width:520px;margin:0 auto;display:block;border-radius:0;box-shadow:none;}
 
-.header-banner{
-  width:100%;
-  background:#005ec6;
-}
-
-.header-banner img{
-  width:100%;
-  max-width:520px;
-  margin:0 auto;
-  display:block;
-  border-radius:0;
-  box-shadow:none;
-}
-
-/* NAVIGATION & SEARCH BAR - Warna disamakan agar menyatu mulus */
-.search-bg {
-  background:#005ec6;
-  position:sticky;
-  top:0;
-  z-index:50;
-}
-.search-wrap{
-  display:flex;
-  gap:12px;
-  padding:12px 16px;
-  max-width: 1200px;
-  margin: 0 auto;
-  align-items: center;
-}
-.menu-btn{
-  width:44px;
-  height:44px;
-  border:none;
-  border-radius:12px;
-  cursor:pointer;
-  background:#fff;
-  color:#005ec6;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  transition: all 0.2s;
-}
-.menu-btn:hover {
-  background: #f0f9ff;
-}
-.menu-btn svg {
-  width: 22px;
-  height: 22px;
-  fill: currentColor;
-}
-#search{
-  flex:1;
-  padding:12px 18px;
-  border:none;
-  border-radius:30px;
-  outline:none;
-  font-size: 14px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
+/* NAVIGATION & SEARCH BAR */
+.search-bg {background:#005ec6;position:sticky;top:0;z-index:50;}
+.search-wrap{display:flex;gap:12px;padding:12px 16px;max-width:1200px;margin:0 auto;align-items:center;}
+.menu-btn{width:44px;height:44px;border:none;border-radius:12px;cursor:pointer;background:#fff;color:#005ec6;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.1);transition:all 0.2s;}
+.menu-btn:hover {background:#f0f9ff;}
+.menu-btn svg {width:22px;height:22px;fill:currentColor;}
+#search{flex:1;padding:12px 18px;border:none;border-radius:30px;outline:none;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
 
 /* KATEGORI BAR */
-#kategoriBar{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding:12px 16px;
-  background:#fff;
-  white-space:nowrap;
-  max-width: 1200px;
-  margin: 0 auto;
-  scrollbar-width: none;
-}
-#kategoriBar::-webkit-scrollbar { display: none; }
-#kategoriBar button{
-  flex:0 0 auto;
-  padding:10px 18px;
-  border:none;
-  border-radius:999px;
-  background:#f1f5f9;
-  font-size:13px;
-  font-weight:600;
-  cursor:pointer;
-  transition:0.2s;
-  color: #475569;
-}
-#kategoriBar button:hover{
-  background:#e2e8f0;
-  transform:translateY(-1px);
-}
-#kategoriBar button.active{
-  background:#005ec6;
-  color:#fff;
-  box-shadow: 0 4px 12px rgba(0,94,198,0.3);
-} 
+#kategoriBar{display:flex;gap:10px;overflow-x:auto;padding:12px 16px;background:#fff;white-space:nowrap;max-width:1200px;margin:0 auto;scrollbar-width:none;}
+#kategoriBar::-webkit-scrollbar {display:none;}
+#kategoriBar button{flex:0 0 auto;padding:10px 18px;border:none;border-radius:999px;background:#f1f5f9;font-size:13px;font-weight:600;cursor:pointer;transition:0.2s;color:#475569;}
+#kategoriBar button:hover{background:#e2e8f0;transform:translateY(-1px);}
+#kategoriBar button.active{background:#005ec6;color:#fff;box-shadow:0 4px 12px rgba(0,94,198,0.3);}
 
 /* BANNER PROMO UTAMA */
-#bannerArea {
-  max-width: 1200px;
-  margin: 0 auto;
-}
+#bannerArea{max-width:1200px;margin:0 auto;}
 
 /* CONTAINER KATALOG PRODUK */
-.container{
-  padding:16px 8px;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-@media(min-width:768px){
-  .container{
-    grid-template-columns:repeat(4,1fr);
-    gap:16px;
-    padding:20px 16px;
-  }
-}
-@media(min-width:1024px){
-  .container{
-    grid-template-columns:repeat(5,1fr);
-  }
-}
+.container{padding:16px 8px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:1200px;margin:0 auto;}
+@media(min-width:768px){.container{grid-template-columns:repeat(4,1fr);gap:16px;padding:20px 16px;}}
+@media(min-width:1024px){.container{grid-template-columns:repeat(5,1fr);}}
 
 /* KARTU PRODUK */
-.card{
-  background:#fff;
-  border-radius:16px;
-  overflow:hidden;
-  border:1px solid #e5e7eb;
-  box-shadow:0 3px 10px rgba(0,0,0,.06);
-  cursor:pointer;
-  display:flex;
-  flex-direction:column;
-  transition: all 0.25s ease;
-}
-.card:hover{
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  border-color: #cbd5e1;
-}
-.card img{
-  width:100%;
-  aspect-ratio:1/1;
-  object-fit:cover;
-  display:block;
-  background: #f8fafc;
-}
-.card-body{
-  padding:12px;
-  display:flex;
-  flex-direction:column;
-}
-.brand{
-  display:inline-flex;
-  align-items:center;
-  background:#005ec6;
-  color:#fff;
-  padding:4px 9px;
-  border-radius:999px;
-  font-size:11px;
-  font-weight:700;
-  width:fit-content;
-}
-.tipe{
-  font-weight:800;
-  font-size:14px;
-  line-height:1.3;
-  margin-top:8px;
-  min-height:40px;
-  display:flex;
-  align-items:flex-start;
-  color: #1e293b;
-}
-.status,.unggulan{
-  display:inline-flex;
-  align-items:center;
-  gap:4px;
-  padding:4px 8px;
-  border-radius:6px;
-  font-size:10px;
-  font-weight:700;
-  margin:2px 4px 6px 0;
-  width:fit-content;
-}
-.status svg, .unggulan svg {
-  width: 12px;
-  height: 12px;
-  fill: currentColor;
-  flex-shrink: 0;
-}
+.card{background:#fff;border-radius:16px;overflow:hidden;border:1px solid #e5e7eb;box-shadow:0 3px 10px rgba(0,0,0,.06);cursor:pointer;display:flex;flex-direction:column;transition:all 0.25s ease;}
+.card:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,0,0,0.1);border-color:#cbd5e1;}
+.card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#f8fafc;}
+.card-body{padding:12px;display:flex;flex-direction:column;}
+.brand{display:inline-flex;align-items:center;background:#005ec6;color:#fff;padding:4px 9px;border-radius:999px;font-size:11px;font-weight:700;width:fit-content;}
+.tipe{font-weight:800;font-size:14px;line-height:1.3;margin-top:8px;min-height:40px;display:flex;align-items:flex-start;color:#1e293b;}
+.status,.unggulan{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:6px;font-size:10px;font-weight:700;margin:2px 4px 6px 0;width:fit-content;}
+.status svg, .unggulan svg {width:12px;height:12px;fill:currentColor;flex-shrink:0;}
 .baru{background:#8b5cf6;color:#fff}
 .promo{background:#dc2626;color:#fff}
 .best{background:#f59e0b;color:#fff}
 .unggulan{background:#16a34a;color:#fff}
-.badge-area{
-  min-height:34px;
-}
+.badge-area{min-height:34px;}
 
 /* MODAL & OVERLAY */
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);overflow:auto;z-index:9999}
-.modal-content{
-  max-width:650px;
-  margin:40px auto;
-  padding:28px;
-  background:#fff;
-  border-radius:24px;
-  box-shadow:0 25px 50px rgba(0,0,0,0.25);
-  position: relative;
-  animation: modalScale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-@keyframes modalScale {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-.modal img{
-  width:100%;
-  max-height:380px;
-  object-fit:contain;
-  border-radius:16px;
-  background:#f8fafc;
-  margin-bottom:15px;
-}
-.close{
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: #f1f5f9;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.close:hover {
-  background: #e2e8f0;
-}
-.close svg {
-  width: 18px;
-  height: 18px;
-  fill: #475569;
-}
+.modal-content{max-width:650px;margin:40px auto;padding:28px;background:#fff;border-radius:24px;box-shadow:0 25px 50px rgba(0,0,0,0.25);position:relative;animation:modalScale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);}
+@keyframes modalScale {from {transform:scale(0.9);opacity:0;} to {transform:scale(1);opacity:1;}}
+.modal img{width:100%;max-height:380px;object-fit:contain;border-radius:16px;background:#f8fafc;margin-bottom:15px;}
+.close{position:absolute;top:20px;right:20px;background:#f1f5f9;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.2s;}
+.close:hover {background:#e2e8f0;}
+.close svg {width:18px;height:18px;fill:#475569;}
 
-.detail-box{
-  background:#f8fafc;
-  border-radius:16px;
-  padding:18px;
-  margin:16px 0;
-  border:1px solid #e2e8f0;
-}
-.detail-row{
-  display:flex;
-  justify-content:space-between;
-  margin:8px 0;
-  font-size:14px;
-}
-.detail-label{
-  color:#64748b;
-  font-weight:600;
-}
-.detail-value{
-  font-weight:700;
-  color:#1e293b;
-}
-#mRelated{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.related-item{
-  padding:12px 14px;
-  border:1px solid #e2e8f0;
-  border-radius:12px;
-  cursor:pointer;
-  transition:all .2s;
-  background:#fff;
-  font-weight: 600;
-  color: #334155;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.related-item:hover{
-  background:#f0f9ff;
-  border-color: #005ec6;
-  color: #005ec6;
-  transform:translateX(4px);
-}
-.related-item svg {
-  width: 18px;
-  height: 18px;
-  fill: #005ec6;
-  flex-shrink: 0;
-}
-#mNama{
-  font-size:24px;
-  font-weight:700;
-  color:#1e293b;
-  margin-top:10px;
-  margin-bottom:10px;
-  line-height:1.3;
-}
-.btn{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  text-align:center;
-  color:#fff;
-  text-decoration:none;
-  padding:14px;
-  border-radius:12px;
-  margin-top:12px;
-  border:none;
-  width:100%;
-  font-weight:700;
-  cursor:pointer;
-  font-size: 15px;
-  transition: opacity 0.2s;
-}
-.btn:hover { opacity: 0.9; }
-.btn svg { width: 18px; height: 18px; fill: currentColor; }
+.detail-box{background:#f8fafc;border-radius:16px;padding:18px;margin:16px 0;border:1px solid #e2e8f0;}
+.detail-row{display:flex;justify-content:space-between;margin:8px 0;font-size:14px;}
+.detail-label{color:#64748b;font-weight:600;}
+.detail-value{font-weight:700;color:#1e293b;}
+#mRelated{display:flex;flex-direction:column;gap:10px;}
+.related-item{padding:12px 14px;border:1px solid #e2e8f0;border-radius:12px;cursor:pointer;transition:all .2s;background:#fff;font-weight:600;color:#334155;font-size:14px;display:flex;align-items:center;gap:10px;}
+.related-item:hover{background:#f0f9ff;border-color:#005ec6;color:#005ec6;transform:translateX(4px);}
+.related-item svg {width:18px;height:18px;fill:#005ec6;flex-shrink:0;}
+#mNama{font-size:24px;font-weight:700;color:#1e293b;margin-top:10px;margin-bottom:10px;line-height:1.3;}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;color:#fff;text-decoration:none;padding:14px;border-radius:12px;margin-top:12px;border:none;width:100%;font-weight:700;cursor:pointer;font-size:15px;transition:opacity 0.2s;}
+.btn:hover {opacity:0.9;}
+.btn svg {width:18px;height:18px;fill:currentColor;}
 .share{background:#005ec6}
 
 /* SIDE MENU DRAWER */
-#sideMenu{
-  position:fixed;
-  left:-320px;
-  top:0;
-  width:320px;
-  height:100%;
-  background:#005ec6;
-  color:#fff;
-  z-index:9999;
-  transition:left .3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow:auto;
-  box-shadow: 5px 0 25px rgba(0,0,0,0.3);
-}
-.menu-item{
-  padding:14px 20px;
-  cursor:pointer;
-  border-bottom:1px solid rgba(255,255,255,0.08);
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: background 0.2s;
-}
-.menu-item:hover {
-  background: rgba(255,255,255,0.1);
-}
-.menu-item svg {
-  width: 18px;
-  height: 18px;
-  fill: currentColor;
-  flex-shrink: 0;
-}
-#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;backdrop-filter: blur(2px);}
+#sideMenu{position:fixed;left:-320px;top:0;width:320px;height:100%;background:#005ec6;color:#fff;z-index:9999;transition:left .3s cubic-bezier(0.4, 0, 0.2, 1);overflow:auto;box-shadow:5px 0 25px rgba(0,0,0,0.3);}
+.menu-item{padding:14px 20px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.08);font-size:14px;font-weight:500;display:flex;align-items:center;gap:12px;transition:background 0.2s;}
+.menu-item:hover {background:rgba(255,255,255,0.1);}
+.menu-item svg {width:18px;height:18px;fill:currentColor;flex-shrink:0;}
+#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;backdrop-filter:blur(2px);}
 
 /* FLOATING WHATSAPP BUTTON */
-.floating-wa{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  width:58px;
-  height:58px;
-  background:#25D366;
-  color:#fff;
-  text-decoration:none;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-  box-shadow:0 6px 20px rgba(37,211,102,0.4);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.floating-wa:hover {
-  transform: scale(1.08);
-  box-shadow: 0 8px 25px rgba(37,211,102,0.6);
-}
-.floating-wa svg {
-  width: 32px;
-  height: 32px;
-  fill: #fff;
-}
+.floating-wa{position:fixed;right:20px;bottom:20px;width:58px;height:58px;background:#25D366;color:#fff;text-decoration:none;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:9999;box-shadow:0 6px 20px rgba(37,211,102,0.4);transition:transform 0.2s ease, box-shadow 0.2s ease;}
+.floating-wa:hover {transform:scale(1.08);box-shadow:0 8px 25px rgba(37,211,102,0.6);}
+.floating-wa svg {width:32px;height:32px;fill:#fff;}
 
 /* BACK TO TOP BUTTON */
-#backToTop{
-  position:fixed;
-  right:20px;
-  bottom:90px;
-  width:46px;
-  height:46px;
-  border:none;
-  border-radius:50%;
-  background:#334155;
-  color:#fff;
-  cursor:pointer;
-  box-shadow:0 4px 12px rgba(0,0,0,0.2);
-  display:none;
-  z-index:9998;
-  align-items: center;
-  justify-content: center;
-  transition:all .2s ease;
-}
-#backToTop:hover{
-  background: #005ec6;
-  transform:translateY(-3px);
-}
-#backToTop svg {
-  width: 20px;
-  height: 20px;
-  fill: currentColor;
-}
+#backToTop{position:fixed;right:20px;bottom:90px;width:46px;height:46px;border:none;border-radius:50%;background:#334155;color:#fff;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);display:none;z-index:9998;align-items:center;justify-content:center;transition:all .2s ease;}
+#backToTop:hover{background:#005ec6;transform:translateY(-3px);}
+#backToTop svg {width:20px;height:20px;fill:currentColor;}
 
 .info-box{grid-column:1/-1;background:#fff;padding:24px;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.06);max-width:1200px;margin:16px auto}
-.footer{
-  text-align:center;
-  padding:30px 10px;
-  color:#64748b;
-  font-size:13px;
-  margin-top:20px;
-  border-top: 1px solid #e2e8f0;
-}
+.footer{text-align:center;padding:30px 10px;color:#64748b;font-size:13px;margin-top:20px;border-top:1px solid #e2e8f0;}
 
 /* POPUP SUBKATEGORI */
-.popup-sub-modal {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 88%;
-  max-width: 380px;
-  background: #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
-  z-index: 9999;
-  overflow: hidden;
-  animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-@keyframes popIn {
-  from { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
-  to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-}
-.popup-sub-header {
-  padding: 16px 20px;
-  background: #005ec6;
-  color: #fff;
-  font-weight: 600;
-  font-size: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.popup-sub-body {
-  max-height: 320px;
-  overflow-y: auto;
-  padding: 12px 16px 20px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.popup-sub-item {
-  width: 100%;
-  text-align: left;
-  padding: 12px 16px;
-  border: 1px solid #e2e8f0;
-  background: #fff;
-  border-radius: 12px;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: #334155;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.2s;
-}
-.popup-sub-item:hover {
-  border-color: #005ec6;
-  background: #f0f9ff;
-  color: #005ec6;
-}
+.popup-sub-modal {display:none;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);width:88%;max-width:380px;background:#ffffff;border-radius:24px;box-shadow:0 25px 50px rgba(0,0,0,0.25);z-index:9999;overflow:hidden;animation:popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);}
+@keyframes popIn {from {transform:translate(-50%, -50%) scale(0.9);opacity:0;} to {transform:translate(-50%, -50%) scale(1);opacity:1;}}
+.popup-sub-header {padding:16px 20px;background:#005ec6;color:#fff;font-weight:600;font-size:15px;display:flex;justify-content:space-between;align-items:center;}
+.popup-sub-body {max-height:320px;overflow-y:auto;padding:12px 16px 20px 16px;display:flex;flex-direction:column;gap:8px;}
+.popup-sub-item {width:100%;text-align:left;padding:12px 16px;border:1px solid #e2e8f0;background:#fff;border-radius:12px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#334155;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.2s;}
+.popup-sub-item:hover {border-color:#005ec6;background:#f0f9ff;color:#005ec6;}
 
 /* POPUP PROMO */
-.promo-popup-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(5px);
-  z-index: 99999;
-  justify-content: center;
-  align-items: center;
-  padding: 16px;
-}
-.promo-popup-box {
-  position: relative;
-  background: #ffffff;
-  border-radius: 20px;
-  max-width: 480px;
-  width: 100%;
-  padding: 16px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  animation: popInPromo 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  text-align: center;
-}
-@keyframes popInPromo {
-  from { transform: scale(0.85); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-.promo-popup-close {
-  position: absolute;
-  top: -12px;
-  right: -12px;
-  background: #ffffff;
-  color: #1f2937;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  border: 2px solid #e5e7eb;
-  z-index: 10;
-  transition: all 0.2s;
-}
-.promo-popup-close:hover {
-  background: #ef4444;
-  color: #fff;
-  border-color: #ef4444;
-}
-.promo-popup-img {
-  width: 100%;
-  max-height: 400px;
-  object-fit: contain;
-  border-radius: 12px;
-  display: block;
-}
-.promo-popup-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #1f2937;
-  margin-top: 12px;
-  margin-bottom: 4px;
-}
+.promo-popup-overlay {display:none;position:fixed;inset:0;background:rgba(0, 0, 0, 0.75);backdrop-filter:blur(5px);z-index:99999;justify-content:center;align-items:center;padding:16px;}
+.promo-popup-box {position:relative;background:#ffffff;border-radius:20px;max-width:480px;width:100%;padding:16px;box-shadow:0 25px 50px -12px rgba(0, 0, 0, 0.5);animation:popInPromo 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);text-align:center;}
+@keyframes popInPromo {from {transform:scale(0.85);opacity:0;} to {transform:scale(1);opacity:1;}}
+.promo-popup-close {position:absolute;top:-12px;right:-12px;background:#ffffff;color:#1f2937;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(0, 0, 0, 0.25);border:2px solid #e5e7eb;z-index:10;transition:all 0.2s;}
+.promo-popup-close:hover {background:#ef4444;color:#fff;border-color:#ef4444;}
+.promo-popup-img {width:100%;max-height:400px;object-fit:contain;border-radius:12px;display:block;}
+.promo-popup-title {font-size:16px;font-weight:700;color:#1f2937;margin-top:12px;margin-bottom:4px;}
+
+/* ========== POPUP PILIHAN CABANG (BARU) ========== */
+.popup-cabang-overlay {display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);z-index:99999;justify-content:center;align-items:center;padding:16px;}
+.popup-cabang-box {background:#fff;border-radius:20px;max-width:420px;width:100%;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,0.3);animation:popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);}
+.popup-cabang-header {background:#005ec6;color:#fff;padding:16px 20px;font-weight:700;font-size:15px;display:flex;justify-content:space-between;align-items:center;}
+.popup-cabang-close {cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.2);border-radius:50%;font-size:14px;}
+.popup-cabang-body {padding:16px;display:flex;flex-direction:column;gap:10px;}
+.popup-cabang-item {display:flex;align-items:center;gap:12px;padding:14px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;cursor:pointer;transition:all 0.2s;text-decoration:none;color:#1e293b;font-weight:600;font-size:14px;}
+.popup-cabang-item:hover {background:#f0f9ff;border-color:#005ec6;color:#005ec6;transform:translateX(4px);}
+.popup-cabang-item svg {width:22px;height:22px;fill:#005ec6;flex-shrink:0;}
+.popup-cabang-item small {display:block;font-weight:400;font-size:11px;color:#64748b;margin-top:2px;}
 </style>
 </head>
 <body id="bodyWeb">
@@ -590,10 +136,21 @@
   </div>
 </div>
 
+<!-- POPUP PILIHAN CABANG -->
+<div id="popupCabang" class="popup-cabang-overlay">
+  <div class="popup-cabang-box">
+    <div class="popup-cabang-header">
+      <span id="popupCabangTitle">Pilih Cabang</span>
+      <span onclick="tutupPopupCabang()" class="popup-cabang-close">✕</span>
+    </div>
+    <div id="popupCabangBody" class="popup-cabang-body"></div>
+  </div>
+</div>
+
 <div id="sideMenu">
   <div style="padding:18px 20px;background:#004b9e;position:relative;display:flex;align-items:center;justify-content:space-between;">
     <div>
-      <div style="font-size:16px;font-weight:700;">🏪 UFO Kebonsari Malang</div>
+      <div style="font-size:16px;font-weight:700;">🏪 UFO Elektronik Malang</div>
       <div style="font-size:12px;opacity:.85;margin-top:2px;">Katalog Produk Resmi</div>
     </div>
     <div onclick="closeMenu()" style="cursor:pointer;padding:6px;background:rgba(255,255,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;">
@@ -612,10 +169,10 @@
   </div>
   <div style="height:1px;background:rgba(255,255,255,0.1);margin:8px 0;"></div>
   <div style="padding:14px 20px 6px;font-size:10px;font-weight:700;letter-spacing:1px;opacity:.7;color:#bae6fd;">INFORMASI TOKO</div>
-  <div class="menu-item" onclick="window.open('https://maps.app.goo.gl/oGMAEKaJqjncurwD9')">
+  <div class="menu-item" onclick="bukaPopupCabang('maps')">
     <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> Lokasi Toko di Maps
   </div>
-  <div class="menu-item" onclick="hubungiKami()">
+  <div class="menu-item" onclick="bukaPopupCabang('wa')">
     <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg> Hubungi Admin WhatsApp
   </div>
   <div class="menu-item" onclick="showTentang()">
@@ -631,14 +188,14 @@
 <div id="popupSubMenu" class="popup-sub-modal">
     <div class="popup-sub-header">
         <span id="popupSubTitle">Sub Kategori Pilihan</span>
-        <span onclick="tutupPopupSub()" style="cursor:pointer; display:flex; align-items:center; justify-content:center; width:28px; height:28px; background:rgba(255,255,255,0.2); border-radius:50%;">✕</span>
+        <span onclick="tutupPopupSub()" style="cursor:pointer;display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:rgba(255,255,255,0.2);border-radius:50%;">✕</span>
     </div>
     <div id="popupSubBody" class="popup-sub-body"></div>
 </div>
 
 <div class="header">
   <div class="header-banner">
-    <img src="images/header-ufo.png" alt="UFO Kebonsari Malang">
+    <img src="images/header-ufo.png" alt="UFO Elektronik Malang">
   </div>
 </div>
 
@@ -697,7 +254,7 @@
   <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
 </button>
 
-<a href="#" id="floatingWA" target="_blank" class="floating-wa" title="Hubungi WhatsApp">
+<a href="javascript:void(0)" id="floatingWA" onclick="bukaPopupCabang('wa')" class="floating-wa" title="Hubungi WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
 </a>
 
@@ -706,8 +263,6 @@
 <script>
 /* ======================================================
    KONFIGURASI FIREBASE
-   Ganti nilai di bawah ini dengan config project Firebase kamu
-   (Firebase Console > Project Settings > General > Your apps > Web app)
    ====================================================== */
 const firebaseConfig = {
   apiKey: "AIzaSyBMokA92YiB87vwuqBREwNhHkkU_bXo8cI",
@@ -719,6 +274,22 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+
+/* ======================================================
+   KONFIGURASI CABANG TOKO
+   ====================================================== */
+const CABANG_TOKO = [
+  {
+    nama: "UFO Malang - Kebonsari",
+    wa: "6287761593677",
+    maps: "https://maps.app.goo.gl/oGMAEKaJqjncurwD9"
+  },
+  {
+    nama: "UFO Malang - Sutoyo",
+    wa: "6281999006778",
+    maps: "https://maps.app.goo.gl/LthuS3LnSWr5pxvT8"
+  }
+];
 
 let semuaProduk=[];
 let settingData={};
@@ -739,7 +310,6 @@ const slug=p=>((p.brand||"")+"-"+(p.tipe||"")).toLowerCase().replace(/[^a-z0-9]+
 
 /* ======================================================
    AMBIL DATA DARI FIREBASE FIRESTORE
-   (Menggantikan fetch ke Google Apps Script / Google Sheets)
    ====================================================== */
 async function ambilDataFirestore(){
   const [produkSnap, settingSnap, bannerSnap, promoSnap] = await Promise.all([
@@ -787,8 +357,8 @@ async function ambilDataFirestore(){
   };
 }
 
-const CACHE_KEY = "ufo_cache_v3";
-const CACHE_TTL_MS = 60 * 60 * 1000; // cache dipakai selama 1 jam sebelum ambil data baru dari Firestore lagi (ubah angka ini kalau mau durasi lain)
+const CACHE_KEY = "ufo_cache_v4";
+const CACHE_TTL_MS = 60 * 60 * 1000;
 
 async function loadProduk(){
  try{
@@ -817,7 +387,6 @@ async function loadProduk(){
 
    const umurCache = Date.now() - (c.time || 0);
    if(umurCache < CACHE_TTL_MS){
-     // Cache masih baru: cukup tampilkan dari cache, tidak perlu narik ulang dari Firestore
      cacheMasihBaru = true;
      mulaiPromoPopup();
    }
@@ -861,7 +430,6 @@ function tampilkanPromoBerikutnya() {
       <img src="${p.gambar}" alt="${p.judul || 'Promo'}" class="promo-popup-img">
       ${p.judul ? `<div class="promo-popup-title">${p.judul}</div>` : ''}
     `;
-
     document.getElementById("promoPopupContent").innerHTML = html;
     document.getElementById("promoPopupOverlay").style.display = "flex";
   } else {
@@ -875,6 +443,55 @@ function tutupPromoPopup() {
   setTimeout(() => {
     tampilkanPromoBerikutnya();
   }, 200);
+}
+
+/* ======================================================
+   POPUP PILIHAN CABANG (BARU)
+   ====================================================== */
+let modePopupCabang = "";
+
+function bukaPopupCabang(mode) {
+  modePopupCabang = mode;
+  const title = document.getElementById("popupCabangTitle");
+  const body = document.getElementById("popupCabangBody");
+  
+  title.innerText = mode === "maps" ? "📍 Pilih Lokasi Toko" : "💬 Pilih Admin WhatsApp";
+  
+  let html = "";
+  CABANG_TOKO.forEach((c) => {
+    if (mode === "maps") {
+      html += `
+        <a href="${c.maps}" target="_blank" class="popup-cabang-item" onclick="tutupPopupCabang()">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          <div>
+            ${c.nama}
+            <small>Buka di Google Maps</small>
+          </div>
+        </a>
+      `;
+    } else {
+      const pesan = produkAktif
+        ? `Halo Admin ${c.nama}.\n\nSaya ingin menanyakan produk berikut:\n\nBrand : ${produkAktif.brand}\nTipe : ${produkAktif.tipe}\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`
+        : `Halo Admin ${c.nama}.\n\nSaya ingin bertanya mengenai produk yang ada di katalog.\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
+      
+      html += `
+        <a href="https://wa.me/${c.wa}?text=${encodeURIComponent(pesan)}" target="_blank" class="popup-cabang-item" onclick="tutupPopupCabang()">
+          <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          <div>
+            ${c.nama}
+            <small>Chat via WhatsApp</small>
+          </div>
+        </a>
+      `;
+    }
+  });
+  
+  body.innerHTML = html;
+  document.getElementById("popupCabang").style.display = "flex";
+}
+
+function tutupPopupCabang() {
+  document.getElementById("popupCabang").style.display = "none";
 }
 
 function buatSubKategori(kategori){
@@ -1003,7 +620,6 @@ function showUnggulan(){tampilkan(semuaProduk.filter(x=>x.unggulan==="YA"));clos
 
 function detail(p){
   produkAktif = p;
-  updateFloatingWA();
   modal.style.display="block";
   history.replaceState({}, "", "?produk=" + encodeURIComponent(slug(p))); 
   mFoto.src=foto(p.foto);
@@ -1012,7 +628,7 @@ function detail(p){
   mHarga.innerHTML=`
   <div style="color:#16a34a;font-size:20px;font-weight:700;">💬 Hubungi Admin via WhatsApp</div>
   <div style="font-size:13px;color:#64748b;margin-top:6px;line-height:1.5;">
-  Harga spesial dapat ditanyakan langsung melalui WhatsApp admin kami.
+  Harga spesial dapat ditanyakan langsung melalui WhatsApp admin kami (Kebonsari atau Sutoyo).
   </div>
   `;
 
@@ -1044,7 +660,7 @@ function detail(p){
   const url = window.location.origin + window.location.pathname + "?produk=" + encodeURIComponent(slug(p));
   shareBtn.onclick = async () => {
     try {
-      await navigator.share({ title: mNama.innerText, text: "Lihat produk ini di UFO Kebonsari Malang", url: url });
+      await navigator.share({ title: mNama.innerText, text: "Lihat produk ini di UFO Elektronik Malang", url: url });
     } catch (err) {}
   };
 }
@@ -1060,14 +676,21 @@ function buatBrandMenu(data){
  brand.forEach(b=>brandList.innerHTML+=`<div class="menu-item" onclick="tampilkan(semuaProduk.filter(x=>x.brand==='${b}'));closeMenu()"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg> ${b}</div>`);
 }
 
+/* ======================================================
+   KATEGORI FIX 3 (ELEKTRONIK, GADGET, RUMAH TANGGA)
+   ====================================================== */
 function buatKategori(data){
   const bar = document.getElementById("kategoriBar");
   if(!bar) return;
-  const daftar = ["SEMUA", ...new Set(data.map(x => (x.kategori || "").trim()).filter(Boolean))];
+  
+  const daftar = ["SEMUA", "ELEKTRONIK", "GADGET", "RUMAH TANGGA"];
+  
   bar.innerHTML = "";
   daftar.forEach((k,index)=>{
     const btn = document.createElement("button");
-    let formatKategori = k === "SEMUA" ? "🏠 Semua" : k.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+    let formatKategori = k === "SEMUA" 
+      ? "🏠 Semua" 
+      : k.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
     btn.textContent = formatKategori;
     if(index===0){ btn.classList.add("active"); }
     btn.onclick = function(){ filterKategori(k,this); };
@@ -1078,8 +701,6 @@ function buatKategori(data){
 function renderSetting(){
  if(settingData.judul){
    document.title=settingData.judul;
-   const waLink=document.getElementById("floatingWA");
-   if(waLink){ waLink.href="https://wa.me/" + (settingData.wa || "6289524391002"); }
  }
 }
 
@@ -1093,8 +714,8 @@ function renderBanner(){
  </a>`).join("");
 }
 
-function hubungiKami(){ window.open("https://wa.me/" + (settingData.wa || "6289524391002")); }
-define=null;
+function hubungiKami(){ bukaPopupCabang('wa'); }
+
 function toggleMenu(){sideMenu.style.left="0";overlay.style.display="block";}
 function closeMenu(){sideMenu.style.left="-320px";overlay.style.display="none";}
 
@@ -1111,7 +732,6 @@ function filterKategori(k, el = null) {
 function tutupDetail(){
   modal.style.display = "none";
   produkAktif = null;
-  updateFloatingWA();
   history.replaceState({}, "", window.location.pathname);
 }
 
@@ -1130,18 +750,13 @@ window.addEventListener("scroll", () => {
 backToTop.addEventListener("click", () => { window.scrollTo({ top: 0, behavior: "smooth" }); });
 
 function updateFloatingWA(){
-  const wa = settingData.wa || "6289524391002";
-  let pesan = "";
-  if(produkAktif){
-    pesan = `Halo Admin UFO Kebonsari.\n\nSaya ingin menanyakan produk berikut:\n\nBrand : ${produkAktif.brand}\nTipe : ${produkAktif.tipe}\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
-  }else{
-    pesan = `Halo Admin UFO Kebonsari.\n\nIgin bertanya mengenai produk yang ada di katalog.\n\nMohon informasi harga dan stoknya.\n\nTerima kasih.`;
-  }
-  floatingWA.href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(pesan);
+  // Floating WA sekarang buka popup pilihan cabang, tidak perlu set href
+  const waLink = document.getElementById("floatingWA");
+  if(waLink){ waLink.style.display = "flex"; }
 }
 </script>
 <footer class="footer">
-  © 2026 UFO Kebonsari Malang &bull; All Rights Reserved
+  © 2026 UFO Elektronik Malang &bull; All Rights Reserved
 </footer>
 </body>
 </html>
