@@ -4,7 +4,7 @@
 <meta name="robots" content="noindex,nofollow">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin Katalog — UFO Kebonsari Malang</title>
+<title>Admin Katalog — UFO Elektronik Malang</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
@@ -37,6 +37,8 @@ input[type=email]:focus,input[type=password]:focus{outline:none;border-color:#00
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .btn.secondary{background:#f1f5f9;color:#334155}
 .btn.secondary:hover{background:#e2e8f0}
+.btn.danger{background:#dc2626;color:#fff}
+.btn.danger:hover{background:#b91c1c}
 
 #loginError{color:#dc2626;font-size:13px;margin-top:-6px;margin-bottom:12px;display:none}
 
@@ -44,21 +46,22 @@ table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}
 th,td{border:1px solid #e2e8f0;padding:6px 8px;text-align:left}
 th{background:#f8fafc;color:#334155}
 
-#logBox{
+.log-box{
   background:#0f172a;color:#d1fae5;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;
   border-radius:10px;padding:14px;max-height:260px;overflow-y:auto;white-space:pre-wrap;line-height:1.6;display:none;margin-top:14px;
 }
+#logBoxReset{color:#fecaca;max-height:200px}
 
 #screenLogin, #screenDashboard{display:none}
-.badge-ok{color:#16a34a;font-weight:700}
-.badge-err{color:#dc2626;font-weight:700}
+.warning-box{background:#fef3c7;border:1px solid #fcd34d;border-radius:10px;padding:12px;font-size:13px;color:#92400e;margin-bottom:14px;line-height:1.6}
+.info-box{background:#dbeafe;border:1px solid #93c5fd;border-radius:10px;padding:12px;font-size:13px;color:#1e40af;margin-bottom:14px;line-height:1.6}
 </style>
 </head>
 <body>
 
 <div class="topbar">
   <div>
-    <h1>🏪 Admin Katalog UFO Kebonsari</h1>
+    <h1>🏪 Admin Katalog UFO Elektronik Malang</h1>
     <span id="userEmail"></span>
   </div>
   <button id="btnLogout" onclick="logout()" style="display:none">Keluar</button>
@@ -83,7 +86,7 @@ th{background:#f8fafc;color:#334155}
 
     <div class="card">
       <h2>1. Format Excel</h2>
-      <p>File Excel harus punya 4 sheet dengan nama persis: <b>KATALOG</b>, <b>SETTING</b>, <b>BANNER</b>, <b>PROMO</b>. Baris pertama tiap sheet adalah judul kolom (akan dilewati). Kalau belum punya filenya, unduh template di bawah supaya urutan kolomnya pasti benar.</p>
+      <p>File Excel harus punya 4 sheet dengan nama persis: <b>KATALOG</b>, <b>SETTING</b>, <b>BANNER</b>, <b>PROMO</b>. Baris pertama tiap sheet adalah judul kolom (akan dilewati).</p>
       <button class="btn secondary" onclick="unduhTemplate()">⬇️ Unduh Template Excel</button>
 
       <table>
@@ -95,18 +98,29 @@ th{background:#f8fafc;color:#334155}
         <tr><td>M Unggulan (YA/kosong)</td><td>N Urutan (angka)</td></tr>
         <tr><td>O Banner (opsional)</td><td></td></tr>
       </table>
+      <p style="margin-top:14px">
+        <b>Kategori valid:</b> <code>Elektronik</code>, <code>Gadget</code>, <code>Rumah Tangga</code>.
+      </p>
     </div>
 
     <div class="card">
-      <h2>2. Upload Excel</h2>
-      <p>
-        <b>Produk (KATALOG):</b> di-update berdasarkan Brand+Tipe — produk lama yang tidak ada di file ini tidak akan terhapus.<br>
-        <b>Setting:</b> hanya key yang ada di sheet ini yang diperbarui.<br>
-        <b>Banner &amp; Promo:</b> seluruh isi lama diganti total dengan isi sheet ini (karena tidak ada kolom kunci unik seperti Brand+Tipe).
-      </p>
+      <h2>2. Upload Excel (Full Sync)</h2>
+      <div class="info-box">
+        🔄 <b>Mode Full Sync Aktif:</b> Setiap upload akan <b>menghapus SEMUA produk lama</b> di Firestore, lalu <b>menggantinya total</b> dengan isi Excel. Website akan <b>persis sama</b> dengan Excel — produk yang tidak ada di Excel otomatis terhapus dari website.
+      </div>
+      <div class="warning-box">
+        ⚠️ <b>Penting:</b> Pastikan Excel sudah benar sebelum upload. Data lama tidak bisa dikembalikan setelah dihapus.
+      </div>
       <input type="file" id="fileInput" accept=".xlsx,.xls">
-      <button class="btn" id="btnUpload" onclick="prosesUpload()">Proses &amp; Simpan ke Firebase</button>
-      <div id="logBox"></div>
+      <button class="btn" id="btnUpload" onclick="prosesUpload()">🔄 Upload & Sync Total ke Firebase</button>
+      <div id="logBox" class="log-box"></div>
+    </div>
+
+    <div class="card">
+      <h2>3. Hapus Semua Produk (Emergency)</h2>
+      <p>Hapus total semua produk di Firestore <b>tanpa upload Excel</b>. Berguna kalau mau bersih-bersih darurat.</p>
+      <button class="btn danger" id="btnReset" onclick="resetSemuaProduk()">🗑️ Hapus Semua Produk</button>
+      <div id="logBoxReset" class="log-box"></div>
     </div>
 
   </div>
@@ -119,21 +133,15 @@ th{background:#f8fafc;color:#334155}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 /* ======================================================
-   KONFIGURASI FIREBASE — samakan persis dengan index.html
+   KONFIGURASI FIREBASE
    ====================================================== */
 const firebaseConfig = {
   apiKey: "AIzaSyBMokA92YiB87vwuqBREwNhHkkU_bXo8cI",
-
   authDomain: "ufokebonsariapps.firebaseapp.com",
-
   projectId: "ufokebonsariapps",
-
   storageBucket: "ufokebonsariapps.firebasestorage.app",
-
   messagingSenderId: "663266923207",
-
   appId: "1:663266923207:web:af9a0abc268766c73724e2"
-
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -168,9 +176,7 @@ async function login(){
   }
 }
 
-function logout(){
-  auth.signOut();
-}
+function logout(){ auth.signOut(); }
 
 function terjemahkanErrorAuth(err){
   const kode = err.code || "";
@@ -198,7 +204,13 @@ function log(pesan){
   box.scrollTop = box.scrollHeight;
 }
 
-// Firestore batch dibatasi 500 operasi, jadi commit per-chunk supaya aman untuk katalog besar
+function logReset(pesan){
+  const box = document.getElementById("logBoxReset");
+  box.style.display = "block";
+  box.textContent += pesan + "\n";
+  box.scrollTop = box.scrollHeight;
+}
+
 async function commitBertahap(ops){
   const UKURAN_CHUNK = 400;
   for(let i=0; i<ops.length; i+=UKURAN_CHUNK){
@@ -212,7 +224,58 @@ async function commitBertahap(ops){
   }
 }
 
-/* ---------- UPLOAD EXCEL ---------- */
+/* ======================================================
+   HAPUS SEMUA PRODUK (EMERGENCY)
+   ====================================================== */
+async function resetSemuaProduk(){
+  const konfirmasi1 = confirm("⚠️ YAKIN mau HAPUS SEMUA PRODUK di Firestore?\n\nData yang sudah dihapus TIDAK bisa dikembalikan.");
+  if(!konfirmasi1) return;
+
+  const konfirmasi2 = prompt('Ketik "HAPUS" (huruf besar) untuk konfirmasi terakhir:');
+  if(konfirmasi2 !== "HAPUS"){
+    alert("Dibatalkan.");
+    return;
+  }
+
+  const btn = document.getElementById("btnReset");
+  btn.disabled = true;
+  document.getElementById("logBoxReset").textContent = "";
+  logReset("Mulai menghapus semua produk...");
+
+  try{
+    const snap = await db.collection("produk").get();
+    const total = snap.size;
+    logReset("Ditemukan " + total + " produk.");
+
+    if(total === 0){
+      logReset("✅ Koleksi produk sudah kosong.");
+      btn.disabled = false;
+      return;
+    }
+
+    const docs = snap.docs;
+    for(let i=0; i<docs.length; i+=400){
+      const batch = db.batch();
+      const chunk = docs.slice(i, i+400);
+      chunk.forEach(d => batch.delete(d.ref));
+      await batch.commit();
+      logReset("  Terhapus " + Math.min(i+400, docs.length) + " / " + total);
+    }
+
+    logReset("");
+    logReset("✅ SELESAI! " + total + " produk dihapus.");
+
+  }catch(err){
+    console.error(err);
+    logReset("❌ Gagal: " + (err.message || err));
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+/* ======================================================
+   UPLOAD EXCEL — MODE FULL SYNC
+   ====================================================== */
 async function prosesUpload(){
   const fileInput = document.getElementById("fileInput");
   const btn = document.getElementById("btnUpload");
@@ -224,6 +287,9 @@ async function prosesUpload(){
     return;
   }
 
+  const konfirmasi = confirm("🔄 FULL SYNC MODE\n\nSemua produk lama akan DIHAPUS dan diganti dengan isi Excel.\n\nLanjutkan?");
+  if(!konfirmasi) return;
+
   btn.disabled = true;
   try{
     log("Membaca file " + file.name + " ...");
@@ -233,12 +299,13 @@ async function prosesUpload(){
     const ops = [];
     let jumlahProduk = 0, jumlahBanner = 0, jumlahPromo = 0, setelanBerubah = false;
 
-    // ===== KATALOG (upsert per Brand+Tipe) =====
+    // ===== KATALOG: parse dari Excel =====
     const rowsKatalog = bacaSheet(wb, "KATALOG");
+    const produkBaru = [];
     if(rowsKatalog){
       for(let i=1; i<rowsKatalog.length; i++){
         const r = rowsKatalog[i];
-        if(!r[0] || !r[1]) continue; // brand & tipe wajib diisi
+        if(!r[0] || !r[1]) continue;
         const produkObj = {
           brand: String(r[0]).trim(),
           tipe: String(r[1]).trim(),
@@ -252,13 +319,29 @@ async function prosesUpload(){
           urutan: Number(r[13])||999,
           banner: r[14]||""
         };
-        const id = slugId(produkObj.brand, produkObj.tipe);
-        ops.push({ tipe:"set", ref: db.collection("produk").doc(id), data: produkObj });
+        produkBaru.push(produkObj);
         jumlahProduk++;
       }
-      log(jumlahProduk + " baris produk siap di-upsert.");
+      log(jumlahProduk + " produk dibaca dari Excel.");
     } else {
-      log("(sheet KATALOG tidak ditemukan, dilewati)");
+      log("(sheet KATALOG tidak ditemukan — koleksi produk tidak akan diubah)");
+    }
+
+    // ===== HAPUS SEMUA PRODUK LAMA (FULL SYNC) =====
+    if(rowsKatalog){
+      log("Menghapus semua produk lama di Firestore...");
+      const snapLama = await db.collection("produk").get();
+      log("  Ditemukan " + snapLama.size + " produk lama untuk dihapus.");
+      snapLama.forEach(doc => ops.push({ tipe:"delete", ref: doc.ref }));
+    }
+
+    // ===== TULIS ULANG PRODUK BARU =====
+    if(rowsKatalog){
+      log("Menyiapkan " + produkBaru.length + " produk baru...");
+      produkBaru.forEach(p => {
+        const id = slugId(p.brand, p.tipe);
+        ops.push({ tipe:"set", ref: db.collection("produk").doc(id), data: p });
+      });
     }
 
     // ===== SETTING (merge) =====
@@ -274,7 +357,7 @@ async function prosesUpload(){
         ops.push({ tipe:"set", ref: db.collection("setting").doc("main"), data: settingObj, opsi:{merge:true} });
         setelanBerubah = true;
       }
-      log("Setting: " + Object.keys(settingObj).length + " key akan diperbarui.");
+      log("Setting: " + Object.keys(settingObj).length + " key diperbarui.");
     } else {
       log("(sheet SETTING tidak ditemukan, dilewati)");
     }
@@ -292,7 +375,7 @@ async function prosesUpload(){
         }});
         jumlahBanner++;
       }
-      log(jumlahBanner + " banner akan menggantikan seluruh banner lama.");
+      log(jumlahBanner + " banner baru.");
     } else {
       log("(sheet BANNER tidak ditemukan, dilewati)");
     }
@@ -304,22 +387,27 @@ async function prosesUpload(){
       lama.forEach(doc => ops.push({ tipe:"delete", ref: doc.ref }));
       for(let i=1; i<rowsPromo.length; i++){
         const r = rowsPromo[i];
-        if(!r[1]) continue; // judul wajib
+        if(!r[1]) continue;
         ops.push({ tipe:"set", ref: db.collection("promo").doc(), data:{
           aktif: r[0]||"", judul: r[1], gambar: r[2]||"", link: r[3]||"", urutan: Number(r[4])||999
         }});
         jumlahPromo++;
       }
-      log(jumlahPromo + " promo akan menggantikan seluruh promo lama.");
+      log(jumlahPromo + " promo baru.");
     } else {
       log("(sheet PROMO tidak ditemukan, dilewati)");
     }
 
+    log("");
     log("Menyimpan ke Firebase (" + ops.length + " operasi)...");
     await commitBertahap(ops);
 
     log("");
-    log("✅ Selesai! " + jumlahProduk + " produk, " + jumlahBanner + " banner, " + jumlahPromo + " promo diproses" + (setelanBerubah ? ", setting diperbarui." : "."));
+    log("✅ SELESAI! Full sync berhasil.");
+    log("   • " + jumlahProduk + " produk baru");
+    log("   • " + jumlahBanner + " banner");
+    log("   • " + jumlahPromo + " promo");
+    if(setelanBerubah) log("   • Setting diperbarui");
 
   }catch(err){
     console.error(err);
@@ -335,23 +423,23 @@ function unduhTemplate(){
 
   const katalog = [
     ["BRAND","TIPE","HARGA","KATEGORI","SUBKATEGORI","SPEK1","SPEK2","SPEK3","SPEK4","SPEK5","FOTO","STATUS","UNGGULAN","URUTAN","BANNER"],
-    ["Sharp","AH-A5ZCY","","Elektronik","Ac Split","1 PK","Low Watt","Remote","Anti Bakteri","Garansi 3 Tahun","sharp-ah-a5zcy.jpg","BARU","YA",1,""]
+    ["Sharp","AH-A5ZCY","","Elektronik","Air Conditioner","1 PK","Low Watt","Remote","Anti Bakteri","Garansi 3 Tahun","sharp-ah-a5zcy.jpg","BARU","YA",1,""]
   ];
   const setting = [
     ["KEY","VALUE"],
-    ["JUDUL_WEB","UFO Kebonsari Malang"],
+    ["JUDUL_WEB","UFO Elektronik Malang"],
     ["SUBJUDUL","Katalog Produk Resmi"],
-    ["WA_ADMIN","6289524391002"],
+    ["WA_ADMIN","6287761593677"],
     ["PROMO","Tulis info promo bulan ini di sini"],
     ["TENTANG","Tulis deskripsi toko di sini"]
   ];
   const banner = [
     ["JUDUL","GAMBAR","LINK","URUTAN"],
-    ["Promo Agustus","images/banner/promo-agustus.jpg","https://wa.me/6289524391002",1]
+    ["Promo Agustus","images/banner/promo-agustus.jpg","https://wa.me/6287761593677",1]
   ];
   const promo = [
     ["AKTIF","JUDUL","GAMBAR","LINK","URUTAN"],
-    ["YA","Promo AC Sharp","promo-ac-sharp.jpg","https://wa.me/6289524391002",1]
+    ["YA","Promo AC Sharp","promo-ac-sharp.jpg","https://wa.me/6287761593677",1]
   ];
 
   XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(katalog), "KATALOG");
